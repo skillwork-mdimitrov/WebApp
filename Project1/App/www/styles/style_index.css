@@ -1,0 +1,36 @@
+/* General */
+img {
+    max-width:100%;
+    max-height:100%;
+}
+
+/* Containers */
+#mainContainer {
+    display: flex;
+}
+
+#getDbContainer {
+    width: 400px;
+    flex: 1;
+}
+
+#insertDbContainer {
+    width: 400px;
+    flex: 1;
+}
+
+#picContainer {
+    width: 350px;
+    height: 350px;
+    border: 1px solid #ff0;
+}
+
+.formTitle {
+    font-size: 2em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.requiredField {
+    border: 2px solid red;
+}
