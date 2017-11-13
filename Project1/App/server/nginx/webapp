@@ -5,7 +5,7 @@ server {
 
 	root /home/maksim/WebstormProjects/Project1/App/www; #required, possibly change to relative path
 
-	location /server/queries/ {
+	location /server/ {
 		proxy_pass "http://127.0.0.1:9000";
 	}
 
