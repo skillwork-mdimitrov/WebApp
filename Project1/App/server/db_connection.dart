@@ -8,7 +8,7 @@ class ConnectionDB {
     connection = new PostgreSQLConnection(
         "localhost",
         5432,
-        "postgres",
+        "postgres", // db name
         username: "postgres",
         password: "prototype115m"
     );

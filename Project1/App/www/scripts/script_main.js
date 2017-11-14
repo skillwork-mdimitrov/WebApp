@@ -82,8 +82,7 @@ function showDB() {
                 document.getElementById("textToBeChanged").innerHTML = this.responseText
             }
         };
-        // xhttp.open("POST", "../../server/queries/display_db.dart",  true);
-        xhttp.open("POST", "server/display",  true);
+        xhttp.open("POST", "/dynamic/display_clients",  true);
         var usrInput = JSON.stringify({"userTable": usrTable.value + "",
                                         "userColumn": userColumn.value + ""});
 
@@ -148,7 +147,7 @@ function updateDb() {
             }
         };
         // xhttp.open("POST", "../../server/queries/update_db.dart", true);
-        xhttp.open("POST", "server/update_client", true);
+        console.log(xhttp.open("POST", "/dynamic/update_client", true));
         var usrInput = JSON.stringify({ "id": rowId.value + "",
                                         "value": rowValue.value + "",
                                         "selectValue": updateWhat.value + ""});
