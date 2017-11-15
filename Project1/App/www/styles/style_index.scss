@@ -1,0 +1,35 @@
+// General
+* {
+  margin: 0;
+}
+
+// Containers
+#mainContainer {
+  display: flex; // makes it flex-container
+  width: 1300px;
+  height: 100%; // mby change
+  background-color: green;
+}
+
+#headContainer {
+  flex: 1; // check that
+  width: 1300px;
+  height: 125px;
+  background-color: hotpink;
+}
+
+#logoContainer {
+  width: 150px;
+  background-color: lightseagreen;
+
+  #logoPic {
+    width: 150%; // fix
+  }
+}
+
+#basketContainer {
+  width: 150px;
+  justify-content: flex-end;
+  background-color: lightblue;
+}
+

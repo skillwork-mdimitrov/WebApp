@@ -2,47 +2,64 @@
 <html lang="en">
 
 <head>
-    <title>Dart project main page</title>
-    <meta charset="UTF-8">
-    <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- remove the favicon.ico request -->
-    <link rel="stylesheet" href="styles/style_index.css">
+  <title>Dart project main page</title>
+  <meta charset="UTF-8">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- remove the favicon.ico request -->
+  <link rel="stylesheet" href="styles/style_index.css">
 </head>
 
 <body>
-    <div id="mainContainer">
-        <div id="getDbContainer">
-            <label for="fromTable" class="formTitle">Search form</label>
-            <fieldset>
-                <form>
-                    Table: <input type="text" id="fromTable" title="From which table"required/><br>
-                    Column: <input type="text" id="tableColumn" title="Table column" ><br>
-                    <input type="button" value="Get results" id="querySubmit"/>
-                </form>
-            </fieldset>
-        </div>
+<!--<div id="mainContainer">-->
+<!--<div id="getDbContainer">-->
+<!--<label for="fromTable" class="formTitle">Search form</label>-->
+<!--<fieldset>-->
+<!--<form>-->
+<!--Table: <input type="text" id="fromTable" title="From which table"required/><br>-->
+<!--Column: <input type="text" id="tableColumn" title="Table column" ><br>-->
+<!--<input type="button" value="Get results" id="querySubmit"/>-->
+<!--</form>-->
+<!--</fieldset>-->
+<!--</div>-->
 
-        <div id="insertDbContainer">
-            <label for="rowId" class="formTitle">Update form</label>
-            <fieldset>
-                <form>
-                    ID <input type="number" id="rowId" required><br>
-                    <select id="selectUpdate">
-                        <option>Name</option>
-                        <option>Cart_empty_status</option>
-                    </select>
-                    <input type="text" id="rowValue" title="Row value"><br>
-                    <input type="button" value="Update!" id="insertDbBtn">
-                </form>
-            </fieldset>
-        </div>
+<!--<div id="insertDbContainer">-->
+<!--<label for="rowId" class="formTitle">Update form</label>-->
+<!--<fieldset>-->
+<!--<form>-->
+<!--ID <input type="number" id="rowId" required><br>-->
+<!--<select id="selectUpdate">-->
+<!--<option>Name</option>-->
+<!--<option>Cart_empty_status</option>-->
+<!--</select>-->
+<!--<input type="text" id="rowValue" title="Row value"><br>-->
+<!--<input type="button" value="Update!" id="insertDbBtn">-->
+<!--</form>-->
+<!--</fieldset>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<h2 id="textToBeChanged">Standard text</h2>-->
+
+<!--<div id="picContainer">-->
+<!--<img src="images/whatever.png" alt="whatever picture" id="catPic">-->
+<!--</div>-->
+
+<!-- Parent flex container -->
+<div id="mainContainer">
+  <!-- Header because ... -->
+  <header>
+    <div id="headContainer">
+      <div id="logoContainer">
+        <img src="images/logo.png" alt="logo" id="logoPic">
+      </div>
+      <div id="basketContainer">
+        <img src="images/basket.png" alt="basket" id="basketPic">
+      </div>
     </div>
+  </header>
+  <div id="slideShow">
 
-    <h2 id="textToBeChanged">Standard text</h2>
-
-    <div id="picContainer">
-
-        <img src="images/whatever.png" alt="whatever picture" id="catPic">
-    </div>
+  </div>
+</div>
 
 </body>
 

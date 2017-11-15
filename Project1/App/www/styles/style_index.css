@@ -1,36 +1,27 @@
-/* General */
-img {
-    max-width:100%;
-    max-height:100%;
-}
+* {
+  margin: 0; }
 
-/* Containers */
 #mainContainer {
-    display: flex;
-}
+  display: flex;
+  width: 1300px;
+  height: 100%;
+  background-color: green; }
 
-#getDbContainer {
-    width: 400px;
-    flex: 1;
-}
+#headContainer {
+  flex: 1;
+  width: 1300px;
+  height: 125px;
+  background-color: hotpink; }
 
-#insertDbContainer {
-    width: 400px;
-    flex: 1;
-}
+#logoContainer {
+  width: 150px;
+  background-color: lightseagreen; }
+  #logoContainer #logoPic {
+    width: 150%; }
 
-#picContainer {
-    width: 350px;
-    height: 350px;
-    border: 1px solid #ff0;
-}
+#basketContainer {
+  width: 150px;
+  justify-content: flex-end;
+  background-color: lightblue; }
 
-.formTitle {
-    font-size: 2em;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.requiredField {
-    border: 2px solid red;
-}
+/*# sourceMappingURL=style_index.css.map */
