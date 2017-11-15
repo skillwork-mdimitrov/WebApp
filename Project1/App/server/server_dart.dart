@@ -22,7 +22,7 @@ main() async {
     try {
       var httpRequest = await HttpBodyHandler.processRequest(request);
       var resultsUnencoded = httpRequest.body;
-      var queries = new Queries();
+      var queries = new Queries(); // maybe it's not that optimised here
       int id;
       String value;
       String selectValue;
@@ -46,7 +46,7 @@ main() async {
         case "Name":
           toWrite = await queries.update.updateName(id, value);
           break;
-        case "Cart_empty_status":
+        case "Cart_empty_status": // careful, linked with HTML text value
           toWrite = await queries.update.updateCartStatus(id, value);
           break;
         default:
