@@ -7,66 +7,83 @@
 ul {
   list-style: none; }
 
-#mainContainer {
+.mainContainer {
   display: flex;
   flex-direction: column;
   width: 1250px;
   margin: 0 auto;
   background-color: lightcyan; }
-  #mainContainer #headContainer {
+  .mainContainer .headContainer {
     display: flex;
     justify-content: center;
     background-color: springgreen; }
-    #mainContainer #headContainer #headSection {
+    .mainContainer .headContainer .headSection {
       display: flex;
       justify-content: space-between;
       flex: 1;
       height: 85px;
       background-color: lightgoldenrodyellow; }
-      #mainContainer #headContainer #headSection #logoContainer {
+      .mainContainer .headContainer .headSection .logoContainer {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 250px;
         background-color: aquamarine; }
-        #mainContainer #headContainer #headSection #logoContainer #logoSection {
+        .mainContainer .headContainer .headSection .logoContainer .logoSection {
           max-width: 50%; }
-          #mainContainer #headContainer #headSection #logoContainer #logoSection #logoPic {
+          .mainContainer .headContainer .headSection .logoContainer .logoSection .logoPic {
             width: 100%; }
-          #mainContainer #headContainer #headSection #logoContainer #logoSection:hover {
+          .mainContainer .headContainer .headSection .logoContainer .logoSection:hover {
             background-color: darkred;
             cursor: pointer; }
-      #mainContainer #headContainer #headSection #basketContainer {
+      .mainContainer .headContainer .headSection .basketContainer {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 150px;
         background-color: lightblue; }
-        #mainContainer #headContainer #headSection #basketContainer #basketSection {
+        .mainContainer .headContainer .headSection .basketContainer .basketSection {
           max-width: 20%; }
-          #mainContainer #headContainer #headSection #basketContainer #basketSection #basketPic {
+          .mainContainer .headContainer .headSection .basketContainer .basketSection .basketPic {
             width: 100%; }
-          #mainContainer #headContainer #headSection #basketContainer #basketSection:hover {
+          .mainContainer .headContainer .headSection .basketContainer .basketSection:hover {
             background-color: darkred;
             cursor: pointer; }
-  #mainContainer #menuContainer {
-    flex: 1;
+  .mainContainer .menuContainer {
     background-color: lightsteelblue; }
-    #mainContainer #menuContainer #menu {
+    .mainContainer .menuContainer .menu {
       display: flex;
       justify-content: space-around; }
-    #mainContainer #menuContainer .menuItem {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 0.247;
-      height: 50px;
-      border: 2px solid darkred;
-      background-color: black;
-      transition: background-color 1s; }
-      #mainContainer #menuContainer .menuItem:hover {
-        background-color: darkred;
-        border: 2px solid black;
-        cursor: pointer; }
+      .mainContainer .menuContainer .menu .menuItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0.247;
+        height: 50px;
+        border: 2px solid darkred;
+        background-color: black;
+        transition: background-color 1s; }
+        .mainContainer .menuContainer .menu .menuItem:hover {
+          background-color: darkred;
+          border: 2px solid black;
+          cursor: pointer; }
+  .mainContainer .slideShowContainer .slideShowImages {
+    display: flex;
+    justify-content: center; }
+  .mainContainer .slideShowContainer .slideShowButtons {
+    display: flex;
+    justify-content: space-between;
+    justify-items: center; }
+    .mainContainer .slideShowContainer .slideShowButtons .slide-button {
+      border: none;
+      padding: 8px 16px;
+      vertical-align: middle;
+      overflow: hidden;
+      text-decoration: none;
+      color: red;
+      background-color: inherit;
+      text-align: center;
+      cursor: pointer;
+      white-space: nowrap; }
 
 /*# sourceMappingURL=style_index.css.map */

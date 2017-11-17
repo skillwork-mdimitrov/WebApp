@@ -10,25 +10,25 @@
 
 <body>
 <!-- Parent flex container -->
-<div id="mainContainer">
+<div class="mainContainer">
 
-  <header id="headContainer">
-    <div id="headSection">
-      <div id="logoContainer">
-        <div id="logoSection">
-          <img src="images/logo.png" alt="logo" id="logoPic">
+  <header class="headContainer">
+    <div class="headSection">
+      <div class="logoContainer">
+        <div class="logoSection">
+          <img src="images/logo.png" alt="logo" class="logoPic">
         </div>
       </div>
-      <div id="basketContainer">
-        <div id="basketSection">
-          <img src="images/basket.png" alt="basket" id="basketPic">
+      <div class="basketContainer">
+        <div class="basketSection">
+          <img src="images/basket.png" alt="basket" class="basketPic">
         </div>
       </div>
     </div>
   </header>
 
-  <nav id="menuContainer">
-    <ul id="menu">
+  <nav class="menuContainer">
+    <ul class="menu">
       <li class="menuItem">FSBN</li>
       <li class="menuItem">SMOG</li>
       <li class="menuItem">BLCK SQUAD</li>
@@ -36,14 +36,18 @@
     </ul>
   </nav>
 
-  <div id="slideShowContainer">
-    <img class="mySlides" src="images/slideshow/DKNY.jpg">
-    <img class="mySlides" src="images/slideshow/fsbn.png">
-    <img class="mySlides" src="images/slideshow/swagger.jpg">
-    <img class="mySlides" src="images/slideshow/wicked.png">
+  <div class="slideShowContainer">
+    <div class="slideShowImages">
+      <img class="mySlides" src="images/slideshow/DKNY.jpg">
+      <img class="mySlides" src="images/slideshow/fsbn.png">
+      <img class="mySlides" src="images/slideshow/swagger.jpg">
+      <img class="mySlides" src="images/slideshow/wicked.png">
+    </div>
 
-    <!--<button class="w3-button w3-display-left" onclick="plusDivs(-1)">&#10094;</button>-->
-    <!--<button class="w3-button w3-display-right" onclick="plusDivs(+1)">&#10095;</button>-->
+    <div class="slideShowButtons">
+      <button class="slide-button slide-display-left" onclick="plusDivs(-1)">&#10094;</button>
+      <button class="slide-button slide-display-right" onclick="plusDivs(+1)">&#10095;</button>
+    </div>
   </div>
 
 </div>

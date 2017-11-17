@@ -15,36 +15,36 @@ ul {
 }
 
 // Containers
-#mainContainer {
+.mainContainer {
   display: flex; // makes it a flex-container
   flex-direction: column; // every next element goes down
   width: 1250px;
   margin: 0 auto;
   background-color: lightcyan;
 
-  #headContainer {
+  .headContainer {
     display: flex;
     justify-content: center;
     background-color: springgreen;
 
-    #headSection {
+    .headSection {
       display: flex;
       justify-content: space-between;
       flex: 1;
       height: $logoHeight;
       background-color: lightgoldenrodyellow;
 
-      #logoContainer {
+      .logoContainer {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 250px;
         background-color: aquamarine;
 
-        #logoSection {
+        .logoSection {
           max-width: 50%;
 
-          #logoPic {
+          .logoPic {
             width: 100%; // fix
           }
 
@@ -55,21 +55,21 @@ ul {
         }
       }
 
-      #basketContainer {
+      .basketContainer {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 150px;
         background-color: lightblue;
 
-        #basketSection {
+        .basketSection {
           max-width: 20%;
 
-          #basketPic {
+          .basketPic {
             width: 100%; // possibly fix
           }
 
-          // acts like #basketPic hover
+          // acts like .basketPic hover
           &:hover {
             background-color: darkred;
             cursor: pointer;
@@ -79,36 +79,69 @@ ul {
     }
   }
 
-  #menuContainer {
-    flex: 1;
+  .menuContainer {
     background-color: lightsteelblue;
 
-    #menu {
+    .menu {
       display: flex;
       justify-content: space-around;
 
-    }
+      .menuItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0.247;
+        height: 50px;
+        border: 2px solid darkred;
+        background-color: black;
+        transition: background-color 1s;
 
-    .menuItem {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 0.247;
-      height: 50px;
-      border: 2px solid darkred;
-      background-color: black;
-      transition: background-color 1s;
-
-      &:hover {
-        background-color: darkred;
-        border: 2px solid black;
-        cursor: pointer;
+        &:hover {
+          background-color: darkred;
+          border: 2px solid black;
+          cursor: pointer;
+        }
       }
     }
   }
+
+  .slideShowContainer {
+
+    .slideShowImages {
+      display: flex;
+      justify-content: center;
+    }
+
+    .slideShowButtons {
+      display: flex;
+      justify-content: space-between;
+      justify-items: center;
+
+      .slide-button {
+        border: none;
+        // display: inline-block;
+        // outline: 0;
+        padding: 8px 16px;
+        vertical-align: middle;
+        overflow: hidden;
+        text-decoration: none;
+        color: red;
+        background-color: inherit;
+        text-align: center;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .slide-display-right {
+      }
+
+      .slide-display-left {
+      }
+    }
+  }
+
+
 }
-
-
 
 
 
