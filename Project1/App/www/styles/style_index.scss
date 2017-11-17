@@ -1,35 +1,119 @@
+// Variables
+$logoHeight: 85px;
+$mainWidth: 1300px;
+
 // General
 * {
   margin: 0;
+  padding: 0;
+  user-select: none;
+  color: white;
+}
+
+ul {
+  list-style: none;
 }
 
 // Containers
 #mainContainer {
-  display: flex; // makes it flex-container
-  width: 1300px;
-  height: 100%; // mby change
-  background-color: green;
-}
+  display: flex; // makes it a flex-container
+  flex-direction: column; // every next element goes down
+  width: 1250px;
+  margin: 0 auto;
+  background-color: lightcyan;
 
-#headContainer {
-  flex: 1; // check that
-  width: 1300px;
-  height: 125px;
-  background-color: hotpink;
-}
+  #headContainer {
+    display: flex;
+    justify-content: center;
+    background-color: springgreen;
 
-#logoContainer {
-  width: 150px;
-  background-color: lightseagreen;
+    #headSection {
+      display: flex;
+      justify-content: space-between;
+      flex: 1;
+      height: $logoHeight;
+      background-color: lightgoldenrodyellow;
 
-  #logoPic {
-    width: 150%; // fix
+      #logoContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 250px;
+        background-color: aquamarine;
+
+        #logoSection {
+          max-width: 50%;
+
+          #logoPic {
+            width: 100%; // fix
+          }
+
+          &:hover {
+            background-color: darkred;
+            cursor: pointer;
+          }
+        }
+      }
+
+      #basketContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        background-color: lightblue;
+
+        #basketSection {
+          max-width: 20%;
+
+          #basketPic {
+            width: 100%; // possibly fix
+          }
+
+          // acts like #basketPic hover
+          &:hover {
+            background-color: darkred;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  #menuContainer {
+    flex: 1;
+    background-color: lightsteelblue;
+
+    #menu {
+      display: flex;
+      justify-content: space-around;
+
+    }
+
+    .menuItem {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 0.247;
+      height: 50px;
+      border: 2px solid darkred;
+      background-color: black;
+      transition: background-color 1s;
+
+      &:hover {
+        background-color: darkred;
+        border: 2px solid black;
+        cursor: pointer;
+      }
+    }
   }
 }
 
-#basketContainer {
-  width: 150px;
-  justify-content: flex-end;
-  background-color: lightblue;
-}
+
+
+
+
+
+
+
+
 
