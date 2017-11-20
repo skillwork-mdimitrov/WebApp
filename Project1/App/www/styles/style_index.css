@@ -1,8 +1,12 @@
+/* Problems */
 * {
   margin: 0;
   padding: 0;
   user-select: none;
   color: white; }
+
+body {
+  background-image: url("../images/bg1.jpg"); }
 
 ul {
   list-style: none; }
@@ -10,9 +14,10 @@ ul {
 .mainContainer {
   display: flex;
   flex-direction: column;
-  width: 1250px;
+  max-width: 1250px;
   margin: 0 auto;
-  background-color: lightcyan; }
+  opacity: 0.975;
+  background-color: black; }
   .mainContainer .headContainer {
     display: flex;
     justify-content: center;
@@ -27,8 +32,7 @@ ul {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 250px;
-        background-color: aquamarine; }
+        width: 250px; }
         .mainContainer .headContainer .headSection .logoContainer .logoSection {
           max-width: 50%; }
           .mainContainer .headContainer .headSection .logoContainer .logoSection .logoPic {
@@ -40,8 +44,7 @@ ul {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 150px;
-        background-color: lightblue; }
+        width: 150px; }
         .mainContainer .headContainer .headSection .basketContainer .basketSection {
           max-width: 20%; }
           .mainContainer .headContainer .headSection .basketContainer .basketSection .basketPic {
@@ -67,23 +70,54 @@ ul {
           background-color: darkred;
           border: 2px solid black;
           cursor: pointer; }
-  .mainContainer .slideShowContainer .slideShowImages {
+  .mainContainer .slideShowContainer {
     display: flex;
     justify-content: center; }
-  .mainContainer .slideShowContainer .slideShowButtons {
-    display: flex;
-    justify-content: space-between;
-    justify-items: center; }
-    .mainContainer .slideShowContainer .slideShowButtons .slide-button {
+    .mainContainer .slideShowContainer .slideShowImages {
+      display: flex;
+      width: 100%;
+      height: 440px;
+      justify-content: center; }
+    .mainContainer .slideShowContainer .slide-button {
       border: none;
-      padding: 8px 16px;
+      display: inline-block;
+      outline: 0;
+      padding: 0 0.6%;
       vertical-align: middle;
       overflow: hidden;
       text-decoration: none;
-      color: red;
+      color: darkred;
       background-color: inherit;
       text-align: center;
       cursor: pointer;
       white-space: nowrap; }
+  .mainContainer .newClothesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    .mainContainer .newClothesContainer .object-fit-cover {
+      max-height: 200px;
+      width: 80%;
+      object-fit: cover; }
+    .mainContainer .newClothesContainer .newClothesText {
+      border-bottom: 2px solid darkred;
+      width: 1150px;
+      margin-bottom: 12px; }
+      .mainContainer .newClothesContainer .newClothesText .newest_string {
+        margin-top: 45px; }
+    .mainContainer .newClothesContainer .newClothesImages {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      max-width: 1150px;
+      max-height: 2200px; }
+      .mainContainer .newClothesContainer .newClothesImages .newClothes {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 250px;
+        height: 250px;
+        margin-bottom: 12px;
+        border: 1px solid white; }
 
 /*# sourceMappingURL=style_index.css.map */

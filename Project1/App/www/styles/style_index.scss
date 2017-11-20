@@ -1,3 +1,10 @@
+/* Problems */
+// Problem with the arrow when image too wide
+// Problem with the menu border not being to the very end of the container
+// Images ratio not scaling well [slide show]
+// Polyfill IE11 object-fit
+// Problem opacity on clothes, looks like design
+
 // Variables
 $logoHeight: 85px;
 $mainWidth: 1300px;
@@ -10,6 +17,10 @@ $mainWidth: 1300px;
   color: white;
 }
 
+body {
+  background-image: url("../images/bg1.jpg");
+}
+
 ul {
   list-style: none;
 }
@@ -18,9 +29,10 @@ ul {
 .mainContainer {
   display: flex; // makes it a flex-container
   flex-direction: column; // every next element goes down
-  width: 1250px;
+  max-width: 1250px;
   margin: 0 auto;
-  background-color: lightcyan;
+  opacity: 0.975;
+  background-color: black; // Maybe change
 
   .headContainer {
     display: flex;
@@ -39,7 +51,6 @@ ul {
         justify-content: center;
         align-items: center;
         width: 250px;
-        background-color: aquamarine;
 
         .logoSection {
           max-width: 50%;
@@ -60,7 +71,6 @@ ul {
         justify-content: center;
         align-items: center;
         width: 150px;
-        background-color: lightblue;
 
         .basketSection {
           max-width: 20%;
@@ -106,41 +116,71 @@ ul {
   }
 
   .slideShowContainer {
+    display: flex;
+    justify-content: center;
 
     .slideShowImages {
       display: flex;
+      width: 100%;
+      height: 440px; // check this
       justify-content: center;
     }
 
-    .slideShowButtons {
-      display: flex;
-      justify-content: space-between;
-      justify-items: center;
-
-      .slide-button {
-        border: none;
-        // display: inline-block;
-        // outline: 0;
-        padding: 8px 16px;
-        vertical-align: middle;
-        overflow: hidden;
-        text-decoration: none;
-        color: red;
-        background-color: inherit;
-        text-align: center;
-        cursor: pointer;
-        white-space: nowrap;
-      }
-
-      .slide-display-right {
-      }
-
-      .slide-display-left {
-      }
+    .slide-button {
+      border: none;
+      display: inline-block;  // considered bad practice
+      outline: 0;             // considered bad practice
+      padding: 0 0.6%;        // POTENTIAL mobile problem
+      vertical-align: middle;
+      overflow: hidden;
+      text-decoration: none;
+      color: darkred;
+      background-color: inherit;
+      text-align: center;
+      cursor: pointer;
+      white-space: nowrap;
     }
   }
 
+  .newClothesContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
+    .object-fit-cover {
+      max-height: 200px;
+      width: 80%;
+      object-fit: cover; // NOT SUPPORTED BY IE11, polyfil
+    }
+
+    .newClothesText {
+      border-bottom: 2px solid darkred;
+      width: $mainWidth - 150px;
+      margin-bottom: 12px;
+
+      .newest_string {
+        margin-top: 45px;
+      }
+    }
+
+    .newClothesImages {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      max-width: $mainWidth - 150px;
+      max-height: 2200px; // 8 items, one each row
+
+      .newClothes {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 250px;
+        height: 250px;
+        margin-bottom: 12px; // UGLY
+        border: 1px solid white;
+      }
+    }
+  }
 }
 
 
