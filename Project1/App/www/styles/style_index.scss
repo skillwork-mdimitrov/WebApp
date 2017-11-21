@@ -1,9 +1,11 @@
 /* Problems */
-// Problem with the arrow when image too wide
+// Problem with the arrow when image too wide - FIXED
 // Problem with the menu border not being to the very end of the container
 // Images ratio not scaling well [slide show]
 // Polyfill IE11 object-fit
 // Problem opacity on clothes, looks like design
+// Make the new clothes container 200x200, instead of 250x200
+// Make the new clothes images not touch the container borders
 
 // Variables
 $logoHeight: 85px;
@@ -15,6 +17,11 @@ $mainWidth: 1300px;
   padding: 0;
   user-select: none;
   color: white;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 body {
@@ -42,7 +49,7 @@ ul {
     .headSection {
       display: flex;
       justify-content: space-between;
-      flex: 1;
+      width: 100%;
       height: $logoHeight;
       background-color: lightgoldenrodyellow;
 
@@ -142,7 +149,7 @@ ul {
     }
   }
 
-  .newClothesContainer {
+  .newSectionContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,34 +157,45 @@ ul {
     .object-fit-cover {
       max-height: 200px;
       width: 80%;
-      object-fit: cover; // NOT SUPPORTED BY IE11, polyfil
+      object-fit: cover; // NOT SUPPORTED BY IE11, polyfill needed
     }
 
-    .newClothesText {
+    .newSectionText {
       border-bottom: 2px solid darkred;
-      width: $mainWidth - 150px;
-      margin-bottom: 12px;
+      width: 90%; // example
+      margin-bottom: 12px; // UGLY
 
       .newest_string {
         margin-top: 45px;
       }
     }
 
-    .newClothesImages {
+    .newSectionFigure {
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
-      max-width: $mainWidth - 150px;
+      max-width: 90%;
       max-height: 2200px; // 8 items, one each row
 
-      .newClothes {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      .newClothesContainer {
         width: 250px;
         height: 250px;
-        margin-bottom: 12px; // UGLY
         border: 1px solid white;
+        margin-bottom: 20px; // UGLY
+
+        .newClothesImage {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-bottom: 1px solid darkred;
+        }
+
+        .newClothesInfo {
+          display: flex;
+          justify-content: center;
+          width: 100%; // not sure
+          
+        }
       }
     }
   }
