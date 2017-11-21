@@ -76,12 +76,13 @@ ul {
           cursor: pointer; }
   .mainContainer .slideShowContainer {
     display: flex;
-    justify-content: center; }
+    height: 440px; }
     .mainContainer .slideShowContainer .slideShowImages {
       display: flex;
       width: 100%;
-      height: 440px;
       justify-content: center; }
+      .mainContainer .slideShowContainer .slideShowImages .mySlides_js {
+        object-fit: cover; }
     .mainContainer .slideShowContainer .slide-button {
       border: none;
       display: inline-block;
@@ -91,7 +92,7 @@ ul {
       overflow: hidden;
       text-decoration: none;
       color: darkred;
-      background-color: inherit;
+      opacity: 0.6;
       text-align: center;
       cursor: pointer;
       white-space: nowrap; }

@@ -1,11 +1,12 @@
 /* Problems */
-// Problem with the arrow when image too wide - FIXED
-// Problem with the menu border not being to the very end of the container
+// 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
+// 3. Potential problem with smaller screen - article info text too wide
+// 3. Problem with the menu border not being to the very end of the container
 // Images ratio not scaling well [slide show]
-// Polyfill IE11 object-fit
-// Problem opacity on clothes, looks like design
-// Make the new clothes container 200x200, instead of 250x200
-// Make the new clothes images not touch the container borders
+// 2. Polyfill IE11 object-fit
+// 2. Problem opacity on clothes, looks like design
+// 3. Make the new clothes container 200x200, instead of 250x200
+// 2. Make the new clothes images not touch the container borders
 
 // Variables
 $logoHeight: 85px;
@@ -86,7 +87,7 @@ ul {
             width: 100%; // possibly fix
           }
 
-          // acts like .basketPic hover
+          // & acts like .basketPic
           &:hover {
             background-color: darkred;
             cursor: pointer;
@@ -124,13 +125,16 @@ ul {
 
   .slideShowContainer {
     display: flex;
-    justify-content: center;
+    height: 440px;
 
     .slideShowImages {
       display: flex;
       width: 100%;
-      height: 440px; // check this
       justify-content: center;
+
+      .mySlides_js {
+        object-fit: cover;
+      }
     }
 
     .slide-button {
@@ -142,7 +146,7 @@ ul {
       overflow: hidden;
       text-decoration: none;
       color: darkred;
-      background-color: inherit;
+      opacity: 0.6;
       text-align: center;
       cursor: pointer;
       white-space: nowrap;
