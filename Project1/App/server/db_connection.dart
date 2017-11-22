@@ -8,9 +8,9 @@ class ConnectionDB {
     connection = new PostgreSQLConnection(
         "localhost",
         5432,
-        "postgres", // db name
+        "webapp", // db name
         username: "postgres",
-        password: "prototype115m"
+        password: "prototype115m" // should be avoided
     );
   }
 }

@@ -1,12 +1,13 @@
 /* Problems */
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
-// 3. Potential problem with smaller screen - article info text too wide
-// 3. Problem with the menu border not being to the very end of the container
-// Images ratio not scaling well [slide show]
 // 2. Polyfill IE11 object-fit
 // 2. Problem opacity on clothes, looks like design
-// 3. Make the new clothes container 200x200, instead of 250x200
 // 2. Make the new clothes images not touch the container borders
+// 3. Potential problem with smaller screen - article info text too wide
+// 3. Problem with the menu border not being to the very end of the container
+// 3. Make the new clothes container 200x200, instead of 250x200
+// 3. Make the arrow scroll to be a bit higher then what is is currently
+// 3. Make the arrow different colour [difficult]
 
 // Variables
 $logoHeight: 85px;
@@ -33,6 +34,18 @@ ul {
   list-style: none;
 }
 
+.arrow {
+  width: 40px;
+  height: 40px;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTEycHgiIGhlaWdodD0iNTEycHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0yOTMuNzUxLDQ1NS44NjhjLTIwLjE4MSwyMC4xNzktNTMuMTY1LDE5LjkxMy03My42NzMtMC41OTVsMCwwYy0yMC41MDgtMjAuNTA4LTIwLjc3My01My40OTMtMC41OTQtNzMuNjcyICBsMTg5Ljk5OS0xOTBjMjAuMTc4LTIwLjE3OCw1My4xNjQtMTkuOTEzLDczLjY3MiwwLjU5NWwwLDBjMjAuNTA4LDIwLjUwOSwyMC43NzIsNTMuNDkyLDAuNTk1LDczLjY3MUwyOTMuNzUxLDQ1NS44Njh6Ii8+DQo8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMjIwLjI0OSw0NTUuODY4YzIwLjE4LDIwLjE3OSw1My4xNjQsMTkuOTEzLDczLjY3Mi0wLjU5NWwwLDBjMjAuNTA5LTIwLjUwOCwyMC43NzQtNTMuNDkzLDAuNTk2LTczLjY3MiAgbC0xOTAtMTkwYy0yMC4xNzgtMjAuMTc4LTUzLjE2NC0xOS45MTMtNzMuNjcxLDAuNTk1bDAsMGMtMjAuNTA4LDIwLjUwOS0yMC43NzIsNTMuNDkyLTAuNTk1LDczLjY3MUwyMjAuMjQ5LDQ1NS44Njh6Ii8+DQo8L3N2Zz4=);
+  background-size: contain;
+}
+
+.alignSelf {
+  margin-bottom: 10px;
+  align-self: flex-end;
+}
+
 // Containers
 .mainContainer {
   display: flex; // makes it a flex-container
@@ -42,61 +55,60 @@ ul {
   opacity: 0.975;
   background-color: black; // Maybe change
 
+
   .headContainer {
     display: flex;
-    justify-content: center;
-    background-color: springgreen;
+    justify-content: space-between;
+    width: 100%;
+    height: $logoHeight;
+    background-color: darkred;
 
-    .headSection {
+    .logoContainer {
       display: flex;
-      justify-content: space-between;
-      width: 100%;
-      height: $logoHeight;
-      background-color: lightgoldenrodyellow;
+      justify-content: center;
+      align-items: center;
+      width: 150px;
 
-      .logoContainer {
+      .logoSection {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 250px;
+        max-width: 100%;
 
-        .logoSection {
-          max-width: 50%;
+        .logoPic {
+          width: 80%; // fix
+        }
 
-          .logoPic {
-            width: 100%; // fix
-          }
-
-          &:hover {
-            background-color: darkred;
-            cursor: pointer;
-          }
+        &:hover {
+          background-color: darkred;
+          cursor: pointer;
         }
       }
+    }
 
-      .basketContainer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 150px;
+    .basketContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 150px;
 
-        .basketSection {
-          max-width: 20%;
+      .basketSection {
+        max-width: 20%;
 
-          .basketPic {
-            width: 100%; // possibly fix
-          }
+        .basketPic {
+          width: 100%; // possibly fix
+        }
 
-          // & acts like .basketPic
-          &:hover {
-            background-color: darkred;
-            cursor: pointer;
-          }
+        // & acts like .basketPic
+        &:hover {
+          background-color: darkred;
+          cursor: pointer;
         }
       }
     }
   }
 
+   // move down
   .menuContainer {
     background-color: lightsteelblue;
 
@@ -125,7 +137,7 @@ ul {
 
   .slideShowContainer {
     display: flex;
-    height: 440px;
+    height: 500px;
 
     .slideShowImages {
       display: flex;
@@ -135,6 +147,7 @@ ul {
       .mySlides_js {
         object-fit: cover;
       }
+
     }
 
     .slide-button {
@@ -159,7 +172,7 @@ ul {
     align-items: center;
 
     .object-fit-cover {
-      max-height: 200px;
+      // max-height: 200px;
       width: 80%;
       object-fit: cover; // NOT SUPPORTED BY IE11, polyfill needed
     }
@@ -183,7 +196,6 @@ ul {
 
       .newClothesContainer {
         width: 250px;
-        height: 250px;
         border: 1px solid white;
         margin-bottom: 20px; // UGLY
 
@@ -196,7 +208,10 @@ ul {
 
         .newClothesInfo {
           display: flex;
+          flex-direction: column;
+          align-items: center;
           justify-content: center;
+          height: 47px;
           width: 100%; // not sure
           
         }

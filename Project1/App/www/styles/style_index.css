@@ -15,6 +15,16 @@ body {
 ul {
   list-style: none; }
 
+.arrow {
+  width: 40px;
+  height: 40px;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTEycHgiIGhlaWdodD0iNTEycHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0yOTMuNzUxLDQ1NS44NjhjLTIwLjE4MSwyMC4xNzktNTMuMTY1LDE5LjkxMy03My42NzMtMC41OTVsMCwwYy0yMC41MDgtMjAuNTA4LTIwLjc3My01My40OTMtMC41OTQtNzMuNjcyICBsMTg5Ljk5OS0xOTBjMjAuMTc4LTIwLjE3OCw1My4xNjQtMTkuOTEzLDczLjY3MiwwLjU5NWwwLDBjMjAuNTA4LDIwLjUwOSwyMC43NzIsNTMuNDkyLDAuNTk1LDczLjY3MUwyOTMuNzUxLDQ1NS44Njh6Ii8+DQo8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMjIwLjI0OSw0NTUuODY4YzIwLjE4LDIwLjE3OSw1My4xNjQsMTkuOTEzLDczLjY3Mi0wLjU5NWwwLDBjMjAuNTA5LTIwLjUwOCwyMC43NzQtNTMuNDkzLDAuNTk2LTczLjY3MiAgbC0xOTAtMTkwYy0yMC4xNzgtMjAuMTc4LTUzLjE2NC0xOS45MTMtNzMuNjcxLDAuNTk1bDAsMGMtMjAuNTA4LDIwLjUwOS0yMC43NzIsNTMuNDkyLTAuNTk1LDczLjY3MUwyMjAuMjQ5LDQ1NS44Njh6Ii8+DQo8L3N2Zz4=);
+  background-size: contain; }
+
+.alignSelf {
+  margin-bottom: 10px;
+  align-self: flex-end; }
+
 .mainContainer {
   display: flex;
   flex-direction: column;
@@ -24,38 +34,37 @@ ul {
   background-color: black; }
   .mainContainer .headContainer {
     display: flex;
-    justify-content: center;
-    background-color: springgreen; }
-    .mainContainer .headContainer .headSection {
+    justify-content: space-between;
+    width: 100%;
+    height: 85px;
+    background-color: darkred; }
+    .mainContainer .headContainer .logoContainer {
       display: flex;
-      justify-content: space-between;
-      width: 100%;
-      height: 85px;
-      background-color: lightgoldenrodyellow; }
-      .mainContainer .headContainer .headSection .logoContainer {
+      justify-content: center;
+      align-items: center;
+      width: 150px; }
+      .mainContainer .headContainer .logoContainer .logoSection {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 250px; }
-        .mainContainer .headContainer .headSection .logoContainer .logoSection {
-          max-width: 50%; }
-          .mainContainer .headContainer .headSection .logoContainer .logoSection .logoPic {
-            width: 100%; }
-          .mainContainer .headContainer .headSection .logoContainer .logoSection:hover {
-            background-color: darkred;
-            cursor: pointer; }
-      .mainContainer .headContainer .headSection .basketContainer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 150px; }
-        .mainContainer .headContainer .headSection .basketContainer .basketSection {
-          max-width: 20%; }
-          .mainContainer .headContainer .headSection .basketContainer .basketSection .basketPic {
-            width: 100%; }
-          .mainContainer .headContainer .headSection .basketContainer .basketSection:hover {
-            background-color: darkred;
-            cursor: pointer; }
+        max-width: 100%; }
+        .mainContainer .headContainer .logoContainer .logoSection .logoPic {
+          width: 80%; }
+        .mainContainer .headContainer .logoContainer .logoSection:hover {
+          background-color: darkred;
+          cursor: pointer; }
+    .mainContainer .headContainer .basketContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 150px; }
+      .mainContainer .headContainer .basketContainer .basketSection {
+        max-width: 20%; }
+        .mainContainer .headContainer .basketContainer .basketSection .basketPic {
+          width: 100%; }
+        .mainContainer .headContainer .basketContainer .basketSection:hover {
+          background-color: darkred;
+          cursor: pointer; }
   .mainContainer .menuContainer {
     background-color: lightsteelblue; }
     .mainContainer .menuContainer .menu {
@@ -76,7 +85,7 @@ ul {
           cursor: pointer; }
   .mainContainer .slideShowContainer {
     display: flex;
-    height: 440px; }
+    height: 500px; }
     .mainContainer .slideShowContainer .slideShowImages {
       display: flex;
       width: 100%;
@@ -101,7 +110,6 @@ ul {
     flex-direction: column;
     align-items: center; }
     .mainContainer .newSectionContainer .object-fit-cover {
-      max-height: 200px;
       width: 80%;
       object-fit: cover; }
     .mainContainer .newSectionContainer .newSectionText {
@@ -118,7 +126,6 @@ ul {
       max-height: 2200px; }
       .mainContainer .newSectionContainer .newSectionFigure .newClothesContainer {
         width: 250px;
-        height: 250px;
         border: 1px solid white;
         margin-bottom: 20px; }
         .mainContainer .newSectionContainer .newSectionFigure .newClothesContainer .newClothesImage {
@@ -128,7 +135,10 @@ ul {
           border-bottom: 1px solid darkred; }
         .mainContainer .newSectionContainer .newSectionFigure .newClothesContainer .newClothesInfo {
           display: flex;
+          flex-direction: column;
+          align-items: center;
           justify-content: center;
+          height: 47px;
           width: 100%; }
 
 /*# sourceMappingURL=style_index.css.map */

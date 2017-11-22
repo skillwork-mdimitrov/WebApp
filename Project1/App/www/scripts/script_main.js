@@ -1,3 +1,9 @@
+// Problems
+// 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
+// 2. Architecture
+
+// Slide show START
+
 var slideIndex = 1;
 showDivs(slideIndex);
 
@@ -16,4 +22,17 @@ function showDivs(n) {
   x[slideIndex-1].style.display = "";
 }
 
-// refactor later
+// Slide show END
+
+// Anchor scroll START
+
+function scrollToAnchor(aid){
+  var aTag = $("a[name='"+ aid +"']");
+  $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+}
+
+$("#link").click(function() {
+  scrollToAnchor('menuContainer');
+});
+
+// Anchor scroll END
