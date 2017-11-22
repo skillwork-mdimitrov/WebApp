@@ -65,24 +65,23 @@ ul {
         .mainContainer .headContainer .basketContainer .basketSection:hover {
           background-color: darkred;
           cursor: pointer; }
-  .mainContainer .menuContainer {
-    background-color: lightsteelblue; }
-    .mainContainer .menuContainer .menu {
+  .mainContainer .menuContainer .menu {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2px; }
+    .mainContainer .menuContainer .menu .menuItem {
       display: flex;
-      justify-content: space-around; }
-      .mainContainer .menuContainer .menu .menuItem {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex: 0.247;
-        height: 50px;
-        border: 2px solid darkred;
-        background-color: black;
-        transition: background-color 1s; }
-        .mainContainer .menuContainer .menu .menuItem:hover {
-          background-color: darkred;
-          border: 2px solid black;
-          cursor: pointer; }
+      justify-content: center;
+      align-items: center;
+      flex: 0.247;
+      height: 50px;
+      border: 2px solid darkred;
+      background-color: black;
+      transition: background-color 1s; }
+      .mainContainer .menuContainer .menu .menuItem:hover {
+        background-color: darkred;
+        border: 2px solid black;
+        cursor: pointer; }
   .mainContainer .slideShowContainer {
     display: flex;
     height: 500px; }
