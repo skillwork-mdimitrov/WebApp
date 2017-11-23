@@ -13,6 +13,7 @@ main() async {
   // Define routes
   final updateClient = new UrlPattern(r'/update_client');
   final displayClients = new UrlPattern(r'/display_clients');
+  final newestClothes = new UrlPattern(r'/newest_clothes');
 
   var server = await HttpServer.bind(InternetAddress.LOOPBACK_IP_V4, 9000);
   print('Listening on ${server.address}, port ${server.port}');
@@ -104,6 +105,39 @@ main() async {
         ..close();
     }
   })
+
+    ..serve(newestClothes).listen((request) async {
+      try {
+        var queries = new Queries();
+        var jacketList = await queries.select.newestClothes();
+
+        request.response
+          ..headers.contentType = ContentType.HTML
+          // ..write(await queries.select.selectAllIds(table, column))
+          ..write(
+          '''
+            <div class="newClothesContainer">
+            <div class="newClothesImage">
+              <img class="object-fit-cover" src="images/clothes/hoodie_jacket.png" alt="Hoodie jacket">
+            </div>
+            <div class="newClothesInfo">
+              <p>$jacketList</p>
+              <p>14.99</p>
+            </div>
+            </div>
+          '''
+          )
+          ..close();
+      }
+      catch(e){
+        print(e); // comment for turning the logging off
+        request.response
+          ..headers.contentType = ContentType.TEXT
+          ..statusCode = 503
+          ..write("Failed to display newest clothes. Bad request")
+          ..close();
+      }
+    })
 
   ..defaultStream.listen((request){
     request.response

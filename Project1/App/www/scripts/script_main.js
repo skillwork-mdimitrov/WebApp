@@ -1,6 +1,10 @@
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
-// 2. Architecture
+// 2. JS Architecture
+
+// VARIABLES
+var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
+var newestClothes = document.getElementById("newestClothes");
 
 // Slide show START
 
@@ -36,3 +40,27 @@ $("#link").click(function() {
 });
 
 // Anchor scroll END
+
+/* Get newest clothes *START* */
+
+function getNewestClothes() {
+  try {
+    // VARIABLES
+    var xhttp;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      var DONE = 4; // readyState 4 means the request is done.
+      var OK = 200; // status 200 is a successful return.
+      if (this.readyState === DONE && this.status === OK) {
+        // document.getElementById("textToBeChanged").innerHTML = this.responseText // check this
+        newestClothes.innerHTML = this.responseText;
+      }
+    };
+    xhttp.open("POST", "/dynamic/newest_clothes",  true);
+    xhttp.send();
+  }
+  catch(e) {
+    console.log('Caught Exception: ' + e.message);
+  }
+}
+/* SHOW INFO FROM DB *END* */

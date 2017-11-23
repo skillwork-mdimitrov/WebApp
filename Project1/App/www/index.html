@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="styles/style_index.css">
 </head>
 
-<body>
+<body onload="getNewestClothes()">
 <!-- Parent flex container -->
 <div class="mainContainer">
 
@@ -60,89 +60,7 @@
     </div>
 
     <div class="newSectionFigure">
-
-      <!-- HARDCODED, FIX -->
-      <div class="newClothesContainer">
-        <div class="newClothesImage">
-          <img class="object-fit-cover" src="images/clothes/nerd_jacket.png" alt="Nerd jacket">
-        </div>
-        <div class="newClothesInfo">
-          <p>Nerd jacket</p>
-          <p>19.99$</p>
-        </div>
-      </div>
-
-      <div class="newClothesContainer">
-        <div class="newClothesImage">
-          <img class="object-fit-cover" src="images/clothes/Foose_jacket.png" alt="Foose jacket">
-        </div>
-        <div class="newClothesInfo">
-          <p>Foose Jacket</p>
-          <p>14.99$</p>
-        </div>
-      </div>
-
-
-      <div class="newClothesContainer">
-        <div class="newClothesImage">
-          <img class="object-fit-cover" src="images/clothes/hoodie_jacket.png" alt="Hoodie jacket">
-        </div>
-        <div class="newClothesInfo">
-          <p>Hoodie Jacket</p>
-          <p>14.99$</p>
-        </div>
-      </div>
-
-      <div class="newClothesContainer">
-        <div class="newClothesImage">
-          <img class="object-fit-cover" src="images/clothes/nerd_jacket.png" alt="Nerd jacket">
-        </div>
-        <div class="newClothesInfo">
-          <p>Nerd Jacket</p>
-          <p>19.99$</p>
-        </div>
-      </div>
-
-      <div class="newClothesContainer">
-        <div class="newClothesImage">
-          <img class="object-fit-cover" src="images/clothes/varsity_jacket.png" alt="Varsity jacket">
-        </div>
-        <div class="newClothesInfo">
-          <p>Varsity Jacket</p>
-          <p>19.99$</p>
-        </div>
-      </div>
-
-      <div class="newClothesContainer">
-        <div class="newClothesImage">
-          <img class="object-fit-cover" src="images/clothes/hoodie_jacket.png" alt="Hoodie jacket">
-        </div>
-        <div class="newClothesInfo">
-          <p>Hoodie Jacket</p>
-          <p>14.99$</p>
-        </div>
-      </div>
-
-      <div class="newClothesContainer">
-        <div class="newClothesImage">
-          <img class="object-fit-cover" src="images/clothes/why_jacket.png" alt="Why jacket">
-        </div>
-        <div class="newClothesInfo">
-          <p>Why Jacket</p>
-          <p>16.99$</p>
-        </div>
-      </div>
-
-      <div class="newClothesContainer">
-        <div class="newClothesImage">
-          <img class="object-fit-cover" src="images/clothes/Foose_jacket.png" alt="Foose jacket">
-        </div>
-        <div class="newClothesInfo">
-          <p>Foose Jacket</p>
-          <p>14.99$</p>
-        </div>
-      </div>
-
+      <span id="newestClothes">Aww, no clothes to show :(</span>
     </div>
 
   </div>

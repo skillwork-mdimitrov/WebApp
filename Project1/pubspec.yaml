@@ -10,7 +10,9 @@ environment:
 dependencies:
   http_server: any
   route: any
-  postgres: "^0.9.6"
+  # postgres: "^0.9.6"
+  mapper:
+      git: git@repo.centryl.org:centryl/mapper.git
 
 dev_dependencies:
   test: ^0.12.0
