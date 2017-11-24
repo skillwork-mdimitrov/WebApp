@@ -109,7 +109,8 @@ main() async {
     ..serve(newestClothes).listen((request) async {
       try {
         var queries = new Queries();
-        var jacketList = await queries.select.newestClothes();
+        var jacketsList = await queries.select.newestClothes();
+        print(jacketsList);
 
         request.response
           ..headers.contentType = ContentType.HTML
@@ -121,7 +122,7 @@ main() async {
               <img class="object-fit-cover" src="images/clothes/hoodie_jacket.png" alt="Hoodie jacket">
             </div>
             <div class="newClothesInfo">
-              <p>$jacketList</p>
+              <p>PUTKO LELINA</p>
               <p>14.99</p>
             </div>
             </div>

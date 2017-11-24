@@ -31,31 +31,35 @@ class DisplayDB {
 
   newestClothes() async {
     // VARIABLES
-    // var dbConnection = new ConnectionDB(); // instance of db connection
     await new ConnectionDB().connect();
     var man = await new Database().init();
     List<Map> jacketsMap = new List<Map>();
+    var jacketTable = "jackets";
+    var jacketId = "id";
 
-    var table = "jackets";
-    var jacketsName = "name";
-    var prices = "price";
-
-    String jacketName = "SELECT $jacketsName FROM $table WHERE id=1;";
-    String jacketPrice = "SELECT $prices FROM $table WHERE id=1;";
-    String jacketId = "SELECT id FROM $table WHERE id=1";
-
-    String almightyQuery = "SELECT * FROM $table";
+    String selectJacketsTbl = "SELECT * FROM $jacketTable ORDER BY $jacketId DESC LIMIT 8";
 
     try {
-      // jacketsMap.add(await man.query(query));
-      jacketsMap.add({await man.query(jacketId):{await man.query(jacketName): await man.query(jacketPrice)}});
+      // var jacketIdMap = (await man.query(jacketIdQuery)).last; // since it's only one element _still
+      // var jacketJustId = (await man.query(jacketIdQuery)).map((m)=>m["id"]).toList().first;
+      // var testtest = (await man.query(jacketNameQuery)).map((m){
+      // return m["name"].length;
+      // }).first;
+      // jacketsMap.add({(await man.query(jacketIdQuery)).map((m)=>m["id"]).first:{await man.query(jacketNameQuery): await man.query(jacketPriceQuery)}});
+      // jacketsMap.add({jacketJustId:{jacketNameMap: jacketPriceMap}});
+
+      var jacketsTableQuery = await man.query(selectJacketsTbl);
+      jacketsTableQuery.forEach((element) {
+        jacketsMap.add(element);
+      });
 
     }
     catch(e) {
       jacketsMap = null; // dirty
-      // print("display_db, invalid query: $query");
+      // print("display_db, invalid query: $jacketsTableQuery");
     }
     await man.close();
+    // print("Display db yells: $jacketsMap");
     return jacketsMap;
   }
 }
