@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../db_connection.dart';
 import 'package:mapper/mapper.dart';
 
@@ -33,7 +35,7 @@ class DisplayDB {
     // VARIABLES
     await new ConnectionDB().connect();
     var man = await new Database().init();
-    List<Map> jacketsMap = new List<Map>();
+    var jacketsTableQuery;
     var jacketTable = "jackets";
     var jacketId = "id";
 
@@ -48,18 +50,27 @@ class DisplayDB {
       // jacketsMap.add({(await man.query(jacketIdQuery)).map((m)=>m["id"]).first:{await man.query(jacketNameQuery): await man.query(jacketPriceQuery)}});
       // jacketsMap.add({jacketJustId:{jacketNameMap: jacketPriceMap}});
 
-      var jacketsTableQuery = await man.query(selectJacketsTbl);
-      jacketsTableQuery.forEach((element) {
-        jacketsMap.add(element);
-      });
+      jacketsTableQuery = await man.query(selectJacketsTbl);
 
     }
     catch(e) {
-      jacketsMap = null; // dirty
+      jacketsTableQuery = null; // dirty
       // print("display_db, invalid query: $jacketsTableQuery");
     }
     await man.close();
     // print("Display db yells: $jacketsMap");
-    return jacketsMap;
+    return jacketsTableQuery;
   }
 }
+
+/*Future performTransaction(Future f(ConnectionDB connection)) async {
+  var c = await new ConnectionDB().connect();
+  try {
+    var r = await f(c);
+  } catch (e) {
+
+  } finally {
+    await c.close();
+    rethrow;
+  }
+}*/
