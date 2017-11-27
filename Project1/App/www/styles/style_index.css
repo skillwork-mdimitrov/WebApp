@@ -117,22 +117,22 @@ ul {
       margin-bottom: 12px; }
       .mainContainer .newSectionContainer .newSectionText .newest_string {
         margin-top: 45px; }
-    .mainContainer .newSectionContainer .newSectionFigure {
+    .mainContainer .newSectionContainer #newestClothes {
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
       max-width: 90%;
       max-height: 2200px; }
-      .mainContainer .newSectionContainer .newSectionFigure .newClothesContainer {
+      .mainContainer .newSectionContainer #newestClothes .newClothesContainer {
         width: 250px;
         border: 1px solid white;
         margin-bottom: 20px; }
-        .mainContainer .newSectionContainer .newSectionFigure .newClothesContainer .newClothesImage {
+        .mainContainer .newSectionContainer #newestClothes .newClothesContainer .newClothesImage {
           display: flex;
           justify-content: center;
           align-items: center;
           border-bottom: 1px solid darkred; }
-        .mainContainer .newSectionContainer .newSectionFigure .newClothesContainer .newClothesInfo {
+        .mainContainer .newSectionContainer #newestClothes .newClothesContainer .newClothesInfo {
           display: flex;
           flex-direction: column;
           align-items: center;

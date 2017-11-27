@@ -35,27 +35,18 @@ class DisplayDB {
     // VARIABLES
     await new ConnectionDB().connect();
     var man = await new Database().init();
-    var jacketsTableQuery;
-    var jacketTable = "jackets";
-    var jacketId = "id";
+    List<Map> jacketsTableQuery;
+    String jacketTable = "jackets";
+    String jacketId = "id";
 
     String selectJacketsTbl = "SELECT * FROM $jacketTable ORDER BY $jacketId DESC LIMIT 8";
 
     try {
-      // var jacketIdMap = (await man.query(jacketIdQuery)).last; // since it's only one element _still
-      // var jacketJustId = (await man.query(jacketIdQuery)).map((m)=>m["id"]).toList().first;
-      // var testtest = (await man.query(jacketNameQuery)).map((m){
-      // return m["name"].length;
-      // }).first;
-      // jacketsMap.add({(await man.query(jacketIdQuery)).map((m)=>m["id"]).first:{await man.query(jacketNameQuery): await man.query(jacketPriceQuery)}});
-      // jacketsMap.add({jacketJustId:{jacketNameMap: jacketPriceMap}});
-
       jacketsTableQuery = await man.query(selectJacketsTbl);
-
     }
     catch(e) {
-      jacketsTableQuery = null; // dirty
       // print("display_db, invalid query: $jacketsTableQuery");
+      jacketsTableQuery = null; // dirty
     }
     await man.close();
     // print("Display db yells: $jacketsMap");

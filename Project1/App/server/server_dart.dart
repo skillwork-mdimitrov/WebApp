@@ -73,7 +73,7 @@ main() async {
     try {
       var httpRequest = await HttpBodyHandler.processRequest(request);
       var resultsUnencoded = httpRequest.body;
-      var queries = new Queries();
+      var queries = new Queries(); // can become Queries queries
       String table;
       String column;
 
@@ -108,26 +108,29 @@ main() async {
 
     ..serve(newestClothes).listen((request) async {
       try {
-        var queries = new Queries();
+        Queries queries = new Queries();
         List<Map> jacketsList = await queries.select.newestClothes();
-        print(jacketsList);
+        String toWrite = "";
+        String clothesPath = "images/clothes";
+
+        for(var element in jacketsList) {
+          toWrite +=
+          ('''
+            <div class="newClothesContainer">
+              <div class="newClothesImage">
+                <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
+              </div>
+              <div class="newClothesInfo">
+                <p>${element['name']}</p>
+                <p>${element['price']}\$</p>
+              </div>
+            </div>
+          ''');
+        }
 
         request.response
           ..headers.contentType = ContentType.HTML
-          // ..write(await queries.select.selectAllIds(table, column))
-          ..write(
-          '''
-            <div class="newClothesContainer">
-            <div class="newClothesImage">
-              <img class="object-fit-cover" src="images/clothes/hoodie_jacket.png" alt="Hoodie jacket">
-            </div>
-            <div class="newClothesInfo">
-              <p>Jacket name</p>
-              <p>Jacket price</p>
-            </div>
-            </div>
-          '''
-          )
+          ..write(toWrite)
           ..close();
       }
       catch(e){

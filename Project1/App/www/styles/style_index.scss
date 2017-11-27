@@ -148,6 +148,11 @@ ul {
         object-fit: cover;
       }
 
+      &:hover {
+        //transform: scale(1.1);
+        //transition: all 0.7s ease;
+      }
+
     }
 
     .slide-button {
@@ -174,7 +179,7 @@ ul {
     .object-fit-cover {
       // max-height: 200px;
       width: 80%;
-      object-fit: cover; // NOT SUPPORTED BY IE11, polyfill needed
+      object-fit: cover; // Seems not doing anything // NOT SUPPORTED BY IE11, polyfill needed
     }
 
     .newSectionText {
@@ -187,12 +192,12 @@ ul {
       }
     }
 
-    .newSectionFigure {
+    #newestClothes {
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
       max-width: 90%;
-      max-height: 2200px; // 8 items, one each row
+      max-height: 2200px; // if 8 items, one each row
 
       .newClothesContainer {
         width: 250px;
