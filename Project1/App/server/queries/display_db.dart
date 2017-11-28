@@ -31,9 +31,12 @@ class DisplayDB {
     return results;
   }
 
+  open_db_connection() async {
+    await new ConnectionDB().connect();
+  }
+
   newestClothes() async {
     // VARIABLES
-    await new ConnectionDB().connect();
     var man = await new Database().init();
     List<Map> jacketsTableQuery;
     String jacketTable = "jackets";
@@ -49,7 +52,6 @@ class DisplayDB {
       jacketsTableQuery = null; // dirty
     }
     await man.close();
-    // print("Display db yells: $jacketsMap");
     return jacketsTableQuery;
   }
 }

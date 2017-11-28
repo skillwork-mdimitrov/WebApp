@@ -9,4 +9,8 @@ class Queries {
     select = new DisplayDB();
     update = new UpdateDB();
   }
+
+  open_connection() async {
+    await select.open_db_connection();
+  }
 }

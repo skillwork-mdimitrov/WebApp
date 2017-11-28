@@ -29,15 +29,13 @@ ul {
   display: flex;
   flex-direction: column;
   max-width: 1250px;
-  margin: 0 auto;
-  opacity: 0.975;
-  background-color: black; }
+  margin: 0 auto; }
   .mainContainer .headContainer {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 85px;
-    background-color: darkred; }
+    background-color: rgba(139, 0, 0, 0.975); }
     .mainContainer .headContainer .logoContainer {
       display: flex;
       justify-content: center;
@@ -51,7 +49,6 @@ ul {
         .mainContainer .headContainer .logoContainer .logoSection .logoPic {
           width: 80%; }
         .mainContainer .headContainer .logoContainer .logoSection:hover {
-          background-color: darkred;
           cursor: pointer; }
     .mainContainer .headContainer .basketContainer {
       display: flex;
@@ -63,27 +60,10 @@ ul {
         .mainContainer .headContainer .basketContainer .basketSection .basketPic {
           width: 100%; }
         .mainContainer .headContainer .basketContainer .basketSection:hover {
-          background-color: darkred;
           cursor: pointer; }
-  .mainContainer .menuContainer .menu {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 2px; }
-    .mainContainer .menuContainer .menu .menuItem {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 0.247;
-      height: 50px;
-      border: 2px solid darkred;
-      background-color: black;
-      transition: background-color 1s; }
-      .mainContainer .menuContainer .menu .menuItem:hover {
-        background-color: darkred;
-        border: 2px solid black;
-        cursor: pointer; }
   .mainContainer .slideShowContainer {
     display: flex;
+    background-color: rgba(0, 0, 0, 0.95);
     height: 500px; }
     .mainContainer .slideShowContainer .slideShowImages {
       display: flex;
@@ -104,10 +84,29 @@ ul {
       text-align: center;
       cursor: pointer;
       white-space: nowrap; }
+  .mainContainer .menuContainer {
+    background-color: rgba(0, 0, 0, 0.975); }
+    .mainContainer .menuContainer .menu {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2px; }
+      .mainContainer .menuContainer .menu .menuItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0.247;
+        height: 50px;
+        border: 2px solid darkred;
+        transition: background-color 1s; }
+        .mainContainer .menuContainer .menu .menuItem:hover {
+          background-color: darkred;
+          border: 2px solid black;
+          cursor: pointer; }
   .mainContainer .newSectionContainer {
     display: flex;
     flex-direction: column;
-    align-items: center; }
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.975); }
     .mainContainer .newSectionContainer .object-fit-cover {
       width: 80%;
       object-fit: cover; }
@@ -129,7 +128,10 @@ ul {
         margin-bottom: 20px; }
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer #addToBasket {
           position: absolute;
-          width: 52px; }
+          width: 52px;
+          cursor: pointer; }
+          .mainContainer .newSectionContainer #newestClothes .newClothesContainer #addToBasket:active {
+            width: 50px; }
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer .newClothesImage {
           display: flex;
           justify-content: center;

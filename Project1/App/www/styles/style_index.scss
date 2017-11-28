@@ -1,13 +1,15 @@
 /* Problems */
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. Polyfill IE11 object-fit
-// 2. Problem opacity on clothes, looks like design
+// 2. Polyfill RGBA (solid colour easy)
 // 2. Make the new clothes images not touch the container borders
+// 2. Make it more visible that the user requested an item
 // 3. Potential problem with smaller screen - article info text too wide
 // 3. Problem with the menu border not being to the very end of the container
 // 3. Make the new clothes container 200x200, instead of 250x200
 // 3. Make the arrow scroll to be a bit higher then what is is currently
 // 3. Make the arrow different colour [difficult]
+// 3. Make the add_to_cart icon darker red
 
 // Variables
 $logoHeight: 85px;
@@ -52,16 +54,14 @@ ul {
   flex-direction: column; // every next element goes down
   max-width: 1250px;
   margin: 0 auto;
-  opacity: 0.975;
-  background-color: black; // Maybe change
-
 
   .headContainer {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: $logoHeight;
-    background-color: darkred;
+    background-color: rgba(139, 0, 0, 0.975); // transparent dark red
+    // polyfill rgba
 
     .logoContainer {
       display: flex;
@@ -80,7 +80,6 @@ ul {
         }
 
         &:hover {
-          background-color: darkred;
           cursor: pointer;
         }
       }
@@ -101,34 +100,6 @@ ul {
 
         // & acts like .basketPic
         &:hover {
-          background-color: darkred;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-
-   // move down
-  .menuContainer {
-
-    .menu {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 2px;
-
-      .menuItem {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex: 0.247;
-        height: 50px;
-        border: 2px solid darkred;
-        background-color: black;
-        transition: background-color 1s;
-
-        &:hover {
-          background-color: darkred;
-          border: 2px solid black;
           cursor: pointer;
         }
       }
@@ -137,6 +108,7 @@ ul {
 
   .slideShowContainer {
     display: flex;
+    background-color: rgba(0, 0, 0, 0.95);
     height: 500px;
 
     .slideShowImages {
@@ -171,10 +143,37 @@ ul {
     }
   }
 
+  .menuContainer {
+    background-color: rgba(0, 0, 0, 0.975);
+
+    .menu {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2px;
+
+      .menuItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0.247;
+        height: 50px;
+        border: 2px solid darkred;
+        transition: background-color 1s;
+
+        &:hover {
+          background-color: darkred;
+          border: 2px solid black;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
   .newSectionContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.975); // transparent dark black
 
     .object-fit-cover {
       // max-height: 200px;
@@ -207,6 +206,11 @@ ul {
         #addToBasket {
           position: absolute;
           width: 52px;
+          cursor: pointer;
+
+          &:active {
+            width: 50px;
+          }
         }
 
         .newClothesImage {

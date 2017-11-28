@@ -1,19 +1,20 @@
 // Copyright (c) 2017, Maksim Dimitrov. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:io';
+import 'dart:convert';
 import 'package:http_server/http_server.dart';
 import 'package:route/server.dart';
 import 'package:route/url_pattern.dart';
-import 'dart:io';
-import 'dart:convert';
 import 'queries/queries.dart';
 
 main() async {
-
   // Define routes
   final updateClient = new UrlPattern(r'/update_client');
   final displayClients = new UrlPattern(r'/display_clients');
   final newestClothes = new UrlPattern(r'/newest_clothes');
+  Queries db = new Queries(); // quick solution to make sure the connection is open just once
+  db.open_connection();
 
   var server = await HttpServer.bind(InternetAddress.LOOPBACK_IP_V4, 9000);
   print('Listening on ${server.address}, port ${server.port}');
@@ -117,7 +118,7 @@ main() async {
           toWrite +=
           ('''
             <div class="newClothesContainer">
-            <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket">
+            <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket" onclick="addToCart(${element['id']}, ${element['price']})">
               <div class="newClothesImage">
                 <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
               </div>
