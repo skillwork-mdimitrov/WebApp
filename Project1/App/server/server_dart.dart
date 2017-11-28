@@ -117,6 +117,7 @@ main() async {
           toWrite +=
           ('''
             <div class="newClothesContainer">
+            <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket">
               <div class="newClothesImage">
                 <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
               </div>

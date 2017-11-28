@@ -204,6 +204,11 @@ ul {
         border: 1px solid white;
         margin-bottom: 20px; // UGLY
 
+        #addToBasket {
+          position: absolute;
+          width: 52px;
+        }
+
         .newClothesImage {
           display: flex;
           justify-content: center;

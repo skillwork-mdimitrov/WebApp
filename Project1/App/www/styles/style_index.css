@@ -127,6 +127,9 @@ ul {
         width: 250px;
         border: 1px solid white;
         margin-bottom: 20px; }
+        .mainContainer .newSectionContainer #newestClothes .newClothesContainer #addToBasket {
+          position: absolute;
+          width: 52px; }
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer .newClothesImage {
           display: flex;
           justify-content: center;
