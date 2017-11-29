@@ -1,4 +1,4 @@
-/*jslint devel: true */
+/*jslint devel: true*/
 
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
@@ -82,8 +82,15 @@ var cart_items_quantity = 0; // How much items are currently in the cart
 function addToCart(articleId, articlePrice) {
   "use strict";
   cart_sum += articlePrice;
-  cart_sum_rounded = Math.round(cart_sum * 100) / 100; // hacky solution
+  cart_sum_rounded = Math.round(cart_sum * 100) / 100; // hacky solution, 2 decimals after the dot
   cart_sum_button.innerHTML = cart_sum_rounded  + "$";
   cart_items_quantity++;
   cart_quantity_text.innerHTML = cart_items_quantity;
 }
+
+/* Show cart contents _START */
+
+$("#go_to_cart_btn").click(function(){
+  "use strict";
+
+});

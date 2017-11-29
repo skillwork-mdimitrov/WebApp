@@ -8,25 +8,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- remove the favicon.ico request -->
   <link rel="stylesheet" href="styles/style_index.css">
+
+  <!-- REMODAL -->
+  <link rel="stylesheet" href="remodal/dist/remodal.css">
+  <link rel="stylesheet" href="remodal/dist/remodal-default-theme.css">
 </head>
 
 <body onload="getNewestClothes()">
 <!-- Parent flex container -->
-<div class="mainContainer">
+<div class="mainContainer remodal-bg">
 
-    <div class="headContainer">
-      <div class="logoContainer">
-        <a class="logoSection" href="/"><img src="images/logo.png" alt="logo" class="logoPic"></a>
-      </div>
-      <a id="link" href="#" class="arrow alignSelf"></a>
-      <div class="basketContainer">
-        <p id="cart_quantity_text">0</p>
-        <div class="basketSection">
-          <img src="images/basket.png" alt="basket" class="basketPic">
-        </div>
-        <p id="cart_sum">0.00</p>
-      </div>
+  <!-- REMODAL -->
+  <div class="remodal" data-remodal-id="modal">
+    <button data-remodal-action="close" class="remodal-close"></button>
+    <h1 style="margin-bottom: 20px">Cart</h1> <!-- Inline not to mash plugins with own css -->
+    <p>
+      Responsive, lightweight, fast, synchronized with CSS animations, fully customizable modal window plugin with declarative configuration and hash tracking.
+    </p>
+    <br>
+    <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
+    <button data-remodal-action="confirm" class="remodal-confirm">OK</button>
+  </div>
+
+  <div class="headContainer">
+    <div class="logoContainer">
+      <a class="logoSection" href="/"><img src="images/logo.png" alt="logo" class="logoPic"></a>
     </div>
+    <a id="link" href="#" class="arrow alignSelf"></a>
+    <div class="basketContainer">
+      <p id="cart_quantity_text">0</p>
+      <div class="basketSection">
+        <!-- REMODAL -->
+        <a data-remodal-target="modal"><img src="images/basket.png" alt="basket" class="basketPic"></a>
+      </div>
+      <p id="cart_sum">0.00</p>
+    </div>
+  </div>
 
   <div class="slideShowContainer">
 
@@ -60,7 +77,7 @@
       <h3 class="newest_string">Newest</h3>
     </div>
 
-    <span id="newestClothes">Aww, no clothes to show :(</span>
+    <span id="newestClothes">Aww, no clothes to show :(. Come back later!</span>
 
   </div>
 
@@ -68,6 +85,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="scripts/script_main.js"></script>
+
+<!-- REMODAL -->
+<script src="remodal/dist/remodal.min.js"></script>
 
 </body>
 </html>
