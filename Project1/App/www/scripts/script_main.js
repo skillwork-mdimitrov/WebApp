@@ -90,6 +90,7 @@ function addToCart(articleId, articlePrice) {
 
 /* Show cart contents _START */
 
+// Consider removing
 $("#go_to_cart_btn").click(function(){
   "use strict";
 
