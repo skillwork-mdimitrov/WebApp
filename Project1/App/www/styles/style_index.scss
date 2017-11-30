@@ -57,6 +57,8 @@ ul {
   max-width: 1250px;
   margin: 0 auto;
 
+
+
   .headContainer {
     display: flex;
     justify-content: space-between;
@@ -126,7 +128,6 @@ ul {
         //transform: scale(1.1);
         //transition: all 0.7s ease;
       }
-
     }
 
     .slide-button {
@@ -203,7 +204,7 @@ ul {
       .newClothesContainer {
         width: 250px;
         border: 1px solid white;
-        margin-bottom: 20px; // UGLY
+        margin-bottom: 20px;
 
         #addToBasket {
           position: absolute;
@@ -234,11 +235,6 @@ ul {
     }
   }
 }
-
-
-
-
-
 
 
 
