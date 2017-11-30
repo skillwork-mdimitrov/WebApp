@@ -3,12 +3,14 @@
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. JS Architecture
+// 2. Change the default db user
 
 // GLOBAL VARIABLES
 var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
 var newestClothes = document.getElementById("newestClothes");
 var cart_sum_button = document.getElementById("cart_sum");
 var cart_quantity_text = document.getElementById("cart_quantity_text");
+var cart; // to be later a cart object
 
 // Slide show START
 
@@ -74,19 +76,23 @@ function getNewestClothes() {
 }
 /* SHOW INFO FROM DB *END* */
 
-
-var cart_sum = 0; // The sum of the user's currently requested clothes
-var cart_sum_rounded = 0; // Will store the rounded version of the cart_sum
-var cart_items_quantity = 0; // How much items are currently in the cart
-// counter articles quantity in the session
-function addToCart(articleId, articlePrice) {
+var Cart = function() {
   "use strict";
-  cart_sum += articlePrice;
-  cart_sum_rounded = Math.round(cart_sum * 100) / 100; // hacky solution, 2 decimals after the dot
-  cart_sum_button.innerHTML = cart_sum_rounded  + "$";
-  cart_items_quantity++;
-  cart_quantity_text.innerHTML = cart_items_quantity;
-}
+  this.cart_sum = 0; // The sum of the user's currently requested clothes
+  this.cart_sum_rounded = 0; // Will store the rounded version of the cart_sum
+  this.cart_items_quantity = 0; // How much items are currently in the cart
+
+  // counter articles quantity in the session
+  Cart.prototype.addToCart = function (articleId, articlePrice) {
+    this.cart_sum += articlePrice;
+    this.cart_sum_rounded = Math.round(this.cart_sum * 100) / 100; // hacky solution, 2 decimals after the dot
+    cart_sum_button.innerHTML = this.cart_sum_rounded  + "$";
+    this.cart_items_quantity++;
+    cart_quantity_text.innerHTML = this.cart_items_quantity;
+  };
+
+};
+cart = new Cart();
 
 /* Show cart contents _START */
 

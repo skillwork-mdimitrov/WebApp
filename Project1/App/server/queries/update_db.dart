@@ -17,15 +17,15 @@ class UpdateDB {
 
     String updateNameQuery = "UPDATE $table SET name='$value' WHERE id=$id";
 
-    await dbConnection.connection.open();
+    // await dbConnection.connection.open();
     try {
-      await dbConnection.connection.query(updateNameQuery);
+      // await dbConnection.connection.query(updateNameQuery);
       results = "Succesfull. [$value] updated";
     }
     catch(e) {
       results = "Cannot update id[$id] with the given name[$value], E";
     }
-    await dbConnection.connection.close();
+    // await dbConnection.connection.close();
     return results;
   }
 
@@ -40,16 +40,16 @@ class UpdateDB {
 
     String updateCartQuery = "UPDATE $table SET cartemptystatus='$value' WHERE id=$id";
 
-    await dbConnection.connection.open();
+    // await dbConnection.connection.open();
     try {
-      await dbConnection.connection.query(updateCartQuery);
+      // await dbConnection.connection.query(updateCartQuery);
       results = "Successful. Id[$id] with status[$value] - updated";
     }
     catch(e) {
       String getPersonString = "SELECT $person FROM $table WHERE id=$id";
       var getPersonQuery;
       try {
-        getPersonQuery = await dbConnection.connection.query(getPersonString);
+        // getPersonQuery = await dbConnection.connection.query(getPersonString);
         if(getPersonQuery.isEmpty) {
           getPersonQuery = "[No such person]";
         }
@@ -59,7 +59,7 @@ class UpdateDB {
       }
       results = "Couldn't update $getPersonQuery, id[$id] with value[$value], E";
     }
-    await dbConnection.connection.close();
+    // await dbConnection.connection.close();
     return results;
   }
 

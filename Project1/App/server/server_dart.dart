@@ -118,7 +118,7 @@ main() async {
           toWrite +=
           ('''
             <div class="newClothesContainer">
-            <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket" onclick="addToCart(${element['id']}, ${element['price']})">
+            <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket" onclick="cart.addToCart(${element['id']}, ${element['price']})">
               <div class="newClothesImage">
                 <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
               </div>
