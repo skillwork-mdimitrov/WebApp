@@ -1,7 +1,6 @@
 /* Problems */
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. Polyfill IE11 object-fit
-// 2. Polyfill RGBA (solid colour easy)
 // 2. Make the new clothes images not touch the container borders
 // 2. Make it more visible that the user requested an item
 // 3. Potential problem with smaller screen - article info text too wide
@@ -64,8 +63,8 @@ ul {
     justify-content: space-between;
     width: 100%;
     height: $logoHeight;
+    background-color: rgb(139, 0, 0); /* The Fallback */
     background-color: rgba(139, 0, 0, 0.975); // transparent dark red
-    // polyfill rgba
 
     .logoContainer {
       display: flex;
@@ -112,6 +111,7 @@ ul {
 
   .slideShowContainer {
     display: flex;
+    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.95);
     height: 500px;
 
@@ -147,6 +147,7 @@ ul {
   }
 
   .menuContainer {
+    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.975);
 
     .menu {
@@ -176,6 +177,7 @@ ul {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.975); // transparent dark black
 
     .object-fit-cover {
