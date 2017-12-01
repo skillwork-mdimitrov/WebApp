@@ -107,47 +107,47 @@ main() async {
     }
   })
 
-//    ..serve(newestClothes).listen((request) async {
-//      try {
-//        Queries queries = new Queries();
-//        List<Map> jacketsList = await queries.select.newestClothes();
-//        String toWrite = "";
-//        String clothesPath = "images/clothes";
-//
-//        for(var element in jacketsList) {
-//          toWrite +=
-//          ('''
-//            <div class="newClothesContainer">
-//            <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket" onclick="cart.addToCart(${element['id']}, ${element['price']})">
-//              <div class="newClothesImage">
-//                <div class="newClothesImageScaled">
-//                  <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
-//                </div>
-//              </div>
-//              <div class="newClothesInfo">
-//                <p>${element['name']}</p>
-//                <p>${element['price']}\$</p>
-//              </div>
-//            </div>
-//          ''');
-//        }
-//
-//        print("test");
-//
-//        request.response
-//          ..headers.contentType = ContentType.HTML
-//          ..write(toWrite)
-//          ..close();
-//      }
-//      catch(e){
-//        print(e); // comment for turning the logging off
-//        request.response
-//          ..headers.contentType = ContentType.TEXT
-//          ..statusCode = 503
-//          ..write("Failed to display newest clothes. Bad request")
-//          ..close();
-//      }
-//    })
+    ..serve(newestClothes).listen((request) async {
+      try {
+        Queries queries = new Queries();
+        List<Map> jacketsList = await queries.select.newestClothes();
+        String toWrite = "";
+        String clothesPath = "images/clothes";
+
+        for(var element in jacketsList) {
+          toWrite +=
+          ('''
+            <div class="newClothesContainer">
+            <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket" onclick="cart.addToCart(${element['id']}, ${element['price']})">
+              <div class="newClothesImage">
+                <div class="newClothesImageScaled">
+                  <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
+                </div>
+              </div>
+              <div class="newClothesInfo">
+                <p>${element['name']}</p>
+                <p>${element['price']}\$</p>
+              </div>
+            </div>
+          ''');
+        }
+
+        print("test");
+
+        request.response
+          ..headers.contentType = ContentType.HTML
+          ..write(toWrite)
+          ..close();
+      }
+      catch(e){
+        print(e); // comment for turning the logging off
+        request.response
+          ..headers.contentType = ContentType.TEXT
+          ..statusCode = 503
+          ..write("Failed to display newest clothes. Bad request")
+          ..close();
+      }
+    })
 
   ..defaultStream.listen((request){
     request.response
