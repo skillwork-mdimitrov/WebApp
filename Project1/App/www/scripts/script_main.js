@@ -82,8 +82,6 @@ var Cart = function() {
   this.cart_sum_rounded = 0; // Will store the rounded version of the cart_sum
   this.cart_items_quantity = 0; // How much items are currently in the cart
 
-
-
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
     this.cart_sum += articlePrice;
@@ -92,7 +90,6 @@ var Cart = function() {
     this.cart_items_quantity++;
     cart_quantity_text.innerHTML = this.cart_items_quantity;
   };
-
 };
 cart = new Cart();
 
