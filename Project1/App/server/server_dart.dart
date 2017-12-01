@@ -120,7 +120,9 @@ main() async {
             <div class="newClothesContainer">
             <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket" onclick="cart.addToCart(${element['id']}, ${element['price']})">
               <div class="newClothesImage">
-                <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
+                <div class="newClothesImageScaled">
+                  <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
+                </div>
               </div>
               <div class="newClothesInfo">
                 <p>${element['name']}</p>

@@ -1,4 +1,6 @@
 /* Problems */
+/* 2. Make it more visible that the user requested an item
+https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction and anchor on screen scroll*/
 * {
   margin: 0;
   padding: 0;
@@ -130,7 +132,9 @@ ul {
       .mainContainer .newSectionContainer #newestClothes .newClothesContainer {
         width: 250px;
         border: 1px solid white;
-        margin-bottom: 20px; }
+        margin-bottom: 20px;
+        margin-right: 3px;
+        margin-left: 3px; }
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer #addToBasket {
           position: absolute;
           width: 52px;
@@ -140,8 +144,14 @@ ul {
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer .newClothesImage {
           display: flex;
           justify-content: center;
-          align-items: center;
-          border-bottom: 1px solid darkred; }
+          border-bottom: 1px solid darkred;
+          width: inherit;
+          height: 192px; }
+          .mainContainer .newSectionContainer #newestClothes .newClothesContainer .newClothesImage .newClothesImageScaled {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 230px; }
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer .newClothesInfo {
           display: flex;
           flex-direction: column;

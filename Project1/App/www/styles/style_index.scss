@@ -1,16 +1,15 @@
 /* Problems */
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. Polyfill IE11 object-fit
-// 2. Make the new clothes images not touch the container borders
-// 2. Make it more visible that the user requested an item
+// 2. Make the new clothes images not touch the container borders // Difficult
+// 2. Media query less than 300px for Cart items - reduce size
+/* 2. Make it more visible that the user requested an item
+https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction and anchor on screen scroll*/
 // 3. Potential problem with smaller screen - article info text too wide
-// 3. Problem with the menu border not being to the very end of the container
-// 3. Make the new clothes container 200x200, instead of 250x200
 // 3. Make the arrow scroll to be a bit higher then what is is currently
 // 3. Make the arrow different colour [difficult]
 // 3. Make the add_to_cart icon background darker red
 // 3. Make the slide-show + header containers = view-port - 5px, maybe not the best idea
-// 3. Having only 4 jackets in the newest section removes the margins
 
 // Variables
 $logoHeight: 85px;
@@ -207,6 +206,8 @@ ul {
         width: 250px;
         border: 1px solid white;
         margin-bottom: 20px;
+        margin-right: 3px;
+        margin-left: 3px;
 
         #addToBasket {
           position: absolute;
@@ -221,8 +222,16 @@ ul {
         .newClothesImage {
           display: flex;
           justify-content: center;
-          align-items: center;
           border-bottom: 1px solid darkred;
+          width: inherit;
+          height: 192px;
+
+          .newClothesImageScaled {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 230px;
+          }
         }
 
         .newClothesInfo {
