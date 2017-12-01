@@ -132,8 +132,6 @@ main() async {
           ''');
         }
 
-        print("test");
-
         request.response
           ..headers.contentType = ContentType.HTML
           ..write(toWrite)
