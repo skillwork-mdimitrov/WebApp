@@ -13,6 +13,7 @@ main() async {
   final updateClient = new UrlPattern(r'/update_client');
   final displayClients = new UrlPattern(r'/display_clients');
   final newestClothes = new UrlPattern(r'/newest_clothes');
+  final generateCart = new UrlPattern(r'/generate_cart');
   Queries db = new Queries(); // quick solution to make sure the connection is open just once
   db.open_connection();
 
@@ -70,31 +71,53 @@ main() async {
     }
   })
 
-    ..serve(displayClients).listen((request) async {
+    ..serve(generateCart).listen((request) async {
     try {
+      Queries queries = new Queries();
       var httpRequest = await HttpBodyHandler.processRequest(request);
-      var resultsUnencoded = httpRequest.body;
-      var queries = new Queries(); // can become Queries queries
-      String table;
-      String column;
+      List<Map> cartItemsList = new List<Map>();
+      String requestBody = httpRequest.body;
+      var requestBodyJSON = JSON.decode(requestBody); // makes the request type a list
 
-      // If the result is not fine
-      if (resultsUnencoded.length == 0) {
-        throw new Exception("Empty request: $resultsUnencoded");
+      String clothesPath = "images/clothes";
+      String toWrite = "";
+
+      for(var elem in requestBodyJSON) {
+        cartItemsList.add(await queries.select.clothesInTheCart(elem));
       }
-      // If the result is fine
-      else {
-        // Sanitize the request
-        resultsUnencoded.replaceAll(new RegExp(r'\(\);\[\]{}%'), (''));
-        // Decode the request
-        var resultsDecoded = JSON.decode(resultsUnencoded);
-        table = resultsDecoded['userTable'];
-        column = resultsDecoded['userColumn'];
+
+      for(var elem in cartItemsList) {
+        print(elem);
+//        toWrite +=
+//        '''
+//        <div class="articleContainer">
+//        <div class="articleImageContainer">
+//          <div class="articleImageScaled">
+//            <img src="images/clothes/hoodie_jacket.png" alt="Jordan Jacket" class="articleImage">
+//          </div>
+//        </div>
+//        <div class="articleInformation">
+//          <div class="general">
+//            <p>Jordan Jacket</p>
+//            <p>17.99</p>
+//          </div>
+//          <div class="quantity">
+//            <p class="colorBlack">x1</p>
+//          </div>
+//        </div>
+//      </div>
+//      ''';
       }
+
+
+      // If there are no items in the cart
+//      if (requestBody.length == 0) {
+//        requestBody = "No clothes in the cart";
+//      }
 
       request.response
         ..headers.contentType = new ContentType('application', 'dart')
-        ..write(await queries.select.selectAllIds(table, column))
+        ..write("hey")
         ..close();
     }
     catch(e){
@@ -102,7 +125,7 @@ main() async {
       request.response
         ..headers.contentType = ContentType.TEXT
         ..statusCode = 503
-        ..write("Failed to display clients. Bad request")
+        ..write("Failed to generate the cart in such a way. Bad request")
         ..close();
     }
   })
@@ -116,12 +139,12 @@ main() async {
 
         for(var element in jacketsList) {
           toWrite +=
-          ('''
+          '''
             <div class="newClothesContainer">
             <img src="images/add_to_basket.png" alt="addToBasket" id="addToBasket" onclick="cart.addToCart(${element['id']}, ${element['price']})">
               <div class="newClothesImage">
                 <div class="newClothesImageScaled">
-                  <img class="object-fit-cover" src="images/clothes/${element['filename']}" alt="${element['name']}">
+                  <img class="object-fit-cover" src="$clothesPath/${element['filename']}" alt="${element['name']}">
                 </div>
               </div>
               <div class="newClothesInfo">
@@ -129,10 +152,8 @@ main() async {
                 <p>${element['price']}\$</p>
               </div>
             </div>
-          ''');
+          ''';
         }
-
-        print("test");
 
         request.response
           ..headers.contentType = ContentType.HTML

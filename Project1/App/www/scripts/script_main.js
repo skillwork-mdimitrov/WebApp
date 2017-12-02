@@ -10,6 +10,7 @@ var newestClothesContainer = document.getElementsByClassName("newSectionFigure")
 var newestClothes = document.getElementById("newestClothes");
 var cart_sum_button = document.getElementById("cart_sum");
 var cart_quantity_text = document.getElementById("cart_quantity_text");
+var cartContent = document.getElementById("cartContent");
 var cart; // to be later a cart object
 
 // Slide show START
@@ -81,6 +82,7 @@ var Cart = function() {
   this.cart_sum = 0; // The sum of the user's currently requested clothes
   this.cart_sum_rounded = 0; // Will store the rounded version of the cart_sum
   this.cart_items_quantity = 0; // How much items are currently in the cart
+  this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
 
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
@@ -89,14 +91,36 @@ var Cart = function() {
     cart_sum_button.innerHTML = this.cart_sum_rounded  + "$";
     this.cart_items_quantity++;
     cart_quantity_text.innerHTML = this.cart_items_quantity;
+
+    this.orderedItems.push(articleId);
   };
+
+  Cart.prototype.sendItemsList = function () {
+    try {
+      // VARIABLES
+      var xhttp;
+      xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        var DONE = 4; // readyState 4 means the request is done.
+        var OK = 200; // status 200 is a successful return.
+        if (this.readyState === DONE && this.status === OK) {
+          cartContent.innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("POST", "/dynamic/generate_cart",  true);
+      var orderedItemsJSON = JSON.stringify(this.orderedItems);
+      xhttp.send(orderedItemsJSON);
+    }
+    catch(e) {
+      console.log('Caught Exception: ' + e.message);
+    }
+  };
+
+  $("#go_to_cart_btn").click(function(){
+    cart.sendItemsList(cart.orderedItems);
+  });
 };
 cart = new Cart();
 
 /* Show cart contents _START */
 
-// Consider removing
-$("#go_to_cart_btn").click(function(){
-  "use strict";
-
-});

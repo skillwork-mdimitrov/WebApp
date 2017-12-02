@@ -39,7 +39,7 @@ class DisplayDB {
     // VARIABLES
     var man = await new Database().init();
     List<Map> jacketsTableQuery;
-    String jacketTable = "jackets";
+    String jacketTable = "jackets"; // potentially change the table to clothes
     String jacketId = "id";
 
     String selectJacketsTbl = "SELECT * FROM $jacketTable ORDER BY $jacketId DESC LIMIT 8";
@@ -50,9 +50,30 @@ class DisplayDB {
     catch(e) {
       // print("display_db, invalid query: $jacketsTableQuery");
       jacketsTableQuery = null; // dirty
+      await man.close();
     }
     await man.close();
     return jacketsTableQuery;
+  }
+
+  clothesInTheCart(id) async {
+    var man = await new Database().init();
+    List<Map> cartClothesQuery; // almost sure
+    String jacketTable = "jackets"; // potentially change the table to clothes
+    String jacketId = "id";
+
+    String selectClothes = "SELECT * FROM $jacketTable WHERE $jacketId = $id";
+
+    try {
+      cartClothesQuery = await man.query(selectClothes);
+    }
+    catch(e) {
+      // print("display_db, invalid query: $cartClothesQuery");
+      cartClothesQuery = null; // dirty
+      await man.close();
+    }
+    await man.close();
+    return cartClothesQuery;
   }
 }
 
