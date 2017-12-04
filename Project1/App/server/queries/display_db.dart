@@ -31,7 +31,7 @@ class DisplayDB {
     return results;
   }
 
-  open_db_connection() async {
+  openDBConnection() async {
     await new ConnectionDB().connect();
   }
 

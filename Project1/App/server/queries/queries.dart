@@ -10,7 +10,7 @@ class Queries {
     update = new UpdateDB();
   }
 
-  open_connection() async {
-    await select.open_db_connection();
+  openConnection() async {
+    await select.openDBConnection();
   }
 }

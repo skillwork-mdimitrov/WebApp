@@ -1,5 +1,9 @@
 // Copyright (c) 2017, Maksim Dimitrov. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
+/* Problems */
+// 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
+// 2. Make the quantity add up instead of displaying another entry of the same product
+
 
 import 'dart:io';
 import 'dart:convert';
@@ -14,8 +18,9 @@ main() async {
   final displayClients = new UrlPattern(r'/display_clients');
   final newestClothes = new UrlPattern(r'/newest_clothes');
   final generateCart = new UrlPattern(r'/generate_cart');
-  Queries db = new Queries(); // quick solution to make sure the connection is open just once
-  db.open_connection();
+  String clothesPath = "images/clothes";
+  Queries DB = new Queries(); // quick solution to make sure the connection is opened just once
+  DB.openConnection();
 
   var server = await HttpServer.bind(InternetAddress.LOOPBACK_IP_V4, 9000);
   print('Listening on ${server.address}, port ${server.port}');
@@ -77,47 +82,39 @@ main() async {
       var httpRequest = await HttpBodyHandler.processRequest(request);
       List<Map> cartItemsList = new List<Map>();
       String requestBody = httpRequest.body;
-      var requestBodyJSON = JSON.decode(requestBody); // makes the request type a list
-
-      String clothesPath = "images/clothes";
+      var requestBodyJSON = JSON.decode(requestBody); // makes the request type a list, previously a String
       String toWrite = "";
 
       for(var elem in requestBodyJSON) {
         cartItemsList.add(await queries.select.clothesInTheCart(elem));
       }
 
-      for(var elem in cartItemsList) {
-        print(elem);
-//        toWrite +=
-//        '''
-//        <div class="articleContainer">
-//        <div class="articleImageContainer">
-//          <div class="articleImageScaled">
-//            <img src="images/clothes/hoodie_jacket.png" alt="Jordan Jacket" class="articleImage">
-//          </div>
-//        </div>
-//        <div class="articleInformation">
-//          <div class="general">
-//            <p>Jordan Jacket</p>
-//            <p>17.99</p>
-//          </div>
-//          <div class="quantity">
-//            <p class="colorBlack">x1</p>
-//          </div>
-//        </div>
-//      </div>
-//      ''';
+      for(int i=0; i<cartItemsList.length; i++) {
+        toWrite +=
+        '''
+        <div class="articleContainer">
+        <div class="articleImageContainer">
+          <span class="remodal-close remodal-close-right" onclick="cart.removeFromCart(${cartItemsList[i][0]['id']}, ${cartItemsList[i][0]['price']})"></span>
+          <div class="articleImageScaled">
+            <img src="images/clothes/${cartItemsList[i][0]['filename']}" alt="${cartItemsList[i][0]['name']}" class="articleImage">
+          </div>
+        </div>
+        <div class="articleInformation">
+          <div class="general">
+            <p>${cartItemsList[i][0]['name']}</p>
+            <p>${cartItemsList[i][0]['price']}\$</p>
+          </div>
+          <div class="quantity">
+            <p class="colorBlack">x1</p>
+          </div>
+        </div>
+      </div>
+      ''';
       }
-
-
-      // If there are no items in the cart
-//      if (requestBody.length == 0) {
-//        requestBody = "No clothes in the cart";
-//      }
 
       request.response
         ..headers.contentType = new ContentType('application', 'dart')
-        ..write("hey")
+        ..write(toWrite)
         ..close();
     }
     catch(e){
@@ -135,7 +132,6 @@ main() async {
         Queries queries = new Queries();
         List<Map> jacketsList = await queries.select.newestClothes();
         String toWrite = "";
-        String clothesPath = "images/clothes";
 
         for(var element in jacketsList) {
           toWrite +=
