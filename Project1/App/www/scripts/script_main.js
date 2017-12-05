@@ -13,6 +13,8 @@ var cart_sum = document.getElementById("cart_sum");
 var cart_quantity_text = document.getElementById("cart_quantity_text");
 var cartContent = document.getElementById("cartContent");
 var totalToPayText = document.getElementById("totalToPayText");
+var remodalContainer = document.getElementsByClassName('remodal');
+var cartContainer = document.getElementsByClassName('cartArticlesContainer');
 var cart; // to be later instantiated as cart object
 
 // GLOBAL functions
@@ -106,6 +108,7 @@ var Cart = function() {
   this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
   this.cartContent = document.getElementById('cartContent');
   this.articleContainer = ""; // later defined
+  this.articleContainerBtn = ""; // later defined
 
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
@@ -142,7 +145,7 @@ var Cart = function() {
   };
 
   Cart.prototype.removeFromCart = function(id, price) {
-    remove(this.orderedItems, id);
+    remove(this.orderedItems, id); // remove from the list of ordered items
 
     this.cart_items_quantity--;
     this.cart_sum -= price;
@@ -151,17 +154,41 @@ var Cart = function() {
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
     totalToPayText.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
 
+    // MAKE THIS A FUNCTION
+    // Determine and set the max-height so the container doesn't spill out of proportions
+    var availVPHeight = window.innerHeight - 20 + 'px';
+    var test = window.innerHeight - 200 + 'px';
+    $(remodalContainer).css('max-height', availVPHeight);
+    $(cartContainer).css('overflow-y', 'auto'); // for now check if needed
+    $(cartContainer).css('max-height', test);
+
     this.removeFromDOM(id);
   };
 
-  Cart.prototype.removeFromDOM = function() {
-    this.articleContainer = document.getElementsByClassName('articleContainer')[0];
-    this.cartContent.removeChild(this.articleContainer);
+  Cart.prototype.removeFromDOM = function(id) {
+    this.articleContainer = document.getElementById('article' + id);
+    this.articleContainerBtn = document.getElementById('articleBtn' + id);
+    this.articleContainer.removeChild(this.articleContainerBtn);
+    this.articleContainer.style.opacity = '0';
+    setTimeout(function(){cart.cartContent.removeChild(cart.articleContainer);}, 1000);
   };
 
-  $("#go_to_cart_btn").click(function(){
+  $("body").on("click", "#go_to_cart_btn", function () {
     cart.sendItemsList(cart.orderedItems);
+
+    // MAKE THIS A FUNCTION
+    // Determine and set the max-height so the container doesn't spill out of proportions
+    var availVPHeight = window.innerHeight - 20 + 'px';
+    var test = window.innerHeight - 200 + 'px';
+    $(remodalContainer).css('max-height', availVPHeight);
+    $(cartContainer).css('overflow-y', 'auto'); // for now check if needed
+    $(cartContainer).css('max-height', test);
+
   });
+
+  // $("#go_to_cart_btn").click(function(){
+  //   cart.sendItemsList(cart.orderedItems);
+  // });
 
   function cartTotal() {
     totalToPayText.innerHTML = "Total: " + mathRoundToSecond(cart.cart_sum) + "$";

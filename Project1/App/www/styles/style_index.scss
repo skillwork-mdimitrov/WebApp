@@ -6,6 +6,7 @@
 /* 2. Make it more visible that the user requested an item
 https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction and anchor on screen scroll*/
 // 2. Make empty cart button + functionality
+// 2. Make the quantity add up instead of displaying another entry of the same product + Server side
 // 3. Potential problem with smaller screen - article info text too wide
 // 3. Make the arrow scroll to be a bit higher then what is is currently
 // 3. Make the arrow different colour [difficult]
@@ -55,8 +56,6 @@ ul {
   flex-direction: column; // every next element goes down
   max-width: 1250px;
   margin: 0 auto;
-
-
 
   .headContainer {
     display: flex;

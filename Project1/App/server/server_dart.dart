@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 /* Problems */
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
-// 2. Make the quantity add up instead of displaying another entry of the same product
+// 2. Make the quantity add up instead of displaying another entry of the same product + CSS
 
 
 import 'dart:io';
@@ -92,9 +92,9 @@ main() async {
       for(int i=0; i<cartItemsList.length; i++) {
         toWrite +=
         '''
-        <div class="articleContainer">
+        <div id="article${cartItemsList[i][0]['id']}" class="articleContainer">
+        <div id="articleBtn${cartItemsList[i][0]['id']}"  class="remodal-close remodal-close-right" onclick="cart.removeFromCart(${cartItemsList[i][0]['id']}, ${cartItemsList[i][0]['price']})"></div>
         <div class="articleImageContainer">
-          <div class="remodal-close remodal-close-right" onclick="cart.removeFromCart(${cartItemsList[i][0]['id']}, ${cartItemsList[i][0]['price']})"></div>
           <div class="articleImageScaled">
             <img src="$clothesPath/${cartItemsList[i][0]['filename']}" alt="${cartItemsList[i][0]['name']}" class="articleImage">
           </div>
