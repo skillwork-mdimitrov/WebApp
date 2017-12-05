@@ -4,6 +4,7 @@
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. JS Architecture
 // 2. Change the default db user
+// 1. Remove DOM HTML for carts when removing
 
 // GLOBAL VARIABLES
 var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
@@ -12,17 +13,17 @@ var cart_sum = document.getElementById("cart_sum");
 var cart_quantity_text = document.getElementById("cart_quantity_text");
 var cartContent = document.getElementById("cartContent");
 var totalToPayText = document.getElementById("totalToPayText");
-var cart; // to be later a cart object
+var cart; // to be later instantiated as cart object
 
 // GLOBAL functions
 
-// Remove element from array
+// Remove element from array by value
 function remove(array, element) {
   "use strict";
-  var index = array.indexOf(element);
+  var value = array.indexOf(element);
 
-  if (index !== -1) {
-    array.splice(index, 1);
+  if (value !== -1) {
+    array.splice(value, 1);
   }
 }
 
@@ -33,8 +34,6 @@ function mathRoundToSecond(num) {
   result = Math.round(num * 100) / 100;
   return result;
 }
-
-
 
 // Slide show START
 
@@ -105,6 +104,8 @@ var Cart = function() {
   this.cart_sum = 0; // The sum of the user's currently requested clothes
   this.cart_items_quantity = 0; // How much items are currently in the cart
   this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
+  this.cartContent = document.getElementById('cartContent');
+  this.articleContainer = ""; // later defined
 
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
@@ -149,6 +150,13 @@ var Cart = function() {
     cart_quantity_text.innerHTML = this.cart_items_quantity;
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
     totalToPayText.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
+
+    this.removeFromDOM(id);
+  };
+
+  Cart.prototype.removeFromDOM = function() {
+    this.articleContainer = document.getElementsByClassName('articleContainer')[0];
+    this.cartContent.removeChild(this.articleContainer);
   };
 
   $("#go_to_cart_btn").click(function(){

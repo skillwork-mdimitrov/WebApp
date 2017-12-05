@@ -94,9 +94,9 @@ main() async {
         '''
         <div class="articleContainer">
         <div class="articleImageContainer">
-          <span class="remodal-close remodal-close-right" onclick="cart.removeFromCart(${cartItemsList[i][0]['id']}, ${cartItemsList[i][0]['price']})"></span>
+          <div class="remodal-close remodal-close-right" onclick="cart.removeFromCart(${cartItemsList[i][0]['id']}, ${cartItemsList[i][0]['price']})"></div>
           <div class="articleImageScaled">
-            <img src="images/clothes/${cartItemsList[i][0]['filename']}" alt="${cartItemsList[i][0]['name']}" class="articleImage">
+            <img src="$clothesPath/${cartItemsList[i][0]['filename']}" alt="${cartItemsList[i][0]['name']}" class="articleImage">
           </div>
         </div>
         <div class="articleInformation">
