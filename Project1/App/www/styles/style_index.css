@@ -9,7 +9,8 @@ https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction an
 
 img {
   max-width: 100%;
-  height: auto; }
+  height: auto;
+  object-fit: contain; }
 
 body {
   background-image: url("../images/bg1.jpg"); }
