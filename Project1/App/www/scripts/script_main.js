@@ -14,7 +14,8 @@ var cart_quantity_text = document.getElementById("cart_quantity_text");
 var cartContent = document.getElementById("cartContent");
 var totalToPayText = document.getElementById("totalToPayText");
 var remodalContainer = document.getElementsByClassName('remodal');
-var cartContainer = document.getElementsByClassName('cartArticlesContainer');
+var cartArticlesContainer = document.getElementsByClassName('cartArticlesContainer');
+var cartWrapper = document.getElementsByClassName('cartWrapper');
 var cart; // to be later instantiated as cart object
 
 // GLOBAL functions
@@ -154,14 +155,6 @@ var Cart = function() {
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
     totalToPayText.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
 
-    // MAKE THIS A FUNCTION
-    // Determine and set the max-height so the container doesn't spill out of proportions
-    var availVPHeight = window.innerHeight - 20 + 'px';
-    var test = window.innerHeight - 200 + 'px';
-    $(remodalContainer).css('max-height', availVPHeight);
-    $(cartContainer).css('overflow-y', 'auto'); // for now check if needed
-    $(cartContainer).css('max-height', test);
-
     this.removeFromDOM(id);
   };
 
@@ -176,13 +169,8 @@ var Cart = function() {
   $("body").on("click", "#go_to_cart_btn", function () {
     cart.sendItemsList(cart.orderedItems);
 
-    // MAKE THIS A FUNCTION
     // Determine and set the max-height so the container doesn't spill out of proportions
-    var availVPHeight = window.innerHeight - 20 + 'px';
-    var test = window.innerHeight - 200 + 'px';
-    $(remodalContainer).css('max-height', availVPHeight);
-    $(cartContainer).css('overflow-y', 'auto'); // for now check if needed
-    $(cartContainer).css('max-height', test);
+    adjustRemodalHeight();
 
   });
 
@@ -198,3 +186,26 @@ cart = new Cart();
 
 /* Show cart contents _START */
 
+function adjustRemodalHeight(mediaQuery) {
+  "use strict";
+  var defaultSize = 0.8;
+  if(mediaQuery === 'undefined') {
+    defaultSize = mediaQuery;
+  }
+  // Determine and set the height so the container doesn't spill out of proportions
+  var remodalContent = window.innerHeight * 0.8; // 80% of the view-port
+  var remodalContentPx = remodalContent + 'px';
+
+  var wrapperContent = remodalContent * 0.95; // 5% less than the remodal container
+  var wrapperContentPx = wrapperContent + 'px';
+
+  var articleContent = wrapperContent * 0.77; // 20% less than the remodal container
+  var articleContentPx = articleContent + 'px';
+
+  $(remodalContainer).css('height', remodalContentPx);
+  $(cartArticlesContainer).css('height', articleContentPx);
+  $(cartArticlesContainer).css('overflow-y', 'auto'); // hides the scroll if it's unnecessary
+  $(cartWrapper).css('height', wrapperContentPx);
+  $(cartWrapper).css('overflow', 'hidden');
+
+}

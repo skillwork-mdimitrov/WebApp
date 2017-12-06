@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="remodal/dist/remodal-default-theme.css">
 </head>
 
-<body onload="getNewestClothes()">
+<body onload="getNewestClothes(); adjustRemodalHeight(100)" onresize="adjustRemodalHeight()">
 <!-- Parent flex container -->
 <div class="mainContainer remodal-bg">
 
@@ -36,18 +36,23 @@
   <!-- REMODAL -->
   <div class="remodal" data-remodal-id="modal">
     <button data-remodal-action="close" class="remodal-close"></button>
-    <h1 style="margin-bottom: 20px">Cart</h1> <!-- Inline not to mash plugins with own css -->
 
-    <div class="cartArticlesContainer">
-      <span id="cartContent">Empty cart</span>
+    <div class="cartWrapper">
+      <h1>Cart</h1> <!-- Inline not to mash plugins with own css -->
+      <div class="cartArticlesContainer">
+        <span id="cartContent"><img src="images/emptyCart.png" alt="Empty cart"></span>
+      </div>
 
       <div class="totalToPayContainer">
         <p id="totalToPayText">Total: 0.00$</p>
       </div>
+
+      <div class="btnContainer">
+        <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
+        <button data-remodal-action="confirm" class="remodal-confirm">Go</button>
+      </div>
     </div>
 
-    <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
-    <button data-remodal-action="confirm" class="remodal-confirm">Go</button>
   </div>
 
   <div class="slideShowContainer">
