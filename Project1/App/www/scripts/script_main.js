@@ -2,11 +2,11 @@
 
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
-// 2. JS Architecture
 // 2. Change the default db user
-// 1. Remove DOM HTML for carts when removing
 
-// GLOBAL VARIABLES
+/* GLOBAL VARIABLES
+   ========================================================================== */
+
 var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
 var newestClothes = document.getElementById("newestClothes");
 var cart_sum = document.getElementById("cart_sum");
@@ -16,9 +16,12 @@ var totalToPayText = document.getElementById("totalToPayText");
 var remodalContainer = document.getElementsByClassName('remodal');
 var cartArticlesContainer = document.getElementsByClassName('cartArticlesContainer');
 var cartWrapper = document.getElementsByClassName('cartWrapper');
-var cart; // to be later instantiated as cart object
 
-// GLOBAL functions
+var cart; // to be later instantiated as cart object
+var slideshow; // to be later instantiated as slideshow object
+
+/* GLOBAL FUNCTIONS
+   ========================================================================== */
 
 // Remove element from array by value
 function remove(array, element) {
@@ -38,31 +41,56 @@ function mathRoundToSecond(num) {
   return result;
 }
 
-// Slide show START
-
-var slideIndex = 1;
-showDivs(slideIndex);
-
-function plusDivs(n) {
+function adjustRemodalHeight(mediaQuery) {
   "use strict";
-  showDivs(slideIndex += n);
-}
-
-function showDivs(n) {
-  "use strict";
-  var i;
-  var x = document.getElementsByClassName("mySlides_js");
-  if (n > x.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = x.length}
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
+  var defaultSize = 0.8;
+  if(mediaQuery === 'undefined') {
+    defaultSize = mediaQuery;
   }
-  x[slideIndex-1].style.display = "";
+  // Determine and set the height so the container doesn't spill out of proportions
+  var remodalContent = window.innerHeight * 0.8; // 80% of the view-port
+  var remodalContentPx = remodalContent + 'px';
+
+  var wrapperContent = remodalContent * 0.95; // 5% less than the remodal container
+  var wrapperContentPx = wrapperContent + 'px';
+
+  var articleContent = wrapperContent * 0.77; // 20% less than the remodal container
+  var articleContentPx = articleContent + 'px';
+
+  $(remodalContainer).css('height', remodalContentPx);
+  $(cartArticlesContainer).css('height', articleContentPx);
+  $(cartArticlesContainer).css('overflow-y', 'auto'); // hides the scroll if it's unnecessary
+  $(cartWrapper).css('height', wrapperContentPx);
+  $(cartWrapper).css('overflow', 'hidden');
 }
 
-// Slide show END
+/* Slideshow CLASS
+   ========================================================================== */
 
-// Anchor scroll START
+var SlideShow = function() {
+  "use strict";
+  this.slideIndex = 1;
+
+  SlideShow.prototype.plusDivs = function(n) {
+    this.showDivs(this.slideIndex += n);
+  };
+
+  SlideShow.prototype.showDivs = function(n) {
+    var i;
+    var x = document.getElementsByClassName("mySlides_js");
+    if (n > x.length) {this.slideIndex = 1}
+    if (n < 1) {this.slideIndex = x.length}
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+    x[this.slideIndex-1].style.display = "";
+  };
+};
+slideshow = new SlideShow();
+slideshow.showDivs(slideshow.slideIndex);
+
+/* Anchor scroll START
+   ========================================================================== */
 
 function scrollToAnchor(aid){
   "use strict";
@@ -75,9 +103,11 @@ $("#link").click(function() {
   scrollToAnchor('menuContainer');
 });
 
-// Anchor scroll END
+/* Anchor scroll END
+   ========================================================================== */
 
-/* Get newest clothes *START* */
+/* Get newest clothes START
+   ========================================================================== */
 
 function getNewestClothes() {
   "use strict";
@@ -100,7 +130,12 @@ function getNewestClothes() {
     console.log('Caught Exception: ' + e.message);
   }
 }
-/* SHOW INFO FROM DB *END* */
+
+/* Get newest clothes END
+   ========================================================================== */
+
+/* Cart class START
+   ========================================================================== */
 
 var Cart = function() {
   "use strict";
@@ -174,38 +209,11 @@ var Cart = function() {
 
   });
 
-  // $("#go_to_cart_btn").click(function(){
-  //   cart.sendItemsList(cart.orderedItems);
-  // });
-
   function cartTotal() {
     totalToPayText.innerHTML = "Total: " + mathRoundToSecond(cart.cart_sum) + "$";
   }
 };
 cart = new Cart();
 
-/* Show cart contents _START */
-
-function adjustRemodalHeight(mediaQuery) {
-  "use strict";
-  var defaultSize = 0.8;
-  if(mediaQuery === 'undefined') {
-    defaultSize = mediaQuery;
-  }
-  // Determine and set the height so the container doesn't spill out of proportions
-  var remodalContent = window.innerHeight * 0.8; // 80% of the view-port
-  var remodalContentPx = remodalContent + 'px';
-
-  var wrapperContent = remodalContent * 0.95; // 5% less than the remodal container
-  var wrapperContentPx = wrapperContent + 'px';
-
-  var articleContent = wrapperContent * 0.77; // 20% less than the remodal container
-  var articleContentPx = articleContent + 'px';
-
-  $(remodalContainer).css('height', remodalContentPx);
-  $(cartArticlesContainer).css('height', articleContentPx);
-  $(cartArticlesContainer).css('overflow-y', 'auto'); // hides the scroll if it's unnecessary
-  $(cartWrapper).css('height', wrapperContentPx);
-  $(cartWrapper).css('overflow', 'hidden');
-
-}
+/* Cart class END
+   ========================================================================== */
