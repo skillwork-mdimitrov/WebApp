@@ -1,5 +1,6 @@
 /* Problems */
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
+// 1 - Flexbox problem in the cart, scroll not scrolling to the top enough
 // 2. Polyfill IE11 object-fit
 // 2. Make the new clothes images not touch the container borders // Difficult
 // 2. Media query less than 300px for Cart items - reduce size
@@ -119,12 +120,16 @@ ul {
     height: 500px;
 
     .slideShowImages {
-      display: flex;
+      position: relative;
       width: 100%;
-      justify-content: center;
 
       .mySlides_js {
         object-fit: cover;
+        position: absolute;
+        opacity: 0;
+        height: 100%;
+        width: 100%;
+        transition: all 0.5s linear;
       }
 
       &:hover {

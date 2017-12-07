@@ -72,11 +72,15 @@ ul {
     background-color: rgba(0, 0, 0, 0.95);
     height: 500px; }
     .mainContainer .slideShowContainer .slideShowImages {
-      display: flex;
-      width: 100%;
-      justify-content: center; }
+      position: relative;
+      width: 100%; }
       .mainContainer .slideShowContainer .slideShowImages .mySlides_js {
-        object-fit: cover; }
+        object-fit: cover;
+        position: absolute;
+        opacity: 0;
+        height: 100%;
+        width: 100%;
+        transition: all 0.5s linear; }
     .mainContainer .slideShowContainer .slide-button {
       border: none;
       display: inline-block;

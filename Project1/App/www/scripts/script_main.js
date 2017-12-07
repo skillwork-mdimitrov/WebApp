@@ -70,20 +70,41 @@ function adjustRemodalHeight(mediaQuery) {
 var SlideShow = function() {
   "use strict";
   this.slideIndex = 1;
+  this.automaticSlideshow = setInterval(
+    function (){
+      slideshow.plusDivs(+1);
+    },
+    5000
+  );
 
   SlideShow.prototype.plusDivs = function(n) {
     this.showDivs(this.slideIndex += n);
+    // clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
+    clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
+    this.automaticSlideshow = setInterval(function(){slideshow.plusDivs(+1);}, 5000); // start a new timer, lazy way
   };
 
   SlideShow.prototype.showDivs = function(n) {
     var i;
-    var x = document.getElementsByClassName("mySlides_js");
-    if (n > x.length) {this.slideIndex = 1}
-    if (n < 1) {this.slideIndex = x.length}
-    for (i = 0; i < x.length; i++) {
-      x[i].style.display = "none";
+    var slideShowImgs = document.getElementsByClassName("mySlides_js");
+
+    function showElement() {
+      console.log(slideShowImgs[slideshow.slideIndex-1]);
+      slideShowImgs[slideshow.slideIndex -1].style.opacity = 1;
+      slideShowImgs[slideshow.slideIndex -1].style.display = 'visible';
     }
-    x[this.slideIndex-1].style.display = "";
+
+    if (n > slideShowImgs.length) {
+      this.slideIndex = 1;
+    }
+    if (n < 1) {
+      this.slideIndex = slideShowImgs.length;
+    }
+    for (i = 0; i < slideShowImgs.length; i++) {
+      slideShowImgs[i].style.opacity = 0;
+      slideShowImgs[i].style.display = 'hidden';
+    }
+    setTimeout(showElement(), 3500);
   };
 };
 slideshow = new SlideShow();
@@ -139,10 +160,10 @@ function getNewestClothes() {
 
 var Cart = function() {
   "use strict";
+  this.cartContent = document.getElementById('cartContent');
   this.cart_sum = 0; // The sum of the user's currently requested clothes
   this.cart_items_quantity = 0; // How much items are currently in the cart
   this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
-  this.cartContent = document.getElementById('cartContent');
   this.articleContainer = ""; // later defined
   this.articleContainerBtn = ""; // later defined
 
