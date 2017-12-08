@@ -18,19 +18,21 @@
 <!-- Parent flex container -->
 <div class="mainContainer remodal-bg">
 
-  <div class="headContainer">
+  <div class="headContainer" id="headContainer">
     <div class="logoContainer">
       <a class="logoSection" href="/"><img src="images/logo.png" alt="logo" class="logoPic"></a>
     </div>
     <a id="link" href="#" class="arrow alignSelf"></a>
+    <a data-remodal-target="modal" style="display: flex;">
     <div class="basketContainer">
       <p id="cart_quantity_text">0</p>
       <div class="basketSection">
         <!-- REMODAL -->
-        <a data-remodal-target="modal"><img src="images/basket.png" alt="basket" class="basketPic" id="go_to_cart_btn"></a>
+       <img src="images/basket.png" alt="basket" class="basketPic">
       </div>
       <p id="cart_sum">0.00</p>
     </div>
+    </a>
   </div>
 
   <!-- REMODAL -->
@@ -40,9 +42,8 @@
     <div class="cartWrapper">
       <h1>Cart</h1>
       <div class="cartArticlesContainer">
-        <span id="cartContent">
-          <img src="images/emptyCart.png" alt="Empty cart" id="emptyCartImg">
-        </span>
+        <img src="images/emptyCart.png" alt="Empty cart" id="emptyCartImg">
+        <span id="cartContent"></span>
       </div>
 
       <div class="totalToPayContainer">

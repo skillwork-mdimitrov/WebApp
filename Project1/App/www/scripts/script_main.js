@@ -8,6 +8,8 @@
    ========================================================================== */
 
 var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
+var headContainer = $('#headContainer');
+var goToCartButton = $('.basketContainer');
 var newestClothes = document.getElementById("newestClothes");
 var cart_sum = document.getElementById("cart_sum");
 var cart_quantity_text = document.getElementById("cart_quantity_text");
@@ -16,9 +18,7 @@ var totalToPayText = document.getElementById("totalToPayText");
 var remodalContainer = document.getElementsByClassName('remodal');
 var cartArticlesContainer = document.getElementsByClassName('cartArticlesContainer');
 var cartWrapper = document.getElementsByClassName('cartWrapper');
-
-var emptyCartImgSrc = document.getElementById('emptyCartImg').getAttribute('src');
-var emptyCartImgAlt = document.getElementById('emptyCartImg').getAttribute('alt');
+var emptyCartImg = document.getElementById('emptyCartImg');
 
 var cart; // to be later instantiated as cart object
 var slideshow; // to be later instantiated as slideshow object
@@ -182,6 +182,7 @@ var Cart = function() {
 
   Cart.prototype.sendItemsList = function () {
     if(this.orderedItems.length !== 0) {
+      emptyCartImg.style.opacity = 0; // fade the Empty cart image
       try {
         // VARIABLES
         var xhttp;
@@ -216,18 +217,14 @@ var Cart = function() {
 
     this.removeFromDOM(id);
 
-    // If the last item from the cart is removed, show Empty cart image
+    // If the last item from the cart is removed, fade in the Empty cart image
     if(this.orderedItems.length === 0) {
-      var emptyCartImg = document.createElement('img');
-      emptyCartImg.setAttribute('src', emptyCartImgSrc);
-      emptyCartImg.setAttribute('alt', emptyCartImgAlt);
-      cartContent.appendChild(emptyCartImg);
+      emptyCartImg.style.opacity = '1';
     }
   };
 
   Cart.prototype.removeFromDOM = function(id) {
     this.articleContainer = document.getElementById('article' + id);
-    console.log(this.articleContainer);
     this.articleContainerBtn = document.getElementById('articleBtn' + id);
     this.articleContainer.removeChild(this.articleContainerBtn);
     this.articleContainer.style.opacity = '0';
@@ -258,4 +255,16 @@ cart = new Cart();
 
 /* Cart class END
    ========================================================================== */
+
+$(document).ready(function() {
+  "use strict";
+  window.addEventListener('scroll',function() {
+    if(window.scrollY > 0) {
+      headContainer.addClass("scrolled");
+    }
+    if(window.scrollY === 0) {
+      headContainer.removeClass("scrolled");
+    }
+  });
+});
 
