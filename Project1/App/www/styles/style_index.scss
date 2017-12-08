@@ -11,6 +11,7 @@ https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction an
 // 2. Media query lower height flex direction row of the items in the cartContainer
 // 2. Media query lower height than 657 (Iphone 5) of the View Port, pass lower % in the adjustRemodalHeight()
 // 2. Media query higher height than 1024 (Ipad), pass higher % in the adjustRemodalHeight()
+// 2. Media query higher width than 1024 (Ipad pro landscape mode), the header spills out of proportions
 // 3. Potential problem with smaller screen - article info text too wide
 // 3. Make the arrow scroll to be a bit higher then what is is currently
 // 3. Make the arrow different colour [difficult]
@@ -18,8 +19,8 @@ https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction an
 // 3. Make the slide-show + header containers = view-port - 5px, maybe not the best idea
 
 // Variables
-$logoHeight: 85px;
-$mainWidth: 1300px;
+$headContainerHeight: 85px;
+$mainContainerWidth: 1250px;
 
 // General
 * {
@@ -59,16 +60,20 @@ ul {
 .mainContainer {
   display: flex; // makes it a flex-container
   flex-direction: column; // every next element goes down
-  max-width: 1250px;
+  max-width: $mainContainerWidth;
   margin: 0 auto;
 
   .headContainer {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: $logoHeight;
+    max-width: $mainContainerWidth;
+    height: $headContainerHeight;
     background-color: rgb(139, 0, 0); /* The Fallback */
-    background-color: rgba(139, 0, 0, 0.975); // transparent dark red
+    background-color: rgba(139, 0, 0, 0.7); // transparent dark red
+    position: fixed;
+    z-index: 10;
+    top: 0;
 
     .logoContainer {
       display: flex;
@@ -117,7 +122,7 @@ ul {
     display: flex;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.95);
-    height: 500px;
+    height: 585px;
 
     .slideShowImages {
       position: relative;
@@ -169,7 +174,7 @@ ul {
         align-items: center;
         flex: 0.247;
         height: 50px;
-        border: 2px solid darkred;
+        border: 1.5px solid darkred;
         transition: background-color 1s;
 
         &:hover {
@@ -255,6 +260,5 @@ ul {
     }
   }
 }
-
 
 

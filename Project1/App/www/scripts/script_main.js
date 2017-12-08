@@ -17,6 +17,9 @@ var remodalContainer = document.getElementsByClassName('remodal');
 var cartArticlesContainer = document.getElementsByClassName('cartArticlesContainer');
 var cartWrapper = document.getElementsByClassName('cartWrapper');
 
+var emptyCartImgSrc = document.getElementById('emptyCartImg').getAttribute('src');
+var emptyCartImgAlt = document.getElementById('emptyCartImg').getAttribute('alt');
+
 var cart; // to be later instantiated as cart object
 var slideshow; // to be later instantiated as slideshow object
 
@@ -74,14 +77,14 @@ var SlideShow = function() {
     function (){
       slideshow.plusDivs(+1);
     },
-    5000
+    900000 // reduce later
   );
 
   SlideShow.prototype.plusDivs = function(n) {
     this.showDivs(this.slideIndex += n);
     // clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
     clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
-    this.automaticSlideshow = setInterval(function(){slideshow.plusDivs(+1);}, 5000); // start a new timer, lazy way
+    this.automaticSlideshow = setInterval(function(){slideshow.plusDivs(+1);}, 900000); // start a new timer, lazy way
   };
 
   SlideShow.prototype.showDivs = function(n) {
@@ -89,7 +92,6 @@ var SlideShow = function() {
     var slideShowImgs = document.getElementsByClassName("mySlides_js");
 
     function showElement() {
-      console.log(slideShowImgs[slideshow.slideIndex-1]);
       slideShowImgs[slideshow.slideIndex -1].style.opacity = 1;
       slideShowImgs[slideshow.slideIndex -1].style.display = 'visible';
     }
@@ -106,6 +108,7 @@ var SlideShow = function() {
     }
     setTimeout(showElement(), 3500);
   };
+
 };
 slideshow = new SlideShow();
 slideshow.showDivs(slideshow.slideIndex);
@@ -212,14 +215,31 @@ var Cart = function() {
     totalToPayText.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
 
     this.removeFromDOM(id);
+
+    // If the last item from the cart is removed, show Empty cart image
+    if(this.orderedItems.length === 0) {
+      var emptyCartImg = document.createElement('img');
+      emptyCartImg.setAttribute('src', emptyCartImgSrc);
+      emptyCartImg.setAttribute('alt', emptyCartImgAlt);
+      cartContent.appendChild(emptyCartImg);
+    }
   };
 
   Cart.prototype.removeFromDOM = function(id) {
     this.articleContainer = document.getElementById('article' + id);
+    console.log(this.articleContainer);
     this.articleContainerBtn = document.getElementById('articleBtn' + id);
     this.articleContainer.removeChild(this.articleContainerBtn);
     this.articleContainer.style.opacity = '0';
-    setTimeout(function(){cart.cartContent.removeChild(cart.articleContainer);}, 1000);
+    setTimeout(function(){
+      try {
+        cart.cartContent.removeChild(cart.articleContainer);
+      }
+      catch(e) {
+
+      }
+    },
+    1000);
   };
 
   $("body").on("click", "#go_to_cart_btn", function () {
@@ -238,3 +258,4 @@ cart = new Cart();
 
 /* Cart class END
    ========================================================================== */
+

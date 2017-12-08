@@ -37,10 +37,14 @@ ul {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    max-width: 1250px;
     height: 85px;
     background-color: darkred;
     /* The Fallback */
-    background-color: rgba(139, 0, 0, 0.975); }
+    background-color: rgba(139, 0, 0, 0.7);
+    position: fixed;
+    z-index: 10;
+    top: 0; }
     .mainContainer .headContainer .logoContainer {
       display: flex;
       justify-content: center;
@@ -70,7 +74,7 @@ ul {
     display: flex;
     background-color: black;
     background-color: rgba(0, 0, 0, 0.95);
-    height: 500px; }
+    height: 585px; }
     .mainContainer .slideShowContainer .slideShowImages {
       position: relative;
       width: 100%; }
@@ -107,7 +111,7 @@ ul {
         align-items: center;
         flex: 0.247;
         height: 50px;
-        border: 2px solid darkred;
+        border: 1.5px solid darkred;
         transition: background-color 1s; }
         .mainContainer .menuContainer .menu .menuItem:hover {
           background-color: darkred;
