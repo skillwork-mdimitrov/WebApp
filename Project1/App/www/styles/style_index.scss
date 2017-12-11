@@ -13,6 +13,7 @@ https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction an
 // 2. Media query higher height than 1024 (Ipad), pass higher % in the adjustRemodalHeight()
 // 2. Media query higher width than 1024 (Ipad pro landscape mode), the header spills out of proportions
 // 2. Media query lower width than 300, the arrow in the header repeats itself, push it down a bit
+// 2. Change background-color
 // 3. Potential problem with smaller screen - article info text too wide
 // 3. Make the arrow scroll to be a bit higher then what is is currently
 // 3. Make the arrow different colour [difficult]
@@ -38,19 +39,12 @@ img {
 }
 
 body {
-  background-image: url("../images/bg1.jpg");
+  background-image: url("../images/bg3.jpg");
 }
 
 ul {
   list-style: none;
 }
-
-//.class1 .class2 {
-//
-//}
-//.class1.class2 {
-//
-//}
 
 .arrow {
   width: 40px;
@@ -286,5 +280,3 @@ ul {
     }
   }
 }
-
-

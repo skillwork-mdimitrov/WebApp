@@ -15,8 +15,10 @@
 </head>
 
 <body onload="getNewestClothes(); adjustRemodalHeight(100)" onresize="adjustRemodalHeight()">
+<div id="dimmingBlock"></div>
 <!-- Parent flex container -->
 <div class="mainContainer remodal-bg">
+
   <div class="headContainer" id="headContainer">
     <div class="logoContainer">
       <a class="logoSection" href="/"><img src="images/logo.png" alt="logo" class="logoPic"></a>
@@ -34,7 +36,7 @@
     </a>
   </div> <!-- Close head container -->
 
-  <!-- REMODAL -->
+  <!-- REMODAL start -->
   <div class="remodal" data-remodal-id="modal">
     <button data-remodal-action="close" class="remodal-close"></button>
 
@@ -95,10 +97,10 @@
 
 </div> <!-- Close main container -->
 
+<!-- SCRIPTS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="scripts/script_main.js"></script>
-
-<!-- REMODAL -->
+<!-- Remodal scripts -->
 <script src="remodal/dist/remodal.min.js"></script>
 
 </body>

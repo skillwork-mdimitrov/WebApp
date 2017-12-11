@@ -52,8 +52,8 @@ function blurElement(element, selector, afterMilliseconds, forMilliseconds) {
   "use strict";
   // VARIABLES
   var elem = "";
-  var afterTime = 0; // immediately blur
-  var forTime = 1000; // blur for a second
+  var afterTime = 0; // immediately blur, default
+  var forTime = 1000; // blur for a second, default
 
   // Select the class to blur
   if(selector === 'class') {
@@ -78,7 +78,7 @@ function blurElement(element, selector, afterMilliseconds, forMilliseconds) {
     forTime = forMilliseconds;
   }
 
-  // Blur effect, filter is that well support
+  // Blur effect, filter is not that well support
   setTimeout(function() {
     elem.css({
     'transition-property': 'all',
@@ -260,10 +260,10 @@ var Cart = function() {
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
 
-    blurElement('basketContainer', 'class', 0, 500);
+    blurElement('basketContainer', 'class', 0, 250);
     setTimeout(function() {
       unblurElement('basketContainer', 'class', 0);
-    }, 500);
+    }, 250); // unblur after 250
 
     this.cart_sum += articlePrice;
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum)  + "$";
