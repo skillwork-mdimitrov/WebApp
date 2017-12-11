@@ -17,7 +17,6 @@
 <body onload="getNewestClothes(); adjustRemodalHeight(100)" onresize="adjustRemodalHeight()">
 <!-- Parent flex container -->
 <div class="mainContainer remodal-bg">
-
   <div class="headContainer" id="headContainer">
     <div class="logoContainer">
       <a class="logoSection" href="/"><img src="images/logo.png" alt="logo" class="logoPic"></a>
@@ -33,7 +32,7 @@
       <p id="cart_sum">0.00</p>
     </div>
     </a>
-  </div>
+  </div> <!-- Close head container -->
 
   <!-- REMODAL -->
   <div class="remodal" data-remodal-id="modal">
@@ -56,7 +55,7 @@
       </div>
     </div>
 
-  </div>
+  </div> <!-- Close Remodal container -->
 
   <div class="slideShowContainer">
 
@@ -70,7 +69,7 @@
       </div>
 
     <button class="slide-button" onclick="slideshow.plusDivs(+1)">&#10095;</button>
-  </div>
+  </div> <!-- Close slide-show container -->
 
   <a name="menuContainer"></a> <!-- Scroll to here -->
 
@@ -92,9 +91,9 @@
 
     <span id="newestClothes">Aww, no clothes to show :(</span>
 
-  </div>
+  </div> <!-- Close new section container -->
 
-</div>
+</div> <!-- Close main container -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="scripts/script_main.js"></script>

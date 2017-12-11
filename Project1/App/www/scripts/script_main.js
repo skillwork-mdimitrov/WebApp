@@ -3,6 +3,7 @@
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. Change the default db user
+// 2. Fallback for filter
 
 /* GLOBAL VARIABLES
    ========================================================================== */
@@ -44,10 +45,96 @@ function mathRoundToSecond(num) {
   return result;
 }
 
+// Make effects class I guess
+
+// Blur an element for a brief period
+function blurElement(element, selector, afterMilliseconds, forMilliseconds) {
+  "use strict";
+  // VARIABLES
+  var elem = "";
+  var afterTime = 0; // immediately blur
+  var forTime = 1000; // blur for a second
+
+  // Select the class to blur
+  if(selector === 'class') {
+    elem = $('.' +element);
+  }
+  // Select the id element to blur
+  else if(selector === 'id') {
+    elem = $('#' +element);
+  }
+  // Element couldn't be selected, expand
+  else {
+    console.log("Expand blurElem() function to accept non id/class selectors");
+  }
+
+  // Delay before the blur
+  if(afterMilliseconds !== 'undefined') {
+    afterTime = afterMilliseconds;
+  }
+
+  // Duration of the blur
+  if(forMilliseconds !== 'undefined') {
+    forTime = forMilliseconds;
+  }
+
+  // Blur effect, filter is that well support
+  setTimeout(function() {
+    elem.css({
+    'transition-property': 'all',
+    'transition-duration': forMilliseconds + 'ms',
+    'transition-timing-function': 'ease',
+    'opacity': '0'
+    });
+  }, afterMilliseconds);
+}
+
+// Unblur element
+function unblurElement(element, selector, afterMilliseconds, forMilliseconds) {
+  "use strict";
+  // VARIABLES
+  var elem = "";
+  var afterTime = 0; // immediately unblur
+  var forTime = 1000; // unblur for a second
+
+  // Select the class to unblur
+  if(selector === 'class') {
+    elem = $('.' +element);
+  }
+  // Select the id element to unblur
+  else if(selector === 'id') {
+    elem = $('#' +element);
+  }
+  // Element couldn't be selected, expand
+  else {
+    console.log("Expand blurElem() function to accept non id/class selectors");
+  }
+
+  // Delay before the unblur
+  if(afterMilliseconds !== 'undefined') {
+    afterTime = afterMilliseconds;
+  }
+
+  // Duration of the unblur
+  if(forMilliseconds !== 'undefined') {
+    forTime = forMilliseconds;
+  }
+
+  // Unblur effect
+  setTimeout(function() {
+    elem.css({
+    'transition-property': 'all',
+    'transition-duration': forMilliseconds + 'ms',
+    'transition-timing-function': 'ease-out',
+    'opacity': '1'
+    });
+  }, afterMilliseconds);
+}
+
 function adjustRemodalHeight(mediaQuery) {
   "use strict";
   var defaultSize = 0.8;
-  if(mediaQuery === 'undefined') {
+  if(mediaQuery === 'undefined') { // check if 'undefined' is same as undefined
     defaultSize = mediaQuery;
   }
   // Determine and set the height so the container doesn't spill out of proportions
@@ -124,7 +211,7 @@ function scrollToAnchor(aid){
 
 $("#link").click(function() {
   "use strict";
-  scrollToAnchor('menuContainer');
+  scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
 });
 
 /* Anchor scroll END
@@ -172,12 +259,19 @@ var Cart = function() {
 
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
+
+    blurElement('basketContainer', 'class', 0, 500);
+    setTimeout(function() {
+      unblurElement('basketContainer', 'class', 0);
+    }, 500);
+
     this.cart_sum += articlePrice;
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum)  + "$";
     this.cart_items_quantity++;
     cart_quantity_text.innerHTML = this.cart_items_quantity;
 
     this.orderedItems.push(articleId);
+
   };
 
   Cart.prototype.sendItemsList = function () {
@@ -217,9 +311,9 @@ var Cart = function() {
 
     this.removeFromDOM(id);
 
-    // If the last item from the cart is removed, fade in the Empty cart image
+    // If the latest removed item happens to be the last one, show that the cart is empty
     if(this.orderedItems.length === 0) {
-      emptyCartImg.style.opacity = '1';
+      emptyCartImg.style.opacity = '1'; // has css transition
     }
   };
 
@@ -239,7 +333,7 @@ var Cart = function() {
     1000);
   };
 
-  $("body").on("click", "#go_to_cart_btn", function () {
+  $("body").on("click", ".basketContainer", function () {
     cart.sendItemsList(cart.orderedItems);
 
     // Determine and set the max-height so the container doesn't spill out of proportions
