@@ -1,28 +1,38 @@
 /*jslint devel: true*/
+/*globals $:false */
 
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. Change the default db user
 // 2. Fallback for filter
+// 3. Check the analyses top right corner
+// 3. Read more about null and possibly refactor checking
 
 /* GLOBAL VARIABLES
    ========================================================================== */
 
-var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
+// manipulated with jQuery
 var headContainer = $('#headContainer');
-var goToCartButton = $('.basketContainer');
+var goToCartButton = $('.basketContainer'); // mby not needed
+var dimmingBlock = $('.dimmingBlock');
+var remodalContainer = $('.remodal');
+var cartArticlesContainer = $('.cartArticlesContainer');
+var cartWrapper = $('.cartWrapper');
+
+// manipulated with vanilla JavaScript
+var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
 var newestClothes = document.getElementById("newestClothes");
 var cart_sum = document.getElementById("cart_sum");
 var cart_quantity_text = document.getElementById("cart_quantity_text");
 var cartContent = document.getElementById("cartContent");
 var totalToPayText = document.getElementById("totalToPayText");
-var remodalContainer = document.getElementsByClassName('remodal');
-var cartArticlesContainer = document.getElementsByClassName('cartArticlesContainer');
-var cartWrapper = document.getElementsByClassName('cartWrapper');
 var emptyCartImg = document.getElementById('emptyCartImg');
 
-var cart; // to be later instantiated as cart object
-var slideshow; // to be later instantiated as slideshow object
+// used anywhere
+var viewPortHeight = window.innerHeight;
+var cart; // to be later instantiated as Cart object
+var slideshow; // to be later instantiated as Slideshow object
+var effects; // to be later instantiated as Effects object
 
 /* GLOBAL FUNCTIONS
    ========================================================================== */
@@ -45,100 +55,107 @@ function mathRoundToSecond(num) {
   return result;
 }
 
-// Make effects class I guess
+/* Effects CLASS
+   ========================================================================== */
 
-// Blur an element for a brief period
-function blurElement(element, selector, afterMilliseconds, forMilliseconds) {
+var Effects = function() {
+  "use strict";
+  // Blur an element for a brief period
+  Effects.prototype.blurElement = function (element, selector, afterMilliseconds, forMilliseconds) {
+    // VARIABLES
+    var elem = "";
+    var afterTime = 0; // immediately blur, by default
+    var forTime = 1000; // blur for a second, by default
+
+    // Delay before the blur
+    if(typeof afterMilliseconds !== 'undefined' && afterMilliseconds !== null) {
+      afterTime = afterMilliseconds;
+    }
+
+    // Duration of the blur
+    if(typeof forMilliseconds !== 'undefined' && forMilliseconds === null) {
+      forTime = forMilliseconds;
+    }
+
+    // Select the class to blur
+    if(selector === 'class') {
+      elem = $('.' +element);
+    }
+    // Select the id element to blur
+    else if(selector === 'id') {
+      elem = $('#' +element);
+    }
+    // Element couldn't be selected, expand
+    else {
+      console.log("Expand blurElem() function to accept non id/class selectors");
+    }
+
+    // Blur effect, filter is not that well supported
+    setTimeout(function() {
+      elem.css({
+      'transition-property': 'all',
+      'transition-duration': forTime + 'ms',
+      'transition-timing-function': 'ease',
+      'filter': 'blur(1px)'
+      });
+    }, afterTime);
+  };
+
+  // Unblur element
+  Effects.prototype.unblurElement = function(element, selector, afterMilliseconds, forMilliseconds) {
+    // VARIABLES
+    var elem = "";
+    var afterTime = 0; // immediately unblur, default
+    var forTime = 1000; // unblur for a second, default
+
+    // Select the class to unblur
+    if(selector === 'class') {
+      elem = $('.' +element);
+    }
+    // Select the id element to unblur
+    else if(selector === 'id') {
+      elem = $('#' +element);
+    }
+    // Element couldn't be selected, expand
+    else {
+      console.log("Expand blurElem() function to accept non id/class selectors");
+    }
+
+    // Delay before the unblur
+    if(typeof afterMilliseconds !== 'undefined' && afterMilliseconds !== null) {
+      afterTime = afterMilliseconds;
+    }
+
+    // Duration of the unblur
+    if(typeof forMilliseconds !== 'undefined' && afterMilliseconds !== null) {
+      forTime = forMilliseconds;
+    }
+
+    // Unblur effect
+    setTimeout(function() {
+      elem.css({
+      'transition-property': 'all',
+      'transition-duration': forTime + 'ms',
+      'transition-timing-function': 'ease-out',
+      'filter': 'none'
+      });
+    }, afterTime);
+  };
+};
+effects = new Effects();
+
+function adjustHeight(mediaQuery) {
   "use strict";
   // VARIABLES
-  var elem = "";
-  var afterTime = 0; // immediately blur, default
-  var forTime = 1000; // blur for a second, default
-
-  // Select the class to blur
-  if(selector === 'class') {
-    elem = $('.' +element);
-  }
-  // Select the id element to blur
-  else if(selector === 'id') {
-    elem = $('#' +element);
-  }
-  // Element couldn't be selected, expand
-  else {
-    console.log("Expand blurElem() function to accept non id/class selectors");
-  }
-
-  // Delay before the blur
-  if(afterMilliseconds !== 'undefined') {
-    afterTime = afterMilliseconds;
-  }
-
-  // Duration of the blur
-  if(forMilliseconds !== 'undefined') {
-    forTime = forMilliseconds;
-  }
-
-  // Blur effect, filter is not that well support
-  setTimeout(function() {
-    elem.css({
-    'transition-property': 'all',
-    'transition-duration': forMilliseconds + 'ms',
-    'transition-timing-function': 'ease',
-    'opacity': '0'
-    });
-  }, afterMilliseconds);
-}
-
-// Unblur element
-function unblurElement(element, selector, afterMilliseconds, forMilliseconds) {
-  "use strict";
-  // VARIABLES
-  var elem = "";
-  var afterTime = 0; // immediately unblur
-  var forTime = 1000; // unblur for a second
-
-  // Select the class to unblur
-  if(selector === 'class') {
-    elem = $('.' +element);
-  }
-  // Select the id element to unblur
-  else if(selector === 'id') {
-    elem = $('#' +element);
-  }
-  // Element couldn't be selected, expand
-  else {
-    console.log("Expand blurElem() function to accept non id/class selectors");
-  }
-
-  // Delay before the unblur
-  if(afterMilliseconds !== 'undefined') {
-    afterTime = afterMilliseconds;
-  }
-
-  // Duration of the unblur
-  if(forMilliseconds !== 'undefined') {
-    forTime = forMilliseconds;
-  }
-
-  // Unblur effect
-  setTimeout(function() {
-    elem.css({
-    'transition-property': 'all',
-    'transition-duration': forMilliseconds + 'ms',
-    'transition-timing-function': 'ease-out',
-    'opacity': '1'
-    });
-  }, afterMilliseconds);
-}
-
-function adjustRemodalHeight(mediaQuery) {
-  "use strict";
   var defaultSize = 0.8;
-  if(mediaQuery === 'undefined') { // check if 'undefined' is same as undefined
+
+  if(typeof mediaQuery === 'undefined' && mediaQuery !== null) { // check if 'undefined' is same as undefined
     defaultSize = mediaQuery;
   }
+
+  /* Remodal cart container */
   // Determine and set the height so the container doesn't spill out of proportions
-  var remodalContent = window.innerHeight * 0.8; // 80% of the view-port
+  var remodalContent = viewPortHeight * 0.8; // 80% of the view-port
   var remodalContentPx = remodalContent + 'px';
 
   var wrapperContent = remodalContent * 0.95; // 5% less than the remodal container
@@ -147,11 +164,16 @@ function adjustRemodalHeight(mediaQuery) {
   var articleContent = wrapperContent * 0.77; // 20% less than the remodal container
   var articleContentPx = articleContent + 'px';
 
-  $(remodalContainer).css('height', remodalContentPx);
-  $(cartArticlesContainer).css('height', articleContentPx);
-  $(cartArticlesContainer).css('overflow-y', 'auto'); // hides the scroll if it's unnecessary
-  $(cartWrapper).css('height', wrapperContentPx);
-  $(cartWrapper).css('overflow', 'hidden');
+  remodalContainer.css('height', remodalContentPx);
+  cartArticlesContainer.css('height', articleContentPx);
+  cartArticlesContainer.css('overflow-y', 'auto'); // hides the scroll if it's unnecessary
+  cartWrapper.css('height', wrapperContentPx);
+  cartWrapper.css('overflow', 'hidden');
+
+  /* Dimming container */
+  if(dimmingBlock.height() !== viewPortHeight) {
+    dimmingBlock.css('height', viewPortHeight);
+  }
 }
 
 /* Slideshow CLASS
@@ -160,18 +182,18 @@ function adjustRemodalHeight(mediaQuery) {
 var SlideShow = function() {
   "use strict";
   this.slideIndex = 1;
+  this.timeNextSlide = 90000; // reduce later
   this.automaticSlideshow = setInterval(
-    function (){
-      slideshow.plusDivs(+1);
-    },
-    900000 // reduce later
+      function (){
+        slideshow.plusDivs(+1);
+      },
+      this.timeNextSlide
   );
 
   SlideShow.prototype.plusDivs = function(n) {
     this.showDivs(this.slideIndex += n);
-    // clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
     clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
-    this.automaticSlideshow = setInterval(function(){slideshow.plusDivs(+1);}, 900000); // start a new timer, lazy way
+    this.automaticSlideshow = setInterval(function(){slideshow.plusDivs(+1);}, this.timeNextSlide); // start a new timer, lazy way
   };
 
   SlideShow.prototype.showDivs = function(n) {
@@ -260,10 +282,8 @@ var Cart = function() {
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
 
-    blurElement('basketContainer', 'class', 0, 250);
-    setTimeout(function() {
-      unblurElement('basketContainer', 'class', 0);
-    }, 250); // unblur after 250
+    effects.blurElement('basketContainer', 'class', 0, 1000);
+    effects.unblurElement('basketContainer', 'class', 1000, 1000);
 
     this.cart_sum += articlePrice;
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum)  + "$";
@@ -337,8 +357,7 @@ var Cart = function() {
     cart.sendItemsList(cart.orderedItems);
 
     // Determine and set the max-height so the container doesn't spill out of proportions
-    adjustRemodalHeight();
-
+    adjustHeight();
   });
 
   function cartTotal() {
@@ -361,4 +380,3 @@ $(document).ready(function() {
     }
   });
 });
-

@@ -14,11 +14,11 @@
   <link rel="stylesheet" href="remodal/dist/remodal-default-theme.css">
 </head>
 
-<body onload="getNewestClothes(); adjustRemodalHeight(100)" onresize="adjustRemodalHeight()">
-<div id="dimmingBlock"></div>
+<body onload="getNewestClothes(); adjustHeight(100)" onresize="adjustHeight()">
+<!-- Container to sit ontop of everything else as a forbidden area -->
+<div class="dimmingBlock"></div>
 <!-- Parent flex container -->
 <div class="mainContainer remodal-bg">
-
   <div class="headContainer" id="headContainer">
     <div class="logoContainer">
       <a class="logoSection" href="/"><img src="images/logo.png" alt="logo" class="logoPic"></a>
