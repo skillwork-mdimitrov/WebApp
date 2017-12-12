@@ -270,6 +270,8 @@ function getNewestClothes() {
 /* Cart class START
    ========================================================================== */
 
+
+// TRY ATTACHING THE FIELDS TO THE CART PROTOTYPE
 var Cart = function() {
   "use strict";
   this.cartContent = document.getElementById('cartContent');
