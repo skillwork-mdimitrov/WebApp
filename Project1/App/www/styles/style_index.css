@@ -13,7 +13,7 @@ img {
   object-fit: contain; }
 
 body {
-  background-image: url("../images/bg3.jpg"); }
+  background-image: url("../images/bg4.jpg"); }
 
 ul {
   list-style: none; }
@@ -36,9 +36,9 @@ ul {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: black;
-  opacity: 0.75;
+  opacity: 0;
   z-index: 5;
-  display: none; }
+  visibility: hidden; }
 
 .mainContainer {
   display: flex;

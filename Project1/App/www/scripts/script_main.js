@@ -5,12 +5,10 @@
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. Change the default db user
 // 2. Fallback for filter
-// 3. Check the analyses top right corner
-// 3. Read more about null and possibly refactor checking
+// 3. Move different modules to different classes, maybe use require.js
 
 /* GLOBAL VARIABLES
    ========================================================================== */
-
 // manipulated with jQuery
 var headContainer = $('#headContainer');
 var goToCartButton = $('.basketContainer'); // mby not needed
@@ -36,7 +34,6 @@ var effects; // to be later instantiated as Effects object
 
 /* GLOBAL FUNCTIONS
    ========================================================================== */
-
 // Remove element from array by value
 function remove(array, element) {
   "use strict";
@@ -57,26 +54,19 @@ function mathRoundToSecond(num) {
 
 /* Effects CLASS
    ========================================================================== */
-
 var Effects = function() {
   "use strict";
   // Blur an element for a brief period
-  Effects.prototype.blurElement = function (element, selector, afterMilliseconds, forMilliseconds) {
-    // VARIABLES
+  Effects.prototype.blurElement = function (element, selector, afterMilliseconds, forMilliseconds, on_or_off) {
+    /* VARIABLES
+   ========================================================================== */
+    var state = 'on';
     var elem = "";
     var afterTime = 0; // immediately blur, by default
     var forTime = 1000; // blur for a second, by default
 
-    // Delay before the blur
-    if(typeof afterMilliseconds !== 'undefined' && afterMilliseconds !== null) {
-      afterTime = afterMilliseconds;
-    }
-
-    // Duration of the blur
-    if(typeof forMilliseconds !== 'undefined' && forMilliseconds === null) {
-      forTime = forMilliseconds;
-    }
-
+    /* Element SELECTOR
+   ========================================================================== */
     // Select the class to blur
     if(selector === 'class') {
       elem = $('.' +element);
@@ -90,56 +80,114 @@ var Effects = function() {
       console.log("Expand blurElem() function to accept non id/class selectors");
     }
 
+    /* Method arguments
+   ========================================================================== */
+    // Delay before the blur
+    if(typeof afterMilliseconds !== 'undefined' && afterMilliseconds !== null) {
+      afterTime = afterMilliseconds;
+    }
+    // Duration of the blur
+    if(typeof forMilliseconds !== 'undefined' && forMilliseconds === null) {
+      forTime = forMilliseconds;
+    }
+    // Dim or undim the element
+    if(typeof forMilliseconds !== 'undefined' && afterMilliseconds !== null) {
+      state = on_or_off;
+    }
+
+    /* State
+   ========================================================================== */
+    if(state === 'on') {
     // Blur effect, filter is not that well supported
     setTimeout(function() {
-      elem.css({
-      'transition-property': 'all',
-      'transition-duration': forTime + 'ms',
-      'transition-timing-function': 'ease',
-      'filter': 'blur(1px)'
-      });
-    }, afterTime);
+        elem.css({
+        'transition-property': 'all',
+        'transition-duration': forTime + 'ms',
+        'transition-timing-function': 'ease',
+        'filter': 'blur(1px)'
+        });
+      }, afterTime);
+    }
+    else if(state === 'off') {
+      setTimeout(function() {
+        elem.css({
+          'transition-property': 'all',
+          'transition-duration': forTime + 'ms',
+          'transition-timing-function': 'ease-out',
+          'filter': 'none'
+        });
+      }, afterTime);
+    }
   };
 
-  // Unblur element
-  Effects.prototype.unblurElement = function(element, selector, afterMilliseconds, forMilliseconds) {
-    // VARIABLES
+  Effects.prototype.displayElement = function(element, selector, afterMilliseconds, forMilliseconds, on_or_off) {
+    var state = 'on'; // dim, by default
     var elem = "";
-    var afterTime = 0; // immediately unblur, default
-    var forTime = 1000; // unblur for a second, default
+    var afterTime = 0; // immediately dim, default
+    var forTime = 1000; // dim it for a second, default
 
-    // Select the class to unblur
+    console.log("Went in here");
+
+    /* Element SELECTOR
+   ========================================================================== */
+    // Select the class to dim/undim
     if(selector === 'class') {
       elem = $('.' +element);
     }
-    // Select the id element to unblur
+    // Select the id element to dim/undim
     else if(selector === 'id') {
       elem = $('#' +element);
     }
+    // Select the element by tag name to dim/undim
+    else if(selector === 'tagName') {
+      elem = $('' +element);
+    }
     // Element couldn't be selected, expand
     else {
-      console.log("Expand blurElem() function to accept non id/class selectors");
+      console.log("Expand show() function to accept non id/class selectors");
     }
 
-    // Delay before the unblur
+    /* Method arguments
+   ========================================================================== */
+    // Delay before the dim/undim
     if(typeof afterMilliseconds !== 'undefined' && afterMilliseconds !== null) {
       afterTime = afterMilliseconds;
     }
 
-    // Duration of the unblur
+    // Duration of the dim/undim
     if(typeof forMilliseconds !== 'undefined' && afterMilliseconds !== null) {
       forTime = forMilliseconds;
     }
 
-    // Unblur effect
-    setTimeout(function() {
-      elem.css({
-      'transition-property': 'all',
-      'transition-duration': forTime + 'ms',
-      'transition-timing-function': 'ease-out',
-      'filter': 'none'
-      });
-    }, afterTime);
+    // Dim or undim the element
+    if(typeof forMilliseconds !== 'undefined' && afterMilliseconds !== null) {
+      state = on_or_off;
+    }
+
+    /* States
+   ========================================================================== */
+    if(state === 'on') {
+      setTimeout(function() {
+        elem.css({
+          'visibility': 'visible',
+          'opacity': 0.85,
+          'transition-property': 'opacity',
+          'transition-duration': forTime + 'ms',
+          'transition-timing-function': 'ease-in'
+        });
+      }, afterTime);
+    }
+    else if(state === 'off') {
+      setTimeout(function() {
+        elem.css({
+          'transition-property': 'all',
+          'transition-duration': forTime + 'ms',
+          'transition-timing-function': 'ease-out',
+          'opacity': 0,
+          'visibility': 'hidden'
+        });
+      }, afterTime);
+    }
   };
 };
 effects = new Effects();
@@ -153,7 +201,8 @@ function adjustHeight(mediaQuery) {
     defaultSize = mediaQuery;
   }
 
-  /* Remodal cart container */
+  /* Remodal container
+   ========================================================================== */
   // Determine and set the height so the container doesn't spill out of proportions
   var remodalContent = viewPortHeight * 0.8; // 80% of the view-port
   var remodalContentPx = remodalContent + 'px';
@@ -170,7 +219,8 @@ function adjustHeight(mediaQuery) {
   cartWrapper.css('height', wrapperContentPx);
   cartWrapper.css('overflow', 'hidden');
 
-  /* Dimming container */
+  /* Dimming block
+   ========================================================================== */
   if(dimmingBlock.height() !== viewPortHeight) {
     dimmingBlock.css('height', viewPortHeight);
   }
@@ -178,7 +228,6 @@ function adjustHeight(mediaQuery) {
 
 /* Slideshow CLASS
    ========================================================================== */
-
 var SlideShow = function() {
   "use strict";
   this.slideIndex = 1;
@@ -222,9 +271,8 @@ var SlideShow = function() {
 slideshow = new SlideShow();
 slideshow.showDivs(slideshow.slideIndex);
 
-/* Anchor scroll START
+/* Anchor scroll
    ========================================================================== */
-
 function scrollToAnchor(aid){
   "use strict";
   var aTag = $("a[name='"+ aid +"']");
@@ -236,12 +284,8 @@ $("#link").click(function() {
   scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
 });
 
-/* Anchor scroll END
+/* Get newest clothes
    ========================================================================== */
-
-/* Get newest clothes START
-   ========================================================================== */
-
 function getNewestClothes() {
   "use strict";
   try {
@@ -264,17 +308,10 @@ function getNewestClothes() {
   }
 }
 
-/* Get newest clothes END
+/* Cart class
    ========================================================================== */
-
-/* Cart class START
-   ========================================================================== */
-
-
-// TRY ATTACHING THE FIELDS TO THE CART PROTOTYPE
-var Cart = function() {
+var Cart = function () {
   "use strict";
-  this.cartContent = document.getElementById('cartContent');
   this.cart_sum = 0; // The sum of the user's currently requested clothes
   this.cart_items_quantity = 0; // How much items are currently in the cart
   this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
@@ -284,49 +321,49 @@ var Cart = function() {
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
 
-    effects.blurElement('basketContainer', 'class', 0, 1000);
-    effects.unblurElement('basketContainer', 'class', 1000, 1000);
+    effects.blurElement('basketContainer', 'class', 0, 1000, 'on');
+    effects.blurElement('basketContainer', 'class', 1000, 1000, 'off');
+    effects.displayElement('dimmingBlock', 'class', 0, 1000, 'on');
+    effects.displayElement('dimmingBlock', 'class', 1500, 1000, 'off');
 
     this.cart_sum += articlePrice;
-    cart_sum.innerHTML = mathRoundToSecond(this.cart_sum)  + "$";
+    cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
     this.cart_items_quantity++;
     cart_quantity_text.innerHTML = this.cart_items_quantity;
 
     this.orderedItems.push(articleId);
-
   };
 
   Cart.prototype.sendItemsList = function () {
-    if(this.orderedItems.length !== 0) {
+    if (this.orderedItems.length !== 0) {
       emptyCartImg.style.opacity = 0; // fade the Empty cart image
       try {
         // VARIABLES
         var xhttp;
         xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
+        xhttp.onreadystatechange = function () {
           var DONE = 4; // readyState 4 means the request is done.
           var OK = 200; // status 200 is a successful return.
           if (this.readyState === DONE && this.status === OK) {
             cartContent.innerHTML = this.responseText;
           }
         };
-        xhttp.open("POST", "/dynamic/generate_cart",  true);
+        xhttp.open("POST", "/dynamic/generate_cart", true);
         var orderedItemsJSON = JSON.stringify(this.orderedItems);
         xhttp.send(orderedItemsJSON);
         cartTotal();
       }
-      catch(e) {
+      catch (e) {
         console.log('Caught Exception: ' + e.message);
       }
     }
   };
 
-  Cart.prototype.removeFromCart = function(id, price) {
+  Cart.prototype.removeFromCart = function (id, price) {
     remove(this.orderedItems, id); // remove from the list of ordered items
 
     this.cart_items_quantity--;
     this.cart_sum -= price;
-
     cart_quantity_text.innerHTML = this.cart_items_quantity;
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
     totalToPayText.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
@@ -334,26 +371,25 @@ var Cart = function() {
     this.removeFromDOM(id);
 
     // If the latest removed item happens to be the last one, show that the cart is empty
-    if(this.orderedItems.length === 0) {
+    if (this.orderedItems.length === 0) {
       emptyCartImg.style.opacity = '1'; // has css transition
     }
   };
 
-  Cart.prototype.removeFromDOM = function(id) {
+  Cart.prototype.removeFromDOM = function (id) {
     this.articleContainer = document.getElementById('article' + id);
     this.articleContainerBtn = document.getElementById('articleBtn' + id);
     this.articleContainer.removeChild(this.articleContainerBtn);
     this.articleContainer.style.opacity = '0';
-    setTimeout(function(){
-      try {
-        cart.cartContent.removeChild(cart.articleContainer);
-      }
-      catch(e) {
+      setTimeout(function () {
+        try {
+          cartContent.removeChild(cart.articleContainer);
+        }
+        catch (e) {
 
-      }
-    },
-    1000);
-  };
+        }
+      }, 1000);
+    };
 
   $("body").on("click", ".basketContainer", function () {
     cart.sendItemsList(cart.orderedItems);
@@ -368,9 +404,6 @@ var Cart = function() {
 };
 cart = new Cart();
 
-/* Cart class END
-   ========================================================================== */
-
 $(document).ready(function() {
   "use strict";
   window.addEventListener('scroll',function() {
@@ -382,3 +415,21 @@ $(document).ready(function() {
     }
   });
 });
+
+/* Additions
+
+// require(['Cart']  ,function(c){
+//   "use strict";
+//   c
+// });
+
+//var CartModule = (function() {
+
+//  return {
+//    cart : Cart
+//  };
+//}());
+
+//cart = new CartModule.cart();
+
+*/
