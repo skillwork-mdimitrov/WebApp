@@ -321,10 +321,10 @@ var Cart = function () {
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
 
-    effects.blurElement('basketContainer', 'class', 0, 1000, 'on');
-    effects.blurElement('basketContainer', 'class', 1000, 1000, 'off');
-    effects.displayElement('dimmingBlock', 'class', 0, 1000, 'on');
-    effects.displayElement('dimmingBlock', 'class', 1500, 1000, 'off');
+    effects.blurElement('basketContainer', 'class', 0, 9000, 'on');
+    effects.blurElement('basketContainer', 'class', 1150, 9000, 'off');
+    effects.displayElement('dimmingBlock', 'class', 0, 500, 'on');
+    effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
 
     this.cart_sum += articlePrice;
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
