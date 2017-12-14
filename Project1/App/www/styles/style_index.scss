@@ -261,6 +261,7 @@ ul {
           position: absolute;
           width: 52px;
           cursor: pointer;
+          z-index: 20; // so you can skip waiting the dimming effect
 
           &:active {
             width: 50px;

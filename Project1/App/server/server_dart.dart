@@ -93,7 +93,7 @@ main() async {
         toWrite +=
         '''
         <div id="article${cartItemsList[i][0]['id']}" class="articleContainer">
-        <div id="articleBtn${cartItemsList[i][0]['id']}"  class="remodal-close remodal-close-right" onclick="cart.removeFromCart(${cartItemsList[i][0]['id']}, ${cartItemsList[i][0]['price']})"></div>
+        <div id="articleBtn${cartItemsList[i][0]['id']}" class="remodal-close remodal-close-right" onclick="cart.removeFromCart(${cartItemsList[i][0]['id']}, ${cartItemsList[i][0]['price']})"></div>
         <div class="articleImageContainer">
           <div class="articleImageScaled">
             <img src="$clothesPath/${cartItemsList[i][0]['filename']}" alt="${cartItemsList[i][0]['name']}" class="articleImage">

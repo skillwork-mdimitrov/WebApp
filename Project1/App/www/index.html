@@ -18,7 +18,7 @@
 <!-- Container to sit ontop of everything else as a forbidden area -->
 <div class="dimmingBlock"></div>
 <!-- Parent flex container -->
-<div class="mainContainer remodal-bg">
+<div class="mainContainer remodal-bg data-remodal-options='closeOnConfirm: false'">
   <div class="headContainer" id="headContainer">
     <div class="logoContainer">
       <a class="logoSection" href="/"><img src="images/logo.png" alt="logo" class="logoPic"></a>
@@ -101,6 +101,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="scripts/script_main.js"></script>
 <!-- Remodal scripts -->
+<script>
+  window.REMODAL_GLOBALS = {
+    DEFAULTS: {
+      closeOnConfirm: false
+    }
+  };
+</script>
 <script src="remodal/dist/remodal.min.js"></script>
 
 </body>

@@ -170,7 +170,8 @@ ul {
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer #addToBasket {
           position: absolute;
           width: 52px;
-          cursor: pointer; }
+          cursor: pointer;
+          z-index: 20; }
           .mainContainer .newSectionContainer #newestClothes .newClothesContainer #addToBasket:active {
             width: 50px; }
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer .newClothesImage {

@@ -5,17 +5,21 @@
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. Change the default db user
 // 2. Fallback for filter
+// 2. On ready when manipulating the DOM
+// 2. Remove all inline functions
 // 3. Move different modules to different classes, maybe use require.js
+// 3. On hover of the slideshow don't go next
 
 /* GLOBAL VARIABLES
    ========================================================================== */
 // manipulated with jQuery
 var headContainer = $('#headContainer');
-var goToCartButton = $('.basketContainer'); // mby not needed
+var basketContainer = $('.basketContainer');
 var dimmingBlock = $('.dimmingBlock');
 var remodalContainer = $('.remodal');
 var cartArticlesContainer = $('.cartArticlesContainer');
 var cartWrapper = $('.cartWrapper');
+var confirmCartBtn = $('.remodal-confirm');
 
 // manipulated with vanilla JavaScript
 var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
@@ -101,17 +105,17 @@ var Effects = function() {
     // Blur effect, filter is not that well supported
     setTimeout(function() {
         elem.css({
-        'transition-property': 'all',
-        'transition-duration': forTime + 'ms',
-        'transition-timing-function': 'ease',
-        'filter': 'blur(1px)'
+          'transition-property': 'filter',
+          'transition-duration': forTime + 'ms',
+          'transition-timing-function': 'ease',
+          'filter': 'blur(1px)'
         });
       }, afterTime);
     }
     else if(state === 'off') {
       setTimeout(function() {
         elem.css({
-          'transition-property': 'all',
+          'transition-property': 'filter',
           'transition-duration': forTime + 'ms',
           'transition-timing-function': 'ease-out',
           'filter': 'none'
@@ -125,8 +129,6 @@ var Effects = function() {
     var elem = "";
     var afterTime = 0; // immediately dim, default
     var forTime = 1000; // dim it for a second, default
-
-    console.log("Went in here");
 
     /* Element SELECTOR
    ========================================================================== */
@@ -169,18 +171,18 @@ var Effects = function() {
     if(state === 'on') {
       setTimeout(function() {
         elem.css({
-          'visibility': 'visible',
-          'opacity': 0.85,
           'transition-property': 'opacity',
           'transition-duration': forTime + 'ms',
-          'transition-timing-function': 'ease-in'
+          'transition-timing-function': 'ease-in',
+          'visibility': 'visible',
+          'opacity': 0.85
         });
       }, afterTime);
     }
     else if(state === 'off') {
       setTimeout(function() {
         elem.css({
-          'transition-property': 'all',
+          'transition-property': 'opacity, visibility',
           'transition-duration': forTime + 'ms',
           'transition-timing-function': 'ease-out',
           'opacity': 0,
@@ -308,6 +310,13 @@ function getNewestClothes() {
   }
 }
 
+/* Register window
+   ========================================================================== */
+var registerUser = function() {
+  "use strict";
+
+};
+
 /* Cart class
    ========================================================================== */
 var Cart = function () {
@@ -321,8 +330,8 @@ var Cart = function () {
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
 
-    effects.blurElement('basketContainer', 'class', 0, 9000, 'on');
-    effects.blurElement('basketContainer', 'class', 1150, 9000, 'off');
+    effects.blurElement('basketContainer', 'class', 0, 900, 'on');
+    effects.blurElement('basketContainer', 'class', 1150, 900, 'off');
     effects.displayElement('dimmingBlock', 'class', 0, 500, 'on');
     effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
 
@@ -383,7 +392,7 @@ var Cart = function () {
     this.articleContainer.style.opacity = '0';
       setTimeout(function () {
         try {
-          cartContent.removeChild(cart.articleContainer);
+          cartContent.removeChild(cart.articleContainer); // think about cart and not this :P
         }
         catch (e) {
 
@@ -391,7 +400,7 @@ var Cart = function () {
       }, 1000);
     };
 
-  $("body").on("click", ".basketContainer", function () {
+  basketContainer.on("click", function () {
     cart.sendItemsList(cart.orderedItems);
 
     // Determine and set the max-height so the container doesn't spill out of proportions
@@ -404,8 +413,13 @@ var Cart = function () {
 };
 cart = new Cart();
 
+/* Event listeners
+   ========================================================================== */
 $(document).ready(function() {
   "use strict";
+
+  /* Window event listeners
+   ========================================================================== */
   window.addEventListener('scroll',function() {
     if(window.scrollY > 0) {
       headContainer.addClass("scrolled");
@@ -414,6 +428,13 @@ $(document).ready(function() {
       headContainer.removeClass("scrolled");
     }
   });
+  /* Cart remodal listeners
+   ========================================================================== */
+  confirmCartBtn.on('click', function() {
+    console.log("Confirm button was clicked");
+
+  });
+
 });
 
 /* Additions
