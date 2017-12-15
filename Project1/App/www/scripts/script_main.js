@@ -1,5 +1,5 @@
 /*jslint devel: true*/
-/*globals $:false */
+/*globals $:false*/
 
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
@@ -55,6 +55,19 @@ function mathRoundToSecond(num) {
   result = Math.round(num * 100) / 100;
   return result;
 }
+
+/* ON ready
+   ========================================================================== */
+window.onload = function() {
+  "use strict";
+  getNewestClothes();
+  adjustHeight(100);
+};
+
+window.onresize = function() {
+  "use strict";
+  adjustHeight();
+};
 
 /* Effects CLASS
    ========================================================================== */
