@@ -31,10 +31,23 @@ var totalToPayText = document.getElementById("totalToPayText");
 var emptyCartImg = document.getElementById('emptyCartImg');
 
 // used anywhere
-var viewPortHeight = window.innerHeight;
+var viewPortHeight = window.innerHeight; // to be later re-calculated
 var cart; // to be later instantiated as Cart object
 var slideshow; // to be later instantiated as Slideshow object
 var effects; // to be later instantiated as Effects object
+
+/* ON events
+   ========================================================================== */
+window.onload = function() {
+  "use strict";
+  getNewestClothes();
+  adjustHeight();
+};
+
+window.onresize = function() {
+  "use strict";
+  adjustHeight();
+};
 
 /* GLOBAL FUNCTIONS
    ========================================================================== */
@@ -56,18 +69,118 @@ function mathRoundToSecond(num) {
   return result;
 }
 
-/* ON ready
-   ========================================================================== */
-window.onload = function() {
+function adjustHeight(mediaQuery) {
   "use strict";
-  getNewestClothes();
-  adjustHeight(100);
+  // VARIABLES
+  var defaultSize = 0.8;
+  viewPortHeight = window.innerHeight;
+
+  if(typeof mediaQuery === 'undefined' && mediaQuery !== null) { // check if 'undefined' is same as undefined
+    defaultSize = mediaQuery;
+  }
+
+  /* Remodal container
+   ========================================================================== */
+  // Determine and set the height so the container doesn't spill out of proportions
+  var remodalContent = viewPortHeight * 0.8; // 80% of the view-port
+  var remodalContentPx = remodalContent + 'px';
+
+  var wrapperContent = remodalContent * 0.95; // 5% less than the remodal container
+  var wrapperContentPx = wrapperContent + 'px';
+
+  var articleContent = wrapperContent * 0.77; // 20% less than the remodal container
+  var articleContentPx = articleContent + 'px';
+
+  remodalContainer.css('height', remodalContentPx);
+  cartArticlesContainer.css('height', articleContentPx);
+  cartArticlesContainer.css('overflow-y', 'auto'); // hides the scroll if it's unnecessary
+  cartWrapper.css('height', wrapperContentPx);
+  cartWrapper.css('overflow', 'hidden');
+
+  /* Dimming block
+   ========================================================================== */
+  if(dimmingBlock.height() !== viewPortHeight) {
+    dimmingBlock.css('height', viewPortHeight);
+  }
+}
+
+/* Anchor scroll
+   ========================================================================== */
+function scrollToAnchor(aid){
+  "use strict";
+  var aTag = $("a[name='"+ aid +"']");
+  $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+}
+
+$("#link").click(function() {
+  "use strict";
+  scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
+});
+
+/* Get newest clothes
+   ========================================================================== */
+function getNewestClothes() {
+  "use strict";
+  try {
+    // VARIABLES
+    var xhttp;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      var DONE = 4; // readyState 4 means the request is done.
+      var OK = 200; // status 200 is a successful return.
+      if (this.readyState === DONE && this.status === OK) {
+        // document.getElementById("textToBeChanged").innerHTML = this.responseText // check this
+        newestClothes.innerHTML = this.responseText;
+      }
+    };
+    xhttp.open("POST", "/dynamic/newest_clothes",  true);
+    xhttp.send();
+  }
+  catch(e) {
+    console.log('Caught Exception: ' + e.message);
+  }
+}
+
+function repaintForRegister() {
+  "use strict";
+  // Make the cart clean
+  (function cleanCart() {
+    for(var i=0; i<cart.orderedItems.length; i++) {
+      cart.removeFromDOM(cart.orderedItems[i]);
+    }
+  }());
+}
+
+/* Register window
+   ========================================================================== */
+var registerUser = function() {
+  "use strict";
+
 };
 
-window.onresize = function() {
+/* Event listeners
+   ========================================================================== */
+$(document).ready(function() {
   "use strict";
-  adjustHeight();
-};
+
+  /* Window event listeners
+   ========================================================================== */
+  window.addEventListener('scroll',function() {
+    if(window.scrollY > 0) {
+      headContainer.addClass("scrolled");
+    }
+    if(window.scrollY === 0) {
+      headContainer.removeClass("scrolled");
+    }
+  });
+  /* Cart remodal listeners
+   ========================================================================== */
+  confirmCartBtn.on('click', function() {
+    console.log("Confirm button was clicked");
+    repaintForRegister();
+  });
+
+});
 
 /* Effects CLASS
    ========================================================================== */
@@ -207,40 +320,6 @@ var Effects = function() {
 };
 effects = new Effects();
 
-function adjustHeight(mediaQuery) {
-  "use strict";
-  // VARIABLES
-  var defaultSize = 0.8;
-
-  if(typeof mediaQuery === 'undefined' && mediaQuery !== null) { // check if 'undefined' is same as undefined
-    defaultSize = mediaQuery;
-  }
-
-  /* Remodal container
-   ========================================================================== */
-  // Determine and set the height so the container doesn't spill out of proportions
-  var remodalContent = viewPortHeight * 0.8; // 80% of the view-port
-  var remodalContentPx = remodalContent + 'px';
-
-  var wrapperContent = remodalContent * 0.95; // 5% less than the remodal container
-  var wrapperContentPx = wrapperContent + 'px';
-
-  var articleContent = wrapperContent * 0.77; // 20% less than the remodal container
-  var articleContentPx = articleContent + 'px';
-
-  remodalContainer.css('height', remodalContentPx);
-  cartArticlesContainer.css('height', articleContentPx);
-  cartArticlesContainer.css('overflow-y', 'auto'); // hides the scroll if it's unnecessary
-  cartWrapper.css('height', wrapperContentPx);
-  cartWrapper.css('overflow', 'hidden');
-
-  /* Dimming block
-   ========================================================================== */
-  if(dimmingBlock.height() !== viewPortHeight) {
-    dimmingBlock.css('height', viewPortHeight);
-  }
-}
-
 /* Slideshow CLASS
    ========================================================================== */
 var SlideShow = function() {
@@ -286,50 +365,6 @@ var SlideShow = function() {
 };
 slideshow = new SlideShow();
 slideshow.showDivs(slideshow.slideIndex);
-
-/* Anchor scroll
-   ========================================================================== */
-function scrollToAnchor(aid){
-  "use strict";
-  var aTag = $("a[name='"+ aid +"']");
-  $('html,body').animate({scrollTop: aTag.offset().top},'slow');
-}
-
-$("#link").click(function() {
-  "use strict";
-  scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
-});
-
-/* Get newest clothes
-   ========================================================================== */
-function getNewestClothes() {
-  "use strict";
-  try {
-    // VARIABLES
-    var xhttp;
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      var DONE = 4; // readyState 4 means the request is done.
-      var OK = 200; // status 200 is a successful return.
-      if (this.readyState === DONE && this.status === OK) {
-        // document.getElementById("textToBeChanged").innerHTML = this.responseText // check this
-        newestClothes.innerHTML = this.responseText;
-      }
-    };
-    xhttp.open("POST", "/dynamic/newest_clothes",  true);
-    xhttp.send();
-  }
-  catch(e) {
-    console.log('Caught Exception: ' + e.message);
-  }
-}
-
-/* Register window
-   ========================================================================== */
-var registerUser = function() {
-  "use strict";
-
-};
 
 /* Cart class
    ========================================================================== */
@@ -426,30 +461,6 @@ var Cart = function () {
   }
 };
 cart = new Cart();
-
-/* Event listeners
-   ========================================================================== */
-$(document).ready(function() {
-  "use strict";
-
-  /* Window event listeners
-   ========================================================================== */
-  window.addEventListener('scroll',function() {
-    if(window.scrollY > 0) {
-      headContainer.addClass("scrolled");
-    }
-    if(window.scrollY === 0) {
-      headContainer.removeClass("scrolled");
-    }
-  });
-  /* Cart remodal listeners
-   ========================================================================== */
-  confirmCartBtn.on('click', function() {
-    console.log("Confirm button was clicked");
-
-  });
-
-});
 
 /* Additions
 

@@ -251,6 +251,7 @@ ul {
       max-height: 2200px; // if 8 items, one each row
 
       .newClothesContainer {
+        position: relative;
         width: 250px;
         border: 1px solid white;
         margin-bottom: 20px;
@@ -259,6 +260,7 @@ ul {
 
         #addToBasket {
           position: absolute;
+          right: 0;
           width: 52px;
           cursor: pointer;
           z-index: 20; // so you can skip waiting the dimming effect

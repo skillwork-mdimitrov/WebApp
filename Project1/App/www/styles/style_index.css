@@ -162,6 +162,7 @@ ul {
       max-width: 90%;
       max-height: 2200px; }
       .mainContainer .newSectionContainer #newestClothes .newClothesContainer {
+        position: relative;
         width: 250px;
         border: 1px solid white;
         margin-bottom: 20px;
@@ -169,6 +170,7 @@ ul {
         margin-left: 3px; }
         .mainContainer .newSectionContainer #newestClothes .newClothesContainer #addToBasket {
           position: absolute;
+          right: 0;
           width: 52px;
           cursor: pointer;
           z-index: 20; }
