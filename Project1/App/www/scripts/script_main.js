@@ -232,7 +232,8 @@ function adjustHeight(mediaQuery) {
    ========================================================================== */
 var SlideShow = function() {
   "use strict";
-  this.slideIndex = 1;
+  this.slideShowImgs = document.getElementsByClassName("mySlides_js"); // used when randomizing the first slide
+  this.slideIndex = Math.floor(Math.random() * this.slideShowImgs.length) + 1;
   this.timeNextSlide = 90000; // reduce later
   this.automaticSlideshow = setInterval(
       function (){
