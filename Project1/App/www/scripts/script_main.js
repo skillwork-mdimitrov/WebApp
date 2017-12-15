@@ -234,7 +234,7 @@ var SlideShow = function() {
   "use strict";
   this.slideShowImgs = document.getElementsByClassName("mySlides_js"); // used when randomizing the first slide
   this.slideIndex = Math.floor(Math.random() * this.slideShowImgs.length) + 1;
-  this.timeNextSlide = 90000; // reduce later
+  this.timeNextSlide = 90000; // to reduce later
   this.automaticSlideshow = setInterval(
       function (){
         slideshow.plusDivs(+1);
