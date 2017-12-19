@@ -19,6 +19,8 @@ https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction an
 // 3. Make the arrow different colour [difficult]
 // 3. Make the add_to_cart icon background darker red
 // 3. Make the slide-show + header containers = view-port - 5px, maybe not the best idea
+// 3. Effect vyrhi cqlata snimka na qketo
+// 3. Footer
 
 // Variables
 $headContainerHeight: 85px;
@@ -130,23 +132,43 @@ ul {
       }
     }
 
-    .basketContainer {
+    .userRelatedContainer {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 150px;
-      opacity: 1;
+      width: 300px;
 
-      // & acts like .basketPic
-      &:hover {
-        cursor: pointer;
+      .userContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 150px;
+
+        .userBtns {
+          height: 55%;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
       }
 
-      .basketSection {
-        max-width: 20%;
+      .basketContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        opacity: 1;
 
-        .basketPic {
-          width: 100%; // possibly fix
+        // & acts like .basketPic
+        &:hover {
+          cursor: pointer;
+        }
+
+        .basketSection {
+          max-width: 20%;
+
+          .basketPic {
+            width: 100%; // possibly fix
+          }
         }
       }
     }
@@ -208,12 +230,12 @@ ul {
         align-items: center;
         flex: 0.247;
         height: 50px;
-        border: 1.5px solid darkred;
+        border: 1.1px solid darkred;
         transition: background-color 1s;
 
         &:hover {
           background-color: darkred;
-          border: 2px solid black;
+          border: 1.5px solid black;
           cursor: pointer;
         }
       }

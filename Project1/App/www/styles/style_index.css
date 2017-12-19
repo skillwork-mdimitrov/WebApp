@@ -81,18 +81,30 @@ ul {
           transition: width 500ms ease-out; }
         .mainContainer .headContainer .logoContainer .logoSection:hover {
           cursor: pointer; }
-    .mainContainer .headContainer .basketContainer {
+    .mainContainer .headContainer .userRelatedContainer {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 150px;
-      opacity: 1; }
-      .mainContainer .headContainer .basketContainer:hover {
-        cursor: pointer; }
-      .mainContainer .headContainer .basketContainer .basketSection {
-        max-width: 20%; }
-        .mainContainer .headContainer .basketContainer .basketSection .basketPic {
-          width: 100%; }
+      width: 300px; }
+      .mainContainer .headContainer .userRelatedContainer .userContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 150px; }
+        .mainContainer .headContainer .userRelatedContainer .userContainer .userBtns {
+          height: 55%; }
+          .mainContainer .headContainer .userRelatedContainer .userContainer .userBtns:hover {
+            cursor: pointer; }
+      .mainContainer .headContainer .userRelatedContainer .basketContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        opacity: 1; }
+        .mainContainer .headContainer .userRelatedContainer .basketContainer:hover {
+          cursor: pointer; }
+        .mainContainer .headContainer .userRelatedContainer .basketContainer .basketSection {
+          max-width: 20%; }
+          .mainContainer .headContainer .userRelatedContainer .basketContainer .basketSection .basketPic {
+            width: 100%; }
   .mainContainer .slideShowContainer {
     display: flex;
     background-color: black;
@@ -134,11 +146,11 @@ ul {
         align-items: center;
         flex: 0.247;
         height: 50px;
-        border: 1.5px solid darkred;
+        border: 1.1px solid darkred;
         transition: background-color 1s; }
         .mainContainer .menuContainer .menu .menuItem:hover {
           background-color: darkred;
-          border: 2px solid black;
+          border: 1.5px solid black;
           cursor: pointer; }
   .mainContainer .newSectionContainer {
     display: flex;

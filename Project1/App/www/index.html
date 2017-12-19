@@ -24,14 +24,22 @@
       <a class="logoSection" href="/"><img src="images/logo.png" alt="logo" class="logoPic"></a>
     </div>
     <a id="link" href="#" class="arrow alignSelf"></a>
-    <a data-remodal-target="modal" style="display: flex;">
-    <div class="basketContainer">
-      <p id="cart_quantity_text">0</p>
-      <div class="basketSection">
-        <!-- REMODAL -->
-       <img src="images/basket.png" alt="basket" class="basketPic">
+
+    <a data-remodal-target="modal" style="display: flex;"> <!-- Remove from inline -->
+    <div class="userRelatedContainer">
+      <div class="userContainer">
+        <img src="images/register.png" alt="register" class="userBtns" id="registerUserBtn">
+        <img src="images/login2.ico" alt="login" class="userBtns" id="loginUserBtn">
       </div>
-      <p id="cart_sum">0.00</p>
+
+      <div class="basketContainer">
+        <p id="cart_quantity_text">0</p>
+        <div class="basketSection">
+          <!-- REMODAL -->
+         <img src="images/basket.png" alt="basket" class="basketPic">
+        </div>
+        <p id="cart_sum">0.00</p>
+      </div>
     </div>
     </a>
   </div> <!-- Close head container -->
@@ -41,7 +49,7 @@
     <button data-remodal-action="close" class="remodal-close"></button>
 
     <div class="cartWrapper">
-      <h1>Cart</h1>
+      <h1 id="modalHeader">Cart</h1> <!-- Default value -->
       <div class="cartArticlesContainer">
         <img src="images/emptyCart.png" alt="Empty cart" id="emptyCartImg">
         <span id="cartContent"></span>

@@ -20,6 +20,8 @@ var remodalContainer = $('.remodal');
 var cartArticlesContainer = $('.cartArticlesContainer');
 var cartWrapper = $('.cartWrapper');
 var confirmCartBtn = $('.remodal-confirm');
+var registerUserBtn = $('#registerUserBtn');
+var loginUserBtn = $('#loginUserBtn');
 
 // manipulated with vanilla JavaScript
 var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
@@ -29,6 +31,7 @@ var cart_quantity_text = document.getElementById("cart_quantity_text");
 var cartContent = document.getElementById("cartContent");
 var totalToPayText = document.getElementById("totalToPayText");
 var emptyCartImg = document.getElementById('emptyCartImg');
+var modalHeader = document.getElementById('modalHeader');
 
 // used anywhere
 var viewPortHeight = window.innerHeight; // to be later re-calculated
@@ -141,14 +144,39 @@ function getNewestClothes() {
   }
 }
 
-function repaintForRegister() {
+// Unite the login and register events in here
+function repaintForEvent(event) {
   "use strict";
+  if(event === 'register') {
+    // Remodal window is now about Registration
+    modalHeader.innerHTML = 'Register';
+
+    cleanCart();
+  }
+
+  else if(event === 'login') {
+    // Remodal window is now about Registration
+    modalHeader.innerHTML = 'Login';
+
+    cleanCart();
+  }
+
   // Make the cart clean
-  (function cleanCart() {
-    for(var i=0; i<cart.orderedItems.length; i++) {
-      cart.removeFromDOM(cart.orderedItems[i]);
+  function cleanCart() {
+    // NEED A CHECK. Remove all the cart items from the DOM
+    if(cartContent.children.length > 0) {
+      for (var i = 0; i < cart.orderedItems.length; i++) {
+        cart.removeFromDOM(cart.orderedItems[i], false);
+      }
     }
-  }());
+
+    // Hide the empty cart image
+    if(emptyCartImg.style.opacity === '1' || emptyCartImg.style.opacity === '') {
+      emptyCartImg.style.opacity = '0';
+    }
+
+    //
+  }
 }
 
 /* Register window
@@ -177,7 +205,17 @@ $(document).ready(function() {
    ========================================================================== */
   confirmCartBtn.on('click', function() {
     console.log("Confirm button was clicked");
-    repaintForRegister();
+    repaintForEvent('register');
+  });
+
+  /* User events listeners
+   ========================================================================== */
+  registerUserBtn.on('click', function() {
+    repaintForEvent('register');
+  });
+
+  loginUserBtn.on('click', function() {
+    repaintForEvent('login');
   });
 
 });
@@ -379,6 +417,7 @@ var Cart = function () {
   // counter articles quantity in the session
   Cart.prototype.addToCart = function (articleId, articlePrice) {
 
+    // Effects
     effects.blurElement('basketContainer', 'class', 0, 900, 'on');
     effects.blurElement('basketContainer', 'class', 1150, 900, 'off');
     effects.displayElement('dimmingBlock', 'class', 0, 500, 'on');
@@ -394,7 +433,7 @@ var Cart = function () {
 
   Cart.prototype.sendItemsList = function () {
     if (this.orderedItems.length !== 0) {
-      emptyCartImg.style.opacity = 0; // fade the Empty cart image
+      emptyCartImg.style.opacity = '0'; // fade out the Empty cart image
       try {
         // VARIABLES
         var xhttp;
@@ -426,7 +465,7 @@ var Cart = function () {
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
     totalToPayText.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
 
-    this.removeFromDOM(id);
+    this.removeFromDOM(id, true);
 
     // If the latest removed item happens to be the last one, show that the cart is empty
     if (this.orderedItems.length === 0) {
@@ -434,23 +473,41 @@ var Cart = function () {
     }
   };
 
-  Cart.prototype.removeFromDOM = function (id) {
-    this.articleContainer = document.getElementById('article' + id);
-    this.articleContainerBtn = document.getElementById('articleBtn' + id);
-    this.articleContainer.removeChild(this.articleContainerBtn);
-    this.articleContainer.style.opacity = '0';
+  Cart.prototype.removeFromDOM = function (id, removeWithTransition) {
+    try {
+      this.articleContainer = document.getElementById('article' + id);
+      this.articleContainerBtn = document.getElementById('articleBtn' + id);
+      this.articleContainer.removeChild(this.articleContainerBtn);
+      this.articleContainer.style.opacity = '0';
+    }
+    catch (e) {
+
+    }
+
+    if(removeWithTransition === true) {
       setTimeout(function () {
         try {
-          cartContent.removeChild(cart.articleContainer); // think about cart and not this :P
+          cartContent.removeChild(cart.articleContainer);
         }
         catch (e) {
 
         }
       }, 1000);
-    };
+    }
+    else {
+      cartContent.removeChild(cart.articleContainer);
+    }
+  };
 
   basketContainer.on("click", function () {
     cart.sendItemsList(cart.orderedItems);
+    modalHeader.innerHTML = 'Cart'; // Remodal is now about the cart
+    // if there are no items in the cart show the empty cart images
+    if(cart.orderedItems.length === 0) {
+      if(emptyCartImg.style.opacity === '0' || emptyCartImg.style.opacity === '') {
+        emptyCartImg.style.opacity = '1';
+      }
+    }
 
     // Determine and set the max-height so the container doesn't spill out of proportions
     adjustHeight();
