@@ -26,7 +26,10 @@ ul {
   transition: all 500ms ease-out; }
 
 .alignSelf {
-  margin-bottom: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  padding-bottom: 5px;
   align-self: flex-end; }
 
 .dimmingBlock {
@@ -206,5 +209,13 @@ ul {
           justify-content: center;
           height: 47px;
           width: 100%; }
+
+/* Media queries
+   ========================================================================== */
+@media screen and (max-width: 800px) {
+  .alignSelf {
+    position: unset;
+    left: unset;
+    transform: unset; } }
 
 /*# sourceMappingURL=style_index.css.map */

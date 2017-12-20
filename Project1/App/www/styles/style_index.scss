@@ -22,6 +22,8 @@ https://irongatecreative.com/custom-code-vs-plugins/ ; switch arrow direction an
 // 3. Effect vyrhi cqlata snimka na qketo
 // 3. Footer
 
+
+
 // Variables
 $headContainerHeight: 85px;
 $mainContainerWidth: 1250px;
@@ -56,8 +58,12 @@ ul {
   transition: all 500ms ease-out;
 }
 
+// Check again pls
 .alignSelf {
-  margin-bottom: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  padding-bottom: 5px;
   align-self: flex-end;
 }
 
@@ -317,5 +323,16 @@ ul {
         }
       }
     }
+  }
+}
+
+/* Media queries
+   ========================================================================== */
+
+@media screen and (max-width: 800px) {
+  .alignSelf {
+    position: unset;
+    left: unset;
+    transform: unset;
   }
 }
