@@ -18,7 +18,7 @@ var basketContainer = $('.basketContainer');
 var dimmingBlock = $('.dimmingBlock');
 var remodalContainer = $('.remodal');
 var cartArticlesContainer = $('.cartArticlesContainer');
-var cartWrapper = $('.cartWrapper');
+var remodalWrapper = $('.remodalWrapper');
 var confirmCartBtn = $('.remodal-confirm');
 var registerUserBtn = $('#registerUserBtn');
 var loginUserBtn = $('#loginUserBtn');
@@ -97,8 +97,8 @@ function adjustHeight(mediaQuery) {
   remodalContainer.css('height', remodalContentPx);
   cartArticlesContainer.css('height', articleContentPx);
   cartArticlesContainer.css('overflow-y', 'auto'); // hides the scroll if it's unnecessary
-  cartWrapper.css('height', wrapperContentPx);
-  cartWrapper.css('overflow', 'hidden');
+  remodalWrapper.css('height', wrapperContentPx);
+  remodalWrapper.css('overflow', 'hidden');
 
   /* Dimming block
    ========================================================================== */
@@ -152,6 +152,12 @@ function repaintForEvent(event) {
     modalHeader.innerHTML = 'Register';
 
     cleanCart();
+
+    /*
+      Create div
+      Style the div (doesn't apply until created)
+      Append the div in the modal container
+     */
   }
 
   else if(event === 'login') {
@@ -163,7 +169,6 @@ function repaintForEvent(event) {
 
   // Make the cart clean
   function cleanCart() {
-    // NEED A CHECK. Remove all the cart items from the DOM
     if(cartContent.children.length > 0) {
       for (var i = 0; i < cart.orderedItems.length; i++) {
         cart.removeFromDOM(cart.orderedItems[i], false);
@@ -174,8 +179,6 @@ function repaintForEvent(event) {
     if(emptyCartImg.style.opacity === '1' || emptyCartImg.style.opacity === '') {
       emptyCartImg.style.opacity = '0';
     }
-
-    //
   }
 }
 

@@ -35,8 +35,7 @@
       <div class="basketContainer">
         <p id="cart_quantity_text">0</p>
         <div class="basketSection">
-          <!-- REMODAL -->
-         <img src="images/basket.png" alt="basket" class="basketPic">
+         <img src="images/basket.png" alt="basket" class="basketPic"> <!-- Opens Remodal window -->
         </div>
         <p id="cart_sum">0.00</p>
       </div>
@@ -44,12 +43,18 @@
     </a>
   </div> <!-- Close head container -->
 
-  <!-- REMODAL start -->
+  <!-- Remodal start -->
   <div class="remodal" data-remodal-id="modal">
     <button data-remodal-action="close" class="remodal-close"></button>
 
-    <div class="cartWrapper">
+    <!-- Remodal innerWindow start, not only for the cart, but same modal for the register/login -->
+    <div class="remodalWrapper">
+
       <h1 id="modalHeader">Cart</h1> <!-- Default value -->
+
+      <!-- Cart content start -->
+
+      <!-- to rename to remodalContent -->
       <div class="cartArticlesContainer">
         <img src="images/emptyCart.png" alt="Empty cart" id="emptyCartImg">
         <span id="cartContent"></span>
@@ -58,14 +63,31 @@
       <div class="totalToPayContainer">
         <p id="totalToPayText">Total: 0.00$</p>
       </div>
+      <!-- Cart content end -->
+
+      <!-- Register start -->
+        <div class="registerUserContainer">
+          <label for="userEmail">Email: </label>
+          <input id="userEmail" type="email">
+
+          <label for="userName">Name: </label>
+          <input id="userName" type="text">
+
+          <label for="userPw">Password: </label>
+          <input id="userPw" type="password">
+        </div>
+      <!-- Register end -->
 
       <div class="btnContainer">
         <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
         <button data-remodal-action="confirm" class="remodal-confirm">Go</button>
       </div>
-    </div>
 
-  </div> <!-- Close Remodal container -->
+    </div>
+    <!-- Remodal innerWindow end -->
+
+  </div>
+  <!-- Remodal end -->
 
   <div class="slideShowContainer">
 
