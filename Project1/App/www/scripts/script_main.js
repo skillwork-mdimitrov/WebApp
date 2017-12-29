@@ -39,18 +39,50 @@ var cart; // to be later instantiated as Cart object
 var slideshow; // to be later instantiated as Slideshow object
 var effects; // to be later instantiated as Effects object
 
-/* ON events
+/* Event listeners
    ========================================================================== */
-window.onload = function() {
+
+window.addEventListener('load', function() {
   "use strict";
   getNewestClothes();
   adjustHeight();
-};
+});
 
-window.onresize = function() {
+$(document).ready(function() {
   "use strict";
-  adjustHeight();
-};
+
+  /* Window event listeners
+   ========================================================================== */
+  window.addEventListener('resize', function() {
+    adjustHeight();
+  });
+
+  window.addEventListener('scroll', function() {
+    if(window.scrollY > 0) {
+      headContainer.addClass("scrolled");
+    }
+    if(window.scrollY === 0) {
+      headContainer.removeClass("scrolled");
+    }
+  });
+
+  /* Cart remodal listeners
+   ========================================================================== */
+  confirmCartBtn.on('click', function() {
+    repaintForEvent('register');
+  });
+
+  /* User events listeners
+   ========================================================================== */
+  registerUserBtn.on('click', function() {
+    repaintForEvent('register');
+  });
+
+  loginUserBtn.on('click', function() {
+    repaintForEvent('login');
+  });
+
+});
 
 /* GLOBAL FUNCTIONS
    ========================================================================== */
@@ -188,40 +220,6 @@ var registerUser = function() {
   "use strict";
 
 };
-
-/* Event listeners
-   ========================================================================== */
-$(document).ready(function() {
-  "use strict";
-
-  /* Window event listeners
-   ========================================================================== */
-  window.addEventListener('scroll',function() {
-    if(window.scrollY > 0) {
-      headContainer.addClass("scrolled");
-    }
-    if(window.scrollY === 0) {
-      headContainer.removeClass("scrolled");
-    }
-  });
-  /* Cart remodal listeners
-   ========================================================================== */
-  confirmCartBtn.on('click', function() {
-    console.log("Confirm button was clicked");
-    repaintForEvent('register');
-  });
-
-  /* User events listeners
-   ========================================================================== */
-  registerUserBtn.on('click', function() {
-    repaintForEvent('register');
-  });
-
-  loginUserBtn.on('click', function() {
-    repaintForEvent('login');
-  });
-
-});
 
 /* Effects CLASS
    ========================================================================== */
