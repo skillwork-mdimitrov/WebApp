@@ -384,7 +384,7 @@ var SlideShow = function() {
     var slideShowImgs = document.getElementsByClassName("mySlides_js");
 
     function showElement() {
-      slideShowImgs[slideshow.slideIndex -1].style.opacity = 1;
+      slideShowImgs[slideshow.slideIndex -1].style.opacity = '1';
       slideShowImgs[slideshow.slideIndex -1].style.display = 'visible';
     }
 
@@ -395,7 +395,7 @@ var SlideShow = function() {
       this.slideIndex = slideShowImgs.length;
     }
     for (i = 0; i < slideShowImgs.length; i++) {
-      slideShowImgs[i].style.opacity = 0;
+      slideShowImgs[i].style.opacity = '0';
       slideShowImgs[i].style.display = 'hidden';
     }
     setTimeout(showElement(), 3500);
