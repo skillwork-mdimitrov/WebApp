@@ -3,10 +3,8 @@
 
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
-// 2. Change the default db user
 // 2. Fallback for filter
-// 2. On ready when manipulating the DOM
-// 2. Remove all inline functions
+// 3. When calling global variables, include window
 // 3. Move different modules to different classes, maybe use require.js
 // 3. On hover of the slideshow don't go next
 
@@ -84,7 +82,7 @@ $(document).ready(function() {
 
 });
 
-/* GLOBAL FUNCTIONS
+/* HIGHLY RE-USABLE FUNCTIONS
    ========================================================================== */
 // Remove element from array by value
 function remove(array, element) {
@@ -104,13 +102,14 @@ function mathRoundToSecond(num) {
   return result;
 }
 
+/* Recalculate Remodal window height, case of mobile going sideways etc..*/
 function adjustHeight(mediaQuery) {
   "use strict";
   // VARIABLES
   var defaultSize = 0.8;
   viewPortHeight = window.innerHeight;
 
-  if(typeof mediaQuery === 'undefined' && mediaQuery !== null) { // check if 'undefined' is same as undefined
+  if(typeof mediaQuery === 'undefined' && mediaQuery !== null) {
     defaultSize = mediaQuery;
   }
 
@@ -164,7 +163,6 @@ function getNewestClothes() {
       var DONE = 4; // readyState 4 means the request is done.
       var OK = 200; // status 200 is a successful return.
       if (this.readyState === DONE && this.status === OK) {
-        // document.getElementById("textToBeChanged").innerHTML = this.responseText // check this
         newestClothes.innerHTML = this.responseText;
       }
     };
@@ -415,7 +413,7 @@ var Cart = function () {
   this.articleContainer = ""; // later defined
   this.articleContainerBtn = ""; // later defined
 
-  // counter articles quantity in the session
+  // counter articles quantity in the session ??
   Cart.prototype.addToCart = function (articleId, articlePrice) {
 
     // Effects
@@ -427,7 +425,7 @@ var Cart = function () {
     this.cart_sum += articlePrice;
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
     this.cart_items_quantity++;
-    cart_quantity_text.innerHTML = this.cart_items_quantity;
+    cart_quantity_text.innerHTML = "" + this.cart_items_quantity;
 
     this.orderedItems.push(articleId);
   };
@@ -462,7 +460,7 @@ var Cart = function () {
 
     this.cart_items_quantity--;
     this.cart_sum -= price;
-    cart_quantity_text.innerHTML = this.cart_items_quantity;
+    cart_quantity_text.innerHTML = "" + this.cart_items_quantity;
     cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
     totalToPayText.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
 
@@ -486,6 +484,7 @@ var Cart = function () {
     }
 
     if(removeWithTransition === true) {
+      console.log("hey");
       setTimeout(function () {
         try {
           cartContent.removeChild(cart.articleContainer);

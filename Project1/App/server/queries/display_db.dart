@@ -9,6 +9,7 @@ class DisplayDB {
   String column;
   String criteria;
 
+  /* Unused method */
   selectAllIds(String table, String column, [String criteria]) async {
     // VARIABLES
     var dbConnection = new ConnectionDB(); // instance of db connection

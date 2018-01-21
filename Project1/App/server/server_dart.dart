@@ -3,7 +3,7 @@
 /* Problems */
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. Make the quantity add up instead of displaying another entry of the same product + CSS
-
+// 2. Change the default db user
 
 import 'dart:io';
 import 'dart:convert';
@@ -26,6 +26,7 @@ main() async {
   print('Listening on ${server.address}, port ${server.port}');
 
   var router = new Router(server)
+    // Update clients has left from the prototyping process, old implementation and currently UNUSED
     ..serve(updateClient).listen((request) async {
     try {
       var httpRequest = await HttpBodyHandler.processRequest(request);

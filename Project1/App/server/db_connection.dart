@@ -2,6 +2,7 @@ import 'package:mapper/mapper.dart';
 // import 'package:postgres/postgres.dart';
 
 class ConnectionDB {
+//  Old connection way
 //  PostgreSQLConnection connection;
 //
 //  ConnectionDB() {
@@ -10,10 +11,11 @@ class ConnectionDB {
 //        5432,
 //        "webapp", // db name
 //        username: "postgres",
-//        password: "prototype115m" // should be avoided
+//        password: "prototype115m"
 //    );
 //  }
 
+  // Centryl's connection
   connect() async {
     var pool =
         new Pool('localhost', 5432, 'webapp', 'postgres', 'prototype115m');

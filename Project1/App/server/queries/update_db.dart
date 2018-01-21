@@ -1,4 +1,5 @@
 import '../db_connection.dart';
+/* This file has left from the process prototyping and it's currently unused */
 /* Unsuccessful operation Strings should end with ', E' */
 
 class UpdateDB {
