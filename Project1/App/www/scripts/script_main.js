@@ -20,6 +20,7 @@ var remodalWrapper = $('.remodalWrapper');
 var confirmCartBtn = $('.remodal-confirm');
 var registerUserBtn = $('#registerUserBtn');
 var loginUserBtn = $('#loginUserBtn');
+var registerContainer = $('.registerUserContainer');
 
 // manipulated with vanilla JavaScript
 var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
@@ -36,14 +37,18 @@ var viewPortHeight = window.innerHeight; // to be later re-calculated
 var cart; // to be later instantiated as Cart object
 var slideshow; // to be later instantiated as Slideshow object
 var effects; // to be later instantiated as Effects object
+var currentState = "default"; // default state
+var loggedIn = false; // false by default
 
 /* Event listeners
    ========================================================================== */
 
+// ON LOAD
 window.addEventListener('load', function() {
   "use strict";
   getNewestClothes();
   adjustHeight();
+  setState("default");
 });
 
 $(document).ready(function() {
@@ -67,13 +72,22 @@ $(document).ready(function() {
   /* Cart remodal listeners
    ========================================================================== */
   confirmCartBtn.on('click', function() {
-    repaintForEvent('register');
+    if(loggedIn === false) {
+      repaintForEvent("register");
+      setState("register");
+    }
+    else if(loggedIn === true) {
+
+    }
   });
 
   /* User events listeners
    ========================================================================== */
   registerUserBtn.on('click', function() {
-    repaintForEvent('register');
+    if(loggedIn === false) {
+      repaintForEvent('register');
+      setState("register");
+    }
   });
 
   loginUserBtn.on('click', function() {
@@ -100,6 +114,36 @@ function mathRoundToSecond(num) {
   var result;
   result = Math.round(num * 100) / 100;
   return result;
+}
+
+/*
+* Set the current state
+* Note: setState("default") is being used in dist/remodal.min.js on remodal close
+* */
+function setState(state) {
+  "use strict";
+  switch(state) {
+    case "default":
+      currentState = "default";
+      defaultState();
+    break;
+    case "register":
+      currentState = "register";
+      registerState();
+    break;
+  }
+}
+
+// NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
+function defaultState() {
+  "use strict";
+  registerContainer.css('visibility', 'hidden');
+}
+
+//
+function registerState() {
+  "use strict";
+  registerContainer.css('visibility', 'visible');
 }
 
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
@@ -484,7 +528,6 @@ var Cart = function () {
     }
 
     if(removeWithTransition === true) {
-      console.log("hey");
       setTimeout(function () {
         try {
           cartContent.removeChild(cart.articleContainer);
