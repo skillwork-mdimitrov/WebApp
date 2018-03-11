@@ -73,8 +73,14 @@ $(document).ready(function() {
    ========================================================================== */
   confirmCartBtn.on('click', function() {
     if(loggedIn === false) {
-      repaintForEvent("register");
-      setState("register");
+      // Allow the user to register if he has at least 1 item in the cart
+      if(cart.orderedItems.length === 0) {
+        totalToPayText.textContent = "Can't go with an empty cart :(";
+      }
+      else {
+        repaintForEvent("register");
+        setState("register");
+      }
     }
     else if(loggedIn === true) {
 
@@ -137,13 +143,13 @@ function setState(state) {
 // NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
 function defaultState() {
   "use strict";
-  registerContainer.css('visibility', 'hidden');
+  registerContainer.css('display', 'none'); // check
 }
 
 //
 function registerState() {
   "use strict";
-  registerContainer.css('visibility', 'visible');
+  registerContainer.css('display', 'flex'); // check
 }
 
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
@@ -242,7 +248,14 @@ function repaintForEvent(event) {
   }
 
   // Make the cart clean
-  function cleanCart() {
+  function cleanCart(fadeEmptyCart) {
+    // By default, don't fade the empty cart image
+    var fadeEmptyCartField = false;
+    // If argument is passed, overwrite the default
+    if(typeof fadeEmptyCart !== 'undefined' && fadeEmptyCart === null) {
+      fadeEmptyCartField = fadeEmptyCart;
+    }
+
     if(cartContent.children.length > 0) {
       for (var i = 0; i < cart.orderedItems.length; i++) {
         cart.removeFromDOM(cart.orderedItems[i], false);
@@ -251,7 +264,13 @@ function repaintForEvent(event) {
 
     // Hide the empty cart image
     if(emptyCartImg.style.opacity === '1' || emptyCartImg.style.opacity === '') {
-      emptyCartImg.style.opacity = '0';
+      if(fadeEmptyCartField === false) {
+        emptyCartImg.style.transition = "unset";
+        emptyCartImg.style.opacity = '0';
+      }
+      else {
+        emptyCartImg.style.opacity = '0';
+      }
     }
   }
 }
