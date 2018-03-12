@@ -3,6 +3,7 @@
 
 // Problems
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
+// 2. https://stackoverflow.com/questions/6904166/should-i-use-window-variable-or-var
 // 2. Fallback for filter
 // 3. When calling global variables, include window
 // 3. Move different modules to different classes, maybe use require.js
@@ -21,16 +22,15 @@ var confirmCartBtn = $('.remodal-confirm');
 var registerUserBtn = $('#registerUserBtn');
 var loginUserBtn = $('#loginUserBtn');
 var registerContainer = $('.registerUserContainer');
+var newestClothes = $('#newestClothes');
+var cart_sum = $('#cart_sum');
+var cart_quantity_text = $('#cart_quantity_text');
+var totalToPayText = $('#totalToPayText');
+var modalHeader = $('#modalHeader');
 
 // manipulated with vanilla JavaScript
-var newestClothesContainer = document.getElementsByClassName("newSectionFigure");
-var newestClothes = document.getElementById("newestClothes");
-var cart_sum = document.getElementById("cart_sum");
-var cart_quantity_text = document.getElementById("cart_quantity_text");
 var cartContent = document.getElementById("cartContent");
-var totalToPayText = document.getElementById("totalToPayText");
 var emptyCartImg = document.getElementById('emptyCartImg');
-var modalHeader = document.getElementById('modalHeader');
 
 // used anywhere
 var viewPortHeight = window.innerHeight; // to be later re-calculated
@@ -75,7 +75,8 @@ $(document).ready(function() {
     if(loggedIn === false) {
       // Allow the user to register if he has at least 1 item in the cart
       if(cart.orderedItems.length === 0) {
-        totalToPayText.textContent = "Can't go with an empty cart :(";
+        // was textContent
+        totalToPayText.text("Can't go with an empty cart :(");
       }
       else {
         repaintForEvent("register");
@@ -213,7 +214,7 @@ function getNewestClothes() {
       var DONE = 4; // readyState 4 means the request is done.
       var OK = 200; // status 200 is a successful return.
       if (this.readyState === DONE && this.status === OK) {
-        newestClothes.innerHTML = this.responseText;
+        newestClothes.html(this.responseText);
       }
     };
     xhttp.open("POST", "/dynamic/newest_clothes",  true);
@@ -229,7 +230,7 @@ function repaintForEvent(event) {
   "use strict";
   if(event === 'register') {
     // Remodal window is now about Registration
-    modalHeader.innerHTML = 'Register';
+    modalHeader.html('Register');
 
     cleanCart();
 
@@ -242,7 +243,7 @@ function repaintForEvent(event) {
 
   else if(event === 'login') {
     // Remodal window is now about Registration
-    modalHeader.innerHTML = 'Login';
+    modalHeader.html('Login');
 
     cleanCart();
   }
@@ -486,9 +487,9 @@ var Cart = function () {
     effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
 
     this.cart_sum += articlePrice;
-    cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
+    window.cart_sum.html(mathRoundToSecond(this.cart_sum) + "$");
     this.cart_items_quantity++;
-    cart_quantity_text.innerHTML = "" + this.cart_items_quantity;
+    window.cart_quantity_text.html("" + this.cart_items_quantity);
 
     this.orderedItems.push(articleId);
   };
@@ -523,9 +524,9 @@ var Cart = function () {
 
     this.cart_items_quantity--;
     this.cart_sum -= price;
-    cart_quantity_text.innerHTML = "" + this.cart_items_quantity;
-    cart_sum.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
-    totalToPayText.innerHTML = mathRoundToSecond(this.cart_sum) + "$";
+    window.cart_quantity_text.html("" + this.cart_items_quantity);
+    window.cart_sum.html(mathRoundToSecond(this.cart_sum) + "$");
+    totalToPayText.html(mathRoundToSecond(this.cart_sum) + "$");
 
     this.removeFromDOM(id, true);
 
@@ -563,7 +564,7 @@ var Cart = function () {
 
   basketContainer.on("click", function () {
     cart.sendItemsList(cart.orderedItems);
-    modalHeader.innerHTML = 'Cart'; // Remodal is now about the cart
+    modalHeader.html('Cart'); // Remodal is now about the cart
     // if there are no items in the cart show the empty cart images
     if(cart.orderedItems.length === 0) {
       if(emptyCartImg.style.opacity === '0' || emptyCartImg.style.opacity === '') {
@@ -576,7 +577,7 @@ var Cart = function () {
   });
 
   function cartTotal() {
-    totalToPayText.innerHTML = "Total: " + mathRoundToSecond(cart.cart_sum) + "$";
+    totalToPayText.html("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
   }
 };
 cart = new Cart();
