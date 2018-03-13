@@ -72,29 +72,24 @@ $(document).ready(function() {
   /* Cart remodal listeners
    ========================================================================== */
   confirmCartBtn.on('click', function() {
-    if(loggedIn === false) {
-      // Allow the user to register if he has at least 1 item in the cart
-      if(cart.orderedItems.length === 0) {
-        // was textContent
-        totalToPayText.text("Can't go with an empty cart :(");
-      }
-      else {
-        repaintForEvent("register");
-        setState("register");
-      }
+    if(currentState === "default") {
+      registrationForm(true);
     }
-    else if(loggedIn === true) {
+    else if(currentState === "register") {
+      console.log("Send registration info");
+      // register();
+    }
 
+    else if(currentState === "purchase") {
+      console.log("Functionality to come");
     }
+
   });
 
   /* User events listeners
    ========================================================================== */
   registerUserBtn.on('click', function() {
-    if(loggedIn === false) {
-      repaintForEvent('register');
-      setState("register");
-    }
+    registrationForm();
   });
 
   loginUserBtn.on('click', function() {
@@ -134,6 +129,9 @@ function setState(state) {
       currentState = "default";
       defaultState();
     break;
+    case "purchase":
+      currentState = "purchase";
+      break;
     case "register":
       currentState = "register";
       registerState();
@@ -153,16 +151,61 @@ function registerState() {
   registerContainer.css('display', 'flex'); // check
 }
 
+function registrationForm(comingFromCart) {
+  "use strict";
+  // By default, user is registering, before purchasing items
+  var cartRegistration = false;
+
+  // If the user isn't logged in [redundant?]
+  if(loggedIn === false) {
+
+    // Set to true, if the user is trying to register, coming from the "shopping state"?
+    if(typeof comingFromCart !== 'undefined' && comingFromCart !== null) {
+      cartRegistration = true;
+    }
+
+    // If it's cart registration, force the user to have at least 1 item in the cart
+    if(cartRegistration === true) {
+      // Allow the user to register if he has at least 1 item in the cart
+      if(cart.orderedItems.length === 0) {
+        // was textContent
+        totalToPayText.text("Can't go with an empty cart :(");
+      }
+      else {
+        repaintForEvent("register");
+        setState("register");
+      }
+    }
+
+    // If it's normal registration directly let the user register
+    else if(cartRegistration === false) {
+      repaintForEvent("register");
+      setState("register");
+    }
+  }
+
+  // Move out
+  else if(loggedIn === true) {
+    console.log("functionality to come");
+  }
+}
+
+function register() {
+  "use strict";
+  console.log("AJAX send register info from forms");
+}
+
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
-function adjustHeight(mediaQuery) {
+function adjustHeight() {
+  // media query parameter
   "use strict";
   // VARIABLES
-  var defaultSize = 0.8;
+  // var defaultSize = 0.8;
   viewPortHeight = window.innerHeight;
 
-  if(typeof mediaQuery === 'undefined' && mediaQuery !== null) {
-    defaultSize = mediaQuery;
-  }
+  // if(typeof mediaQuery === 'undefined' && mediaQuery !== null) {
+  //   defaultSize = mediaQuery;
+  // }
 
   /* Remodal container
    ========================================================================== */
@@ -231,20 +274,12 @@ function repaintForEvent(event) {
   if(event === 'register') {
     // Remodal window is now about Registration
     modalHeader.html('Register');
-
     cleanCart();
-
-    /*
-      Create div
-      Style the div (doesn't apply until created)
-      Append the div in the modal container
-     */
   }
 
   else if(event === 'login') {
     // Remodal window is now about Registration
     modalHeader.html('Login');
-
     cleanCart();
   }
 
@@ -275,13 +310,6 @@ function repaintForEvent(event) {
     }
   }
 }
-
-/* Register window
-   ========================================================================== */
-var registerUser = function() {
-  "use strict";
-
-};
 
 /* Effects CLASS
    ========================================================================== */
@@ -352,6 +380,7 @@ var Effects = function() {
   };
 
   Effects.prototype.displayElement = function(element, selector, afterMilliseconds, forMilliseconds, on_or_off) {
+    // var theSelector = "class" - do this
     var state = 'on'; // dim, by default
     var elem = "";
     var afterTime = 0; // immediately dim, default
