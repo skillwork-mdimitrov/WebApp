@@ -85,24 +85,33 @@ $(document).ready(function () {
 /* HIGHLY RE-USABLE FUNCTIONS
    ========================================================================== */
 // Remove element from array by value
-function remove(array, element) {
+var remove = function (array, element) {
     "use strict";
     var value = array.indexOf(element);
     if (value !== -1) {
         array.splice(value, 1);
     }
     return value;
-}
+};
 // Round a number to the second decimal
-function mathRoundToSecond(num) {
+var mathRoundToSecond = function (num) {
     "use strict";
     return Math.round(num * 100) / 100;
-}
+};
+// NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
+var defaultState = function () {
+    "use strict";
+    registerContainer.css('display', 'none'); // check
+};
+var registerState = function () {
+    "use strict";
+    registerContainer.css('display', 'flex'); // check
+};
 /*
 * Set the current state
 * Note: setState("default") is being used in dist/remodal.min.js on remodal close
 * */
-function setState(state) {
+var setState = function (state) {
     "use strict";
     switch (state) {
         case "default":
@@ -118,17 +127,8 @@ function setState(state) {
             break;
     }
     return currentState;
-}
-// NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
-function defaultState() {
-    "use strict";
-    registerContainer.css('display', 'none'); // check
-}
-function registerState() {
-    "use strict";
-    registerContainer.css('display', 'flex'); // check
-}
-function registrationForm(comingFromCart) {
+};
+var registrationForm = function (comingFromCart) {
     "use strict";
     if (comingFromCart === void 0) { comingFromCart = false; }
     // By default, user is registering, before purchasing items
@@ -154,13 +154,13 @@ function registrationForm(comingFromCart) {
     else if (loggedIn === true) {
         console.log("functionality to come");
     }
-}
-function register() {
+};
+var register = function () {
     "use strict";
     console.log("AJAX send register info from forms");
-}
+};
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
-function adjustHeight() {
+var adjustHeight = function () {
     // media query parameter
     "use strict";
     // VARIABLES
@@ -188,21 +188,21 @@ function adjustHeight() {
     if (dimmingBlock.height() !== viewPortHeight) {
         dimmingBlock.css('height', viewPortHeight);
     }
-}
+};
 /* Anchor scroll
    ========================================================================== */
-function scrollToAnchor(aid) {
+var scrollToAnchor = function (aid) {
     "use strict";
     var aTag = $("a[name='" + aid + "']");
     $('html,body').animate({ scrollTop: aTag.offset().top }, 'slow');
-}
+};
 $("#link").click(function () {
     "use strict";
     scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
 });
 /* Get newest clothes
    ========================================================================== */
-function getNewestClothes() {
+var getNewestClothes = function () {
     "use strict";
     try {
         // VARIABLES
@@ -221,22 +221,12 @@ function getNewestClothes() {
     catch (e) {
         console.log('Caught Exception: ' + e.message);
     }
-}
+};
 // Unite the login and register events in here
-function repaintForEvent(event) {
+var repaintForEvent = function (event) {
     "use strict";
-    if (event === 'register') {
-        // Remodal window is now about Registration
-        modalHeader.html('Register');
-        cleanCart(false);
-    }
-    else if (event === 'login') {
-        // Remodal window is now about Registration
-        modalHeader.html('Login');
-        cleanCart(false);
-    }
     // Make the cart clean
-    function cleanCart(fadeEmptyCart) {
+    var cleanCart = function (fadeEmptyCart) {
         if (fadeEmptyCart === void 0) { fadeEmptyCart = false; }
         if (cartContent.children.length > 0) {
             for (var i = 0; i < cart.orderedItems.length; i++) {
@@ -253,8 +243,18 @@ function repaintForEvent(event) {
                 emptyCartImg.css("opacity", "0");
             }
         }
+    };
+    if (event === 'register') {
+        // Remodal window is now about Registration
+        modalHeader.html('Register');
+        cleanCart(false);
     }
-}
+    else if (event === 'login') {
+        // Remodal window is now about Registration
+        modalHeader.html('Login');
+        cleanCart(false);
+    }
+};
 /* Effects CLASS
    ========================================================================== */
 var Effects = function () {
@@ -355,29 +355,30 @@ effects = new Effects();
    ========================================================================== */
 var SlideShow = function () {
     "use strict";
+    var _this = this;
     this.slideShowImgs = document.getElementsByClassName("mySlides_js"); // used when randomizing the first slide
     this.slideIndex = Math.floor(Math.random() * this.slideShowImgs.length) + 1;
-    this.timeNextSlide = 90000; // to reduce later
+    this.timeNextSlide = 1000; // to reduce later
     this.automaticSlideshow = setInterval(function () {
         slideshow.plusDivs(+1);
     }, this.timeNextSlide);
     SlideShow.prototype.plusDivs = function (n) {
-        this.showDivs(this.slideIndex += n);
-        clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
-        this.automaticSlideshow = setInterval(function () { slideshow.plusDivs(+1); }, this.timeNextSlide); // start a new timer, lazy way
+        _this.showDivs(_this.slideIndex += n);
+        clearInterval(_this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
+        _this.automaticSlideshow = setInterval(function () { slideshow.plusDivs(+1); }, _this.timeNextSlide); // start a new timer, lazy way
     };
     SlideShow.prototype.showDivs = function (n) {
         var i;
         var slideShowImgs = document.getElementsByClassName("mySlides_js");
-        function showElement() {
+        var showElement = function () {
             slideShowImgs[slideshow.slideIndex - 1].style.opacity = '1';
             slideShowImgs[slideshow.slideIndex - 1].style.display = 'visible';
-        }
+        };
         if (n > slideShowImgs.length) {
-            this.slideIndex = 1;
+            _this.slideIndex = 1;
         }
         if (n < 1) {
-            this.slideIndex = slideShowImgs.length;
+            _this.slideIndex = slideShowImgs.length;
         }
         for (i = 0; i < slideShowImgs.length; i++) {
             slideShowImgs[i].style.opacity = '0';
@@ -392,11 +393,15 @@ slideshow.showDivs(slideshow.slideIndex);
    ========================================================================== */
 var Cart = function () {
     "use strict";
+    var _this = this;
     this.cart_sum = 0; // The sum of the user's currently requested clothes
     this.cart_items_quantity = 0; // How much items are currently in the cart
     this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
     this.articleContainer = ""; // later defined
     this.articleContainerBtn = ""; // later defined
+    var cartTotal = function () {
+        totalToPayText.html("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
+    };
     // counter articles quantity in the session ??
     Cart.prototype.addToCart = function (articleId, articlePrice) {
         // Effects
@@ -404,14 +409,14 @@ var Cart = function () {
         effects.blurElement('basketContainer', 'class', 1150, 900, 'off');
         effects.displayElement('dimmingBlock', 'class', 0, 500, 'on');
         effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
-        this.cart_sum += articlePrice;
-        cart_sum.html(mathRoundToSecond(this.cart_sum) + "$");
-        this.cart_items_quantity++;
-        cart_quantity_text.html("" + this.cart_items_quantity);
-        this.orderedItems.push(articleId);
+        _this.cart_sum += articlePrice;
+        cart_sum.html(mathRoundToSecond(_this.cart_sum) + "$");
+        _this.cart_items_quantity++;
+        cart_quantity_text.html("" + _this.cart_items_quantity);
+        _this.orderedItems.push(articleId);
     };
     Cart.prototype.sendItemsList = function () {
-        if (this.orderedItems.length !== 0) {
+        if (_this.orderedItems.length !== 0) {
             emptyCartImg.css("opacity", "0"); // fade out the Empty cart image
             try {
                 // VARIABLES
@@ -425,7 +430,7 @@ var Cart = function () {
                     }
                 };
                 xhttp.open("POST", "/dynamic/generate_cart", true);
-                var orderedItemsJSON = JSON.stringify(this.orderedItems);
+                var orderedItemsJSON = JSON.stringify(_this.orderedItems);
                 xhttp.send(orderedItemsJSON);
                 cartTotal();
             }
@@ -434,25 +439,12 @@ var Cart = function () {
             }
         }
     };
-    Cart.prototype.removeFromCart = function (id, price) {
-        remove(this.orderedItems, id); // remove from the list of ordered items
-        this.cart_items_quantity--;
-        this.cart_sum -= price;
-        cart_quantity_text.html("" + this.cart_items_quantity);
-        cart_sum.html(mathRoundToSecond(this.cart_sum) + "$");
-        totalToPayText.html(mathRoundToSecond(this.cart_sum) + "$");
-        this.removeFromDOM(id, true);
-        // If the latest removed item happens to be the last one, show that the cart is empty
-        if (this.orderedItems.length === 0) {
-            emptyCartImg.css("opacity", "1"); // has css transition
-        }
-    };
     Cart.prototype.removeFromDOM = function (id, removeWithTransition) {
         try {
-            this.articleContainer = document.querySelector("#article" + id);
-            this.articleContainerBtn = document.querySelector("#articleBtn" + id);
-            this.articleContainer.removeChild(this.articleContainerBtn);
-            this.articleContainer.style.opacity = '0';
+            _this.articleContainer = document.querySelector("#article" + id);
+            _this.articleContainerBtn = document.querySelector("#articleBtn" + id);
+            _this.articleContainer.removeChild(_this.articleContainerBtn);
+            _this.articleContainer.style.opacity = '0';
         }
         catch (e) {
             console.log("Exception caught " + e);
@@ -470,6 +462,19 @@ var Cart = function () {
             cart.articleContainer.remove();
         }
     };
+    Cart.prototype.removeFromCart = function (id, price) {
+        remove(_this.orderedItems, id); // remove from the list of ordered items
+        _this.cart_items_quantity--;
+        _this.cart_sum -= price;
+        cart_quantity_text.html("" + _this.cart_items_quantity);
+        cart_sum.html(mathRoundToSecond(_this.cart_sum) + "$");
+        totalToPayText.html(mathRoundToSecond(_this.cart_sum) + "$");
+        _this.removeFromDOM(id, true);
+        // If the latest removed item happens to be the last one, show that the cart is empty
+        if (_this.orderedItems.length === 0) {
+            emptyCartImg.css("opacity", "1"); // has css transition
+        }
+    };
     basketContainer.on("click", function () {
         cart.sendItemsList(cart.orderedItems);
         modalHeader.html('Cart'); // Remodal is now about the cart
@@ -482,9 +487,6 @@ var Cart = function () {
         // Determine and set the max-height so the container doesn't spill out of proportions
         adjustHeight();
     });
-    function cartTotal() {
-        totalToPayText.html("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
-    }
 };
 cart = new Cart();
 /* Additions

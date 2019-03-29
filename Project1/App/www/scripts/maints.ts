@@ -44,23 +44,23 @@ let loggedIn: boolean = false; // false by default
    ========================================================================== */
 
 // ON LOAD
-window.addEventListener('load', function() {
+window.addEventListener('load', () => {
     "use strict";
     getNewestClothes();
     adjustHeight();
     setState("default");
 });
 
-$(document).ready(function() {
+$(document).ready(() => {
     "use strict";
 
     /* Window event listeners
      ========================================================================== */
-    window.addEventListener('resize',function() {
+    window.addEventListener('resize',() =>{
         adjustHeight();
     });
 
-    window.addEventListener('scroll',function() {
+    window.addEventListener('scroll',() => {
         if(window.scrollY > 0) {
             headContainer.addClass("scrolled");
         }
@@ -71,7 +71,7 @@ $(document).ready(function() {
 
     /* Cart remodal listeners
      ========================================================================== */
-    confirmCartBtn.on('click', function() {
+    confirmCartBtn.on('click', () => {
         if(currentState === "default") {
             registrationForm(true);
         }
@@ -88,11 +88,11 @@ $(document).ready(function() {
 
     /* User events listeners
      ========================================================================== */
-    registerUserBtn.on('click', function() {
+    registerUserBtn.on('click', () => {
         registrationForm( false);
     });
 
-    loginUserBtn.on('click', function() {
+    loginUserBtn.on('click', () => {
         repaintForEvent('login');
     });
 
@@ -101,7 +101,7 @@ $(document).ready(function() {
 /* HIGHLY RE-USABLE FUNCTIONS
    ========================================================================== */
 // Remove element from array by value
-function remove(array: number[], element): number {
+const remove = (array: number[], element): number => {
     "use strict";
     let value: number = array.indexOf(element);
 
@@ -110,19 +110,31 @@ function remove(array: number[], element): number {
     }
 
     return value;
-}
+};
 
 // Round a number to the second decimal
-function mathRoundToSecond(num: number): number {
+const mathRoundToSecond = (num: number): number =>{
     "use strict";
     return Math.round(num * 100) / 100;
-}
+};
+
+
+// NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
+const defaultState = (): void => {
+    "use strict";
+    registerContainer.css('display', 'none'); // check
+};
+
+const registerState = (): void => {
+    "use strict";
+    registerContainer.css('display', 'flex'); // check
+};
 
 /*
 * Set the current state
 * Note: setState("default") is being used in dist/remodal.min.js on remodal close
 * */
-function setState(state: string): string {
+const setState = (state: string): string => {
     "use strict";
     switch(state) {
         case "default":
@@ -138,20 +150,9 @@ function setState(state: string): string {
             break;
     }
     return currentState;
-}
+};
 
-// NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
-function defaultState(): void {
-    "use strict";
-    registerContainer.css('display', 'none'); // check
-}
-
-function registerState(): void {
-    "use strict";
-    registerContainer.css('display', 'flex'); // check
-}
-
-function registrationForm(comingFromCart: boolean = false): void {
+const registrationForm = (comingFromCart: boolean = false): void => {
     "use strict";
     // By default, user is registering, before purchasing items
 
@@ -181,15 +182,15 @@ function registrationForm(comingFromCart: boolean = false): void {
     else if(loggedIn === true) {
         console.log("functionality to come");
     }
-}
+};
 
-function register(): void {
+const register = (): void => {
     "use strict";
     console.log("AJAX send register info from forms");
-}
+};
 
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
-function adjustHeight(): void {
+const adjustHeight = (): void => {
     // media query parameter
     "use strict";
     // VARIABLES
@@ -223,24 +224,24 @@ function adjustHeight(): void {
     if(dimmingBlock.height() !== viewPortHeight) {
         dimmingBlock.css('height', viewPortHeight);
     }
-}
+};
 
 /* Anchor scroll
    ========================================================================== */
-function scrollToAnchor(aid): void{
+const scrollToAnchor = (aid): void =>{
     "use strict";
     const aTag = $("a[name='"+ aid +"']");
     $('html,body').animate({scrollTop: aTag.offset().top},'slow');
-}
+};
 
-$("#link").click(function(): void {
+$("#link").click((): void => {
     "use strict";
     scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
 });
 
 /* Get newest clothes
    ========================================================================== */
-function getNewestClothes() {
+const getNewestClothes = () => {
     "use strict";
     try {
         // VARIABLES
@@ -259,25 +260,14 @@ function getNewestClothes() {
     catch(e) {
         console.log('Caught Exception: ' + e.message);
     }
-}
+};
 
 // Unite the login and register events in here
-function repaintForEvent(event: string) {
+const repaintForEvent = (event: string) => {
     "use strict";
-    if(event === 'register') {
-        // Remodal window is now about Registration
-        modalHeader.html('Register');
-        cleanCart(false);
-    }
-
-    else if(event === 'login') {
-        // Remodal window is now about Registration
-        modalHeader.html('Login');
-        cleanCart(false);
-    }
 
     // Make the cart clean
-    function cleanCart(fadeEmptyCart: boolean = false) {
+    const cleanCart = (fadeEmptyCart: boolean = false) => {
         if(cartContent.children.length > 0) {
             for (let i = 0; i < cart.orderedItems.length; i++) {
                 cart.removeFromDOM(cart.orderedItems[i], false);
@@ -294,22 +284,34 @@ function repaintForEvent(event: string) {
                 emptyCartImg.css("opacity", "0");
             }
         }
+    };
+
+    if(event === 'register') {
+        // Remodal window is now about Registration
+        modalHeader.html('Register');
+        cleanCart(false);
     }
-}
+
+    else if(event === 'login') {
+        // Remodal window is now about Registration
+        modalHeader.html('Login');
+        cleanCart(false);
+    }
+};
 
 /* Effects CLASS
    ========================================================================== */
-const Effects = function() {
+const Effects = () => {
     "use strict";
     // Blur an element for a brief period
     Effects.prototype.blurElement =
-        function (
+        (
             element: string = "class",
             selector: string,
             afterMilliseconds: number = 0,
             forMilliseconds: number = 1000,
             on_or_off: string
-        ){
+        ) => {
 
         let elem;
 
@@ -332,7 +334,7 @@ const Effects = function() {
        ========================================================================== */
         if(on_or_off === 'on') {
             // Blur effect, filter is not that well supported
-            setTimeout(function() {
+            setTimeout(() => {
                 elem.css({
                     'transition-property': 'filter',
                     'transition-duration': forMilliseconds + 'ms',
@@ -342,7 +344,7 @@ const Effects = function() {
             }, afterMilliseconds);
         }
         else if(on_or_off === 'off') {
-            setTimeout(function() {
+            setTimeout(() => {
                 elem.css({
                     'transition-property': 'filter',
                     'transition-duration': forMilliseconds + 'ms',
@@ -354,13 +356,13 @@ const Effects = function() {
     };
 
     Effects.prototype.displayElement =
-        function(
+        (
             element,
             selector: string = "class",
             afterMilliseconds: number = 0,
             forMilliseconds: number = 1000,
             on_or_off: string = "on"
-        ) {
+        ) => {
         let elem;
 
         /* Element SELECTOR
@@ -385,7 +387,7 @@ const Effects = function() {
         /* States
        ========================================================================== */
         if(on_or_off === 'on') {
-            setTimeout(function() {
+            setTimeout(() => {
                 elem.css({
                     'transition-property': 'opacity',
                     'transition-duration': forMilliseconds + 'ms',
@@ -396,7 +398,7 @@ const Effects = function() {
             }, afterMilliseconds);
         }
         else if(on_or_off === 'off') {
-            setTimeout(function() {
+            setTimeout(() => {
                 elem.css({
                     'transition-property': 'opacity, visibility',
                     'transition-duration': forMilliseconds + 'ms',
@@ -416,28 +418,28 @@ const SlideShow = function() {
     "use strict";
     this.slideShowImgs = document.getElementsByClassName("mySlides_js"); // used when randomizing the first slide
     this.slideIndex = Math.floor(Math.random() * this.slideShowImgs.length) + 1;
-    this.timeNextSlide = 90000; // to reduce later
+    this.timeNextSlide = 1000; // to reduce later
     this.automaticSlideshow = setInterval(
-        function (){
+        () => {
             slideshow.plusDivs(+1);
         },
         this.timeNextSlide
     );
 
-    SlideShow.prototype.plusDivs = function(n) {
+    SlideShow.prototype.plusDivs = (n) => {
         this.showDivs(this.slideIndex += n);
         clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
-        this.automaticSlideshow = setInterval(function(){slideshow.plusDivs(+1);}, this.timeNextSlide); // start a new timer, lazy way
+        this.automaticSlideshow = setInterval(() => {slideshow.plusDivs(+1);}, this.timeNextSlide); // start a new timer, lazy way
     };
 
-    SlideShow.prototype.showDivs = function(n) {
+    SlideShow.prototype.showDivs = (n) => {
         let i;
         const slideShowImgs: any = document.getElementsByClassName("mySlides_js");
 
-        function showElement() {
+        const showElement = () => {
             slideShowImgs[slideshow.slideIndex -1].style.opacity = '1';
             slideShowImgs[slideshow.slideIndex -1].style.display = 'visible';
-        }
+        };
 
         if (n > slideShowImgs.length) {
             this.slideIndex = 1;
@@ -466,9 +468,12 @@ const Cart = function () {
     this.articleContainer = ""; // later defined
     this.articleContainerBtn = ""; // later defined
 
-    // counter articles quantity in the session ??
-    Cart.prototype.addToCart = function (articleId, articlePrice) {
+    const cartTotal = () => {
+        totalToPayText.html("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
+    };
 
+    // counter articles quantity in the session ??
+    Cart.prototype.addToCart = (articleId, articlePrice) => {
         // Effects
         effects.blurElement('basketContainer', 'class', 0, 900, 'on');
         effects.blurElement('basketContainer', 'class', 1150, 900, 'off');
@@ -483,7 +488,7 @@ const Cart = function () {
         this.orderedItems.push(articleId);
     };
 
-    Cart.prototype.sendItemsList = function () {
+    Cart.prototype.sendItemsList = () => {
         if (this.orderedItems.length !== 0) {
             emptyCartImg.css("opacity", "0"); // fade out the Empty cart image
             try {
@@ -508,7 +513,33 @@ const Cart = function () {
         }
     };
 
-    Cart.prototype.removeFromCart = function (id, price) {
+    Cart.prototype.removeFromDOM = (id, removeWithTransition) => {
+        try {
+            this.articleContainer = document.querySelector(`#article${id}`);
+            this.articleContainerBtn = document.querySelector(`#articleBtn${id}`);
+            this.articleContainer.removeChild(this.articleContainerBtn);
+            this.articleContainer.style.opacity = '0';
+        }
+        catch (e) {
+            console.log(`Exception caught ${e}`);
+        }
+
+        if(removeWithTransition === true) {
+            setTimeout(() => {
+                try {
+                    cart.articleContainer.remove();
+                }
+                catch (e) {
+
+                }
+            }, 1000);
+        }
+        else {
+            cart.articleContainer.remove();
+        }
+    };
+
+    Cart.prototype.removeFromCart = (id, price) => {
         remove(this.orderedItems, id); // remove from the list of ordered items
 
         this.cart_items_quantity--;
@@ -525,33 +556,7 @@ const Cart = function () {
         }
     };
 
-    Cart.prototype.removeFromDOM = function (id, removeWithTransition) {
-        try {
-            this.articleContainer = document.querySelector(`#article${id}`);
-            this.articleContainerBtn = document.querySelector(`#articleBtn${id}`);
-            this.articleContainer.removeChild(this.articleContainerBtn);
-            this.articleContainer.style.opacity = '0';
-        }
-        catch (e) {
-            console.log(`Exception caught ${e}`);
-        }
-
-        if(removeWithTransition === true) {
-            setTimeout(function () {
-                try {
-                    cart.articleContainer.remove();
-                }
-                catch (e) {
-
-                }
-            }, 1000);
-        }
-        else {
-            cart.articleContainer.remove();
-        }
-    };
-
-    basketContainer.on("click", function () {
+    basketContainer.on("click", () => {
         cart.sendItemsList(cart.orderedItems);
         modalHeader.html('Cart'); // Remodal is now about the cart
         // if there are no items in the cart show the empty cart images
@@ -564,10 +569,6 @@ const Cart = function () {
         // Determine and set the max-height so the container doesn't spill out of proportions
         adjustHeight();
     });
-
-    function cartTotal() {
-        totalToPayText.html("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
-    }
 };
 cart = new Cart();
 
