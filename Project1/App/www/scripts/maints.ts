@@ -1,3 +1,6 @@
+import { sayHelloMf } from "./mymodule";
+sayHelloMf();
+
 // Edit only .ts file
 // ******************
 
@@ -34,7 +37,6 @@ const emptyCartImg = $("#emptyCartImg");
 
 // used anywhere
 let viewPortHeight: number = window.innerHeight; // to be later re-calculated
-let cart; // to be later instantiated as Cart object
 let slideshow; // to be later instantiated as Slideshow object
 let effects; // to be later instantiated as Effects object
 let currentState: string = "default"; // default state
@@ -89,7 +91,7 @@ $(document).ready(() => {
     /* User events listeners
      ========================================================================== */
     registerUserBtn.on('click', () => {
-        registrationForm( false);
+        registrationForm(false);
     });
 
     loginUserBtn.on('click', () => {
@@ -418,7 +420,7 @@ const SlideShow = function() {
     "use strict";
     this.slideShowImgs = document.getElementsByClassName("mySlides_js"); // used when randomizing the first slide
     this.slideIndex = Math.floor(Math.random() * this.slideShowImgs.length) + 1;
-    this.timeNextSlide = 1000; // to reduce later
+    this.timeNextSlide = 8000; // to reduce later
     this.automaticSlideshow = setInterval(
         () => {
             slideshow.plusDivs(+1);
@@ -570,7 +572,7 @@ const Cart = function () {
         adjustHeight();
     });
 };
-cart = new Cart();
+window.cart = new Cart(); // Made as window object, so the server-side rendered cart.addToCart works
 
 /* Additions
 
