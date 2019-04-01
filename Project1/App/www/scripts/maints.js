@@ -1,17 +1,16 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var mymodule_1 = require("./mymodule");
-mymodule_1.sayHelloMf();
-// Edit only .ts file
-// ******************
 /*jslint devel: true*/
-/*globals $:false*/
-// Problems
+/*globals $, setState, cart:false*/
+Object.defineProperty(exports, "__esModule", { value: true });
+// Issues
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. https://stackoverflow.com/questions/6904166/should-i-use-window-variable-or-var
 // 2. Fallback for filter
-// 3. Move different modules to different classes, maybe use require.js
 // 3. On hover of the slideshow don't go next
+var Effects_1 = require("./modules/Effects");
+var SlideShow_1 = require("./modules/SlideShow");
+var Math_1 = require("./modules/Math");
+var Array_1 = require("./modules/Array");
 /* GLOBAL VARIABLES
    ========================================================================== */
 // manipulated with jQuery
@@ -32,23 +31,22 @@ var totalToPayText = $('#totalToPayText');
 var modalHeader = $('#modalHeader');
 var cartContent = $('#cartContent');
 var emptyCartImg = $("#emptyCartImg");
+var prevSlideBtn = $("#prevSlideBtn");
+var nextSlideBtn = $("#nextSlideBtn");
 // used anywhere
 var viewPortHeight = window.innerHeight; // to be later re-calculated
-var slideshow; // to be later instantiated as Slideshow object
-var effects; // to be later instantiated as Effects object
 var currentState = "default"; // default state
 var loggedIn = false; // false by default
 /* Event listeners
    ========================================================================== */
 // ON LOAD
 window.addEventListener('load', function () {
-    "use strict";
     getNewestClothes();
     adjustHeight();
     setState("default");
 });
 $(document).ready(function () {
-    "use strict";
+    SlideShow_1.slideshow.showDivs(SlideShow_1.slideshow.slideIndex);
     /* Window event listeners
      ========================================================================== */
     window.addEventListener('resize', function () {
@@ -84,38 +82,26 @@ $(document).ready(function () {
     loginUserBtn.on('click', function () {
         repaintForEvent('login');
     });
+    prevSlideBtn.on('click', function () {
+        SlideShow_1.slideshow.plusDivs(-1);
+    });
+    nextSlideBtn.on('click', function () {
+        SlideShow_1.slideshow.plusDivs(+1);
+    });
 });
-/* HIGHLY RE-USABLE FUNCTIONS
-   ========================================================================== */
-// Remove element from array by value
-var remove = function (array, element) {
-    "use strict";
-    var value = array.indexOf(element);
-    if (value !== -1) {
-        array.splice(value, 1);
-    }
-    return value;
-};
-// Round a number to the second decimal
-var mathRoundToSecond = function (num) {
-    "use strict";
-    return Math.round(num * 100) / 100;
-};
 // NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
 var defaultState = function () {
-    "use strict";
     registerContainer.css('display', 'none'); // check
 };
 var registerState = function () {
-    "use strict";
     registerContainer.css('display', 'flex'); // check
 };
 /*
 * Set the current state
 * Note: setState("default") is being used in dist/remodal.min.js on remodal close
 * */
-var setState = function (state) {
-    "use strict";
+// @ts-ignore - Attached to the window object because used as a global - Browserify issue
+window.setState = function (state) {
     switch (state) {
         case "default":
             currentState = "default";
@@ -132,9 +118,8 @@ var setState = function (state) {
     return currentState;
 };
 var registrationForm = function (comingFromCart) {
-    "use strict";
-    if (comingFromCart === void 0) { comingFromCart = false; }
     // By default, user is registering, before purchasing items
+    if (comingFromCart === void 0) { comingFromCart = false; }
     // If the user isn't logged in [redundant?]
     if (loggedIn === false) {
         // If it's cart registration, force the user to have at least 1 item in the cart
@@ -159,13 +144,11 @@ var registrationForm = function (comingFromCart) {
     }
 };
 var register = function () {
-    "use strict";
     console.log("AJAX send register info from forms");
 };
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
 var adjustHeight = function () {
     // media query parameter
-    "use strict";
     // VARIABLES
     // var defaultSize = 0.8;
     viewPortHeight = window.innerHeight;
@@ -195,18 +178,15 @@ var adjustHeight = function () {
 /* Anchor scroll
    ========================================================================== */
 var scrollToAnchor = function (aid) {
-    "use strict";
     var aTag = $("a[name='" + aid + "']");
     $('html,body').animate({ scrollTop: aTag.offset().top }, 'slow');
 };
 $("#link").click(function () {
-    "use strict";
     scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
 });
 /* Get newest clothes
    ========================================================================== */
 var getNewestClothes = function () {
-    "use strict";
     try {
         // VARIABLES
         var xhttp = void 0;
@@ -227,7 +207,6 @@ var getNewestClothes = function () {
 };
 // Unite the login and register events in here
 var repaintForEvent = function (event) {
-    "use strict";
     // Make the cart clean
     var cleanCart = function (fadeEmptyCart) {
         if (fadeEmptyCart === void 0) { fadeEmptyCart = false; }
@@ -258,144 +237,9 @@ var repaintForEvent = function (event) {
         cleanCart(false);
     }
 };
-/* Effects CLASS
-   ========================================================================== */
-var Effects = function () {
-    "use strict";
-    // Blur an element for a brief period
-    Effects.prototype.blurElement =
-        function (element, selector, afterMilliseconds, forMilliseconds, on_or_off) {
-            if (element === void 0) { element = "class"; }
-            if (afterMilliseconds === void 0) { afterMilliseconds = 0; }
-            if (forMilliseconds === void 0) { forMilliseconds = 1000; }
-            var elem;
-            /* Element SELECTOR
-            ========================================================================== */
-            // Select the class to blur
-            if (selector === 'class') {
-                elem = $('.' + element);
-            }
-            else if (selector === 'id') {
-                elem = $('#' + element);
-            }
-            else {
-                console.log("Expand blurElem() function to accept non id/class selectors");
-            }
-            /* State
-           ========================================================================== */
-            if (on_or_off === 'on') {
-                // Blur effect, filter is not that well supported
-                setTimeout(function () {
-                    elem.css({
-                        'transition-property': 'filter',
-                        'transition-duration': forMilliseconds + 'ms',
-                        'transition-timing-function': 'ease',
-                        'filter': 'blur(1px)'
-                    });
-                }, afterMilliseconds);
-            }
-            else if (on_or_off === 'off') {
-                setTimeout(function () {
-                    elem.css({
-                        'transition-property': 'filter',
-                        'transition-duration': forMilliseconds + 'ms',
-                        'transition-timing-function': 'ease-out',
-                        'filter': 'none'
-                    });
-                }, afterMilliseconds);
-            }
-        };
-    Effects.prototype.displayElement =
-        function (element, selector, afterMilliseconds, forMilliseconds, on_or_off) {
-            if (selector === void 0) { selector = "class"; }
-            if (afterMilliseconds === void 0) { afterMilliseconds = 0; }
-            if (forMilliseconds === void 0) { forMilliseconds = 1000; }
-            if (on_or_off === void 0) { on_or_off = "on"; }
-            var elem;
-            /* Element SELECTOR
-           ========================================================================== */
-            // Select the class to dim/undim
-            if (selector === 'class') {
-                elem = $('.' + element);
-            }
-            else if (selector === 'id') {
-                elem = $('#' + element);
-            }
-            else if (selector === 'tagName') {
-                elem = $('' + element);
-            }
-            else {
-                console.log("Expand show() function to accept non id/class selectors");
-            }
-            /* States
-           ========================================================================== */
-            if (on_or_off === 'on') {
-                setTimeout(function () {
-                    elem.css({
-                        'transition-property': 'opacity',
-                        'transition-duration': forMilliseconds + 'ms',
-                        'transition-timing-function': 'ease-in',
-                        'visibility': 'visible',
-                        'opacity': 0.85
-                    });
-                }, afterMilliseconds);
-            }
-            else if (on_or_off === 'off') {
-                setTimeout(function () {
-                    elem.css({
-                        'transition-property': 'opacity, visibility',
-                        'transition-duration': forMilliseconds + 'ms',
-                        'transition-timing-function': 'ease-out',
-                        'opacity': 0,
-                        'visibility': 'hidden'
-                    });
-                }, afterMilliseconds);
-            }
-        };
-};
-effects = new Effects();
-/* Slideshow CLASS
-   ========================================================================== */
-var SlideShow = function () {
-    "use strict";
-    var _this = this;
-    this.slideShowImgs = document.getElementsByClassName("mySlides_js"); // used when randomizing the first slide
-    this.slideIndex = Math.floor(Math.random() * this.slideShowImgs.length) + 1;
-    this.timeNextSlide = 8000; // to reduce later
-    this.automaticSlideshow = setInterval(function () {
-        slideshow.plusDivs(+1);
-    }, this.timeNextSlide);
-    SlideShow.prototype.plusDivs = function (n) {
-        _this.showDivs(_this.slideIndex += n);
-        clearInterval(_this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
-        _this.automaticSlideshow = setInterval(function () { slideshow.plusDivs(+1); }, _this.timeNextSlide); // start a new timer, lazy way
-    };
-    SlideShow.prototype.showDivs = function (n) {
-        var i;
-        var slideShowImgs = document.getElementsByClassName("mySlides_js");
-        var showElement = function () {
-            slideShowImgs[slideshow.slideIndex - 1].style.opacity = '1';
-            slideShowImgs[slideshow.slideIndex - 1].style.display = 'visible';
-        };
-        if (n > slideShowImgs.length) {
-            _this.slideIndex = 1;
-        }
-        if (n < 1) {
-            _this.slideIndex = slideShowImgs.length;
-        }
-        for (i = 0; i < slideShowImgs.length; i++) {
-            slideShowImgs[i].style.opacity = '0';
-            slideShowImgs[i].style.display = 'hidden';
-        }
-        setTimeout(showElement(), 3500);
-    };
-};
-slideshow = new SlideShow();
-slideshow.showDivs(slideshow.slideIndex);
 /* Cart class
    ========================================================================== */
 var Cart = function () {
-    "use strict";
     var _this = this;
     this.cart_sum = 0; // The sum of the user's currently requested clothes
     this.cart_items_quantity = 0; // How much items are currently in the cart
@@ -403,17 +247,17 @@ var Cart = function () {
     this.articleContainer = ""; // later defined
     this.articleContainerBtn = ""; // later defined
     var cartTotal = function () {
-        totalToPayText.html("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
+        totalToPayText.html("Total: " + Math_1.mathRoundToSecond(cart.cart_sum) + "$");
     };
     // counter articles quantity in the session ??
     Cart.prototype.addToCart = function (articleId, articlePrice) {
         // Effects
-        effects.blurElement('basketContainer', 'class', 0, 900, 'on');
-        effects.blurElement('basketContainer', 'class', 1150, 900, 'off');
-        effects.displayElement('dimmingBlock', 'class', 0, 500, 'on');
-        effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
+        Effects_1.effects.blurElement('basketContainer', 'class', 0, 900, 'on');
+        Effects_1.effects.blurElement('basketContainer', 'class', 1150, 900, 'off');
+        Effects_1.effects.displayElement('dimmingBlock', 'class', 0, 500, 'on');
+        Effects_1.effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
         _this.cart_sum += articlePrice;
-        cart_sum.html(mathRoundToSecond(_this.cart_sum) + "$");
+        cart_sum.html(Math_1.mathRoundToSecond(_this.cart_sum) + "$");
         _this.cart_items_quantity++;
         cart_quantity_text.html("" + _this.cart_items_quantity);
         _this.orderedItems.push(articleId);
@@ -466,12 +310,12 @@ var Cart = function () {
         }
     };
     Cart.prototype.removeFromCart = function (id, price) {
-        remove(_this.orderedItems, id); // remove from the list of ordered items
+        Array_1.removeFromArr(_this.orderedItems, id); // remove from the list of ordered items
         _this.cart_items_quantity--;
         _this.cart_sum -= price;
         cart_quantity_text.html("" + _this.cart_items_quantity);
-        cart_sum.html(mathRoundToSecond(_this.cart_sum) + "$");
-        totalToPayText.html(mathRoundToSecond(_this.cart_sum) + "$");
+        cart_sum.html(Math_1.mathRoundToSecond(_this.cart_sum) + "$");
+        totalToPayText.html(Math_1.mathRoundToSecond(_this.cart_sum) + "$");
         _this.removeFromDOM(id, true);
         // If the latest removed item happens to be the last one, show that the cart is empty
         if (_this.orderedItems.length === 0) {
@@ -491,11 +335,12 @@ var Cart = function () {
         adjustHeight();
     });
 };
-window.cart = new Cart(); // Made as window object, so the server-side rendered cart.addToCart works
+// @ts-ignore - Made as window object, so the server-side rendered cart.addToCart works, Browserify issue
+window.cart = new Cart();
 /* Additions
 
 // require(['Cart']  ,function(c){
-//   "use strict";
+//
 //   c
 // });
 

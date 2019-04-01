@@ -1,1 +1,0 @@
-export function sayHelloMf(){ console.log("Hello MF"); return "HelloMF"}

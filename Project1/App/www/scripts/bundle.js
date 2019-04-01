@@ -1,18 +1,17 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var mymodule_1 = require("./mymodule");
-mymodule_1.sayHelloMf();
-// Edit only .ts file
-// ******************
 /*jslint devel: true*/
-/*globals $:false*/
-// Problems
+/*globals $, setState, cart:false*/
+Object.defineProperty(exports, "__esModule", { value: true });
+// Issues
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. https://stackoverflow.com/questions/6904166/should-i-use-window-variable-or-var
 // 2. Fallback for filter
-// 3. Move different modules to different classes, maybe use require.js
 // 3. On hover of the slideshow don't go next
+var Effects_1 = require("./modules/Effects");
+var SlideShow_1 = require("./modules/SlideShow");
+var Math_1 = require("./modules/Math");
+var Array_1 = require("./modules/Array");
 /* GLOBAL VARIABLES
    ========================================================================== */
 // manipulated with jQuery
@@ -33,23 +32,22 @@ var totalToPayText = $('#totalToPayText');
 var modalHeader = $('#modalHeader');
 var cartContent = $('#cartContent');
 var emptyCartImg = $("#emptyCartImg");
+var prevSlideBtn = $("#prevSlideBtn");
+var nextSlideBtn = $("#nextSlideBtn");
 // used anywhere
 var viewPortHeight = window.innerHeight; // to be later re-calculated
-var slideshow; // to be later instantiated as Slideshow object
-var effects; // to be later instantiated as Effects object
 var currentState = "default"; // default state
 var loggedIn = false; // false by default
 /* Event listeners
    ========================================================================== */
 // ON LOAD
 window.addEventListener('load', function () {
-    "use strict";
     getNewestClothes();
     adjustHeight();
     setState("default");
 });
 $(document).ready(function () {
-    "use strict";
+    SlideShow_1.slideshow.showDivs(SlideShow_1.slideshow.slideIndex);
     /* Window event listeners
      ========================================================================== */
     window.addEventListener('resize', function () {
@@ -85,38 +83,26 @@ $(document).ready(function () {
     loginUserBtn.on('click', function () {
         repaintForEvent('login');
     });
+    prevSlideBtn.on('click', function () {
+        SlideShow_1.slideshow.plusDivs(-1);
+    });
+    nextSlideBtn.on('click', function () {
+        SlideShow_1.slideshow.plusDivs(+1);
+    });
 });
-/* HIGHLY RE-USABLE FUNCTIONS
-   ========================================================================== */
-// Remove element from array by value
-var remove = function (array, element) {
-    "use strict";
-    var value = array.indexOf(element);
-    if (value !== -1) {
-        array.splice(value, 1);
-    }
-    return value;
-};
-// Round a number to the second decimal
-var mathRoundToSecond = function (num) {
-    "use strict";
-    return Math.round(num * 100) / 100;
-};
 // NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
 var defaultState = function () {
-    "use strict";
     registerContainer.css('display', 'none'); // check
 };
 var registerState = function () {
-    "use strict";
     registerContainer.css('display', 'flex'); // check
 };
 /*
 * Set the current state
 * Note: setState("default") is being used in dist/remodal.min.js on remodal close
 * */
-var setState = function (state) {
-    "use strict";
+// @ts-ignore - Attached to the window object because used as a global - Browserify issue
+window.setState = function (state) {
     switch (state) {
         case "default":
             currentState = "default";
@@ -133,9 +119,8 @@ var setState = function (state) {
     return currentState;
 };
 var registrationForm = function (comingFromCart) {
-    "use strict";
-    if (comingFromCart === void 0) { comingFromCart = false; }
     // By default, user is registering, before purchasing items
+    if (comingFromCart === void 0) { comingFromCart = false; }
     // If the user isn't logged in [redundant?]
     if (loggedIn === false) {
         // If it's cart registration, force the user to have at least 1 item in the cart
@@ -160,13 +145,11 @@ var registrationForm = function (comingFromCart) {
     }
 };
 var register = function () {
-    "use strict";
     console.log("AJAX send register info from forms");
 };
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
 var adjustHeight = function () {
     // media query parameter
-    "use strict";
     // VARIABLES
     // var defaultSize = 0.8;
     viewPortHeight = window.innerHeight;
@@ -196,18 +179,15 @@ var adjustHeight = function () {
 /* Anchor scroll
    ========================================================================== */
 var scrollToAnchor = function (aid) {
-    "use strict";
     var aTag = $("a[name='" + aid + "']");
     $('html,body').animate({ scrollTop: aTag.offset().top }, 'slow');
 };
 $("#link").click(function () {
-    "use strict";
     scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
 });
 /* Get newest clothes
    ========================================================================== */
 var getNewestClothes = function () {
-    "use strict";
     try {
         // VARIABLES
         var xhttp = void 0;
@@ -228,7 +208,6 @@ var getNewestClothes = function () {
 };
 // Unite the login and register events in here
 var repaintForEvent = function (event) {
-    "use strict";
     // Make the cart clean
     var cleanCart = function (fadeEmptyCart) {
         if (fadeEmptyCart === void 0) { fadeEmptyCart = false; }
@@ -259,10 +238,142 @@ var repaintForEvent = function (event) {
         cleanCart(false);
     }
 };
+/* Cart class
+   ========================================================================== */
+var Cart = function () {
+    var _this = this;
+    this.cart_sum = 0; // The sum of the user's currently requested clothes
+    this.cart_items_quantity = 0; // How much items are currently in the cart
+    this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
+    this.articleContainer = ""; // later defined
+    this.articleContainerBtn = ""; // later defined
+    var cartTotal = function () {
+        totalToPayText.html("Total: " + Math_1.mathRoundToSecond(cart.cart_sum) + "$");
+    };
+    // counter articles quantity in the session ??
+    Cart.prototype.addToCart = function (articleId, articlePrice) {
+        // Effects
+        Effects_1.effects.blurElement('basketContainer', 'class', 0, 900, 'on');
+        Effects_1.effects.blurElement('basketContainer', 'class', 1150, 900, 'off');
+        Effects_1.effects.displayElement('dimmingBlock', 'class', 0, 500, 'on');
+        Effects_1.effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
+        _this.cart_sum += articlePrice;
+        cart_sum.html(Math_1.mathRoundToSecond(_this.cart_sum) + "$");
+        _this.cart_items_quantity++;
+        cart_quantity_text.html("" + _this.cart_items_quantity);
+        _this.orderedItems.push(articleId);
+    };
+    Cart.prototype.sendItemsList = function () {
+        if (_this.orderedItems.length !== 0) {
+            emptyCartImg.css("opacity", "0"); // fade out the Empty cart image
+            try {
+                // VARIABLES
+                var xhttp = void 0;
+                xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    var DONE = 4; // readyState 4 means the request is done.
+                    var OK = 200; // status 200 is a successful return.
+                    if (this.readyState === DONE && this.status === OK) {
+                        cartContent.html(this.responseText);
+                    }
+                };
+                xhttp.open("POST", "/dynamic/generate_cart", true);
+                var orderedItemsJSON = JSON.stringify(_this.orderedItems);
+                xhttp.send(orderedItemsJSON);
+                cartTotal();
+            }
+            catch (e) {
+                console.log('Caught Exception: ' + e.message);
+            }
+        }
+    };
+    Cart.prototype.removeFromDOM = function (id, removeWithTransition) {
+        try {
+            _this.articleContainer = document.querySelector("#article" + id);
+            _this.articleContainerBtn = document.querySelector("#articleBtn" + id);
+            _this.articleContainer.removeChild(_this.articleContainerBtn);
+            _this.articleContainer.style.opacity = '0';
+        }
+        catch (e) {
+            console.log("Exception caught " + e);
+        }
+        if (removeWithTransition === true) {
+            setTimeout(function () {
+                try {
+                    cart.articleContainer.remove();
+                }
+                catch (e) {
+                }
+            }, 1000);
+        }
+        else {
+            cart.articleContainer.remove();
+        }
+    };
+    Cart.prototype.removeFromCart = function (id, price) {
+        Array_1.removeFromArr(_this.orderedItems, id); // remove from the list of ordered items
+        _this.cart_items_quantity--;
+        _this.cart_sum -= price;
+        cart_quantity_text.html("" + _this.cart_items_quantity);
+        cart_sum.html(Math_1.mathRoundToSecond(_this.cart_sum) + "$");
+        totalToPayText.html(Math_1.mathRoundToSecond(_this.cart_sum) + "$");
+        _this.removeFromDOM(id, true);
+        // If the latest removed item happens to be the last one, show that the cart is empty
+        if (_this.orderedItems.length === 0) {
+            emptyCartImg.css("opacity", "1"); // has css transition
+        }
+    };
+    basketContainer.on("click", function () {
+        cart.sendItemsList(cart.orderedItems);
+        modalHeader.html('Cart'); // Remodal is now about the cart
+        // if there are no items in the cart show the empty cart images
+        if (cart.orderedItems.length === 0) {
+            if (emptyCartImg.css("opacity") === '0' || emptyCartImg.css("opacity") === '') {
+                emptyCartImg.css("opacity", "1");
+            }
+        }
+        // Determine and set the max-height so the container doesn't spill out of proportions
+        adjustHeight();
+    });
+};
+// @ts-ignore - Made as window object, so the server-side rendered cart.addToCart works, Browserify issue
+window.cart = new Cart();
+/* Additions
+
+// require(['Cart']  ,function(c){
+//
+//   c
+// });
+
+//var CartModule = (function() {
+
+//  return {
+//    cart : Cart
+//  };
+//}());
+
+//cart = new CartModule.cart();
+
+*/
+
+},{"./modules/Array":2,"./modules/Effects":3,"./modules/Math":4,"./modules/SlideShow":5}],2:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+// Remove element from array by value
+exports.removeFromArr = function (array, element) {
+    var value = array.indexOf(element);
+    if (value !== -1) {
+        array.splice(value, 1);
+    }
+    return value;
+};
+
+},{}],3:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /* Effects CLASS
    ========================================================================== */
 var Effects = function () {
-    "use strict";
     // Blur an element for a brief period
     Effects.prototype.blurElement =
         function (element, selector, afterMilliseconds, forMilliseconds, on_or_off) {
@@ -354,29 +465,40 @@ var Effects = function () {
             }
         };
 };
-effects = new Effects();
+exports.effects = new Effects();
+
+},{}],4:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+// Round a number to the second decimal
+exports.mathRoundToSecond = function (num) {
+    return Math.round(num * 100) / 100;
+};
+
+},{}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /* Slideshow CLASS
    ========================================================================== */
 var SlideShow = function () {
-    "use strict";
     var _this = this;
     this.slideShowImgs = document.getElementsByClassName("mySlides_js"); // used when randomizing the first slide
     this.slideIndex = Math.floor(Math.random() * this.slideShowImgs.length) + 1;
     this.timeNextSlide = 8000; // to reduce later
     this.automaticSlideshow = setInterval(function () {
-        slideshow.plusDivs(+1);
+        exports.slideshow.plusDivs(+1);
     }, this.timeNextSlide);
     SlideShow.prototype.plusDivs = function (n) {
         _this.showDivs(_this.slideIndex += n);
         clearInterval(_this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
-        _this.automaticSlideshow = setInterval(function () { slideshow.plusDivs(+1); }, _this.timeNextSlide); // start a new timer, lazy way
+        _this.automaticSlideshow = setInterval(function () { exports.slideshow.plusDivs(+1); }, _this.timeNextSlide); // start a new timer, lazy way
     };
     SlideShow.prototype.showDivs = function (n) {
         var i;
         var slideShowImgs = document.getElementsByClassName("mySlides_js");
         var showElement = function () {
-            slideShowImgs[slideshow.slideIndex - 1].style.opacity = '1';
-            slideShowImgs[slideshow.slideIndex - 1].style.display = 'visible';
+            slideShowImgs[exports.slideshow.slideIndex - 1].style.opacity = '1';
+            slideShowImgs[exports.slideshow.slideIndex - 1].style.display = 'visible';
         };
         if (n > slideShowImgs.length) {
             _this.slideIndex = 1;
@@ -391,130 +513,6 @@ var SlideShow = function () {
         setTimeout(showElement(), 3500);
     };
 };
-slideshow = new SlideShow();
-slideshow.showDivs(slideshow.slideIndex);
-/* Cart class
-   ========================================================================== */
-var Cart = function () {
-    "use strict";
-    var _this = this;
-    this.cart_sum = 0; // The sum of the user's currently requested clothes
-    this.cart_items_quantity = 0; // How much items are currently in the cart
-    this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
-    this.articleContainer = ""; // later defined
-    this.articleContainerBtn = ""; // later defined
-    var cartTotal = function () {
-        totalToPayText.html("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
-    };
-    // counter articles quantity in the session ??
-    Cart.prototype.addToCart = function (articleId, articlePrice) {
-        // Effects
-        effects.blurElement('basketContainer', 'class', 0, 900, 'on');
-        effects.blurElement('basketContainer', 'class', 1150, 900, 'off');
-        effects.displayElement('dimmingBlock', 'class', 0, 500, 'on');
-        effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
-        _this.cart_sum += articlePrice;
-        cart_sum.html(mathRoundToSecond(_this.cart_sum) + "$");
-        _this.cart_items_quantity++;
-        cart_quantity_text.html("" + _this.cart_items_quantity);
-        _this.orderedItems.push(articleId);
-    };
-    Cart.prototype.sendItemsList = function () {
-        if (_this.orderedItems.length !== 0) {
-            emptyCartImg.css("opacity", "0"); // fade out the Empty cart image
-            try {
-                // VARIABLES
-                var xhttp = void 0;
-                xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    var DONE = 4; // readyState 4 means the request is done.
-                    var OK = 200; // status 200 is a successful return.
-                    if (this.readyState === DONE && this.status === OK) {
-                        cartContent.html(this.responseText);
-                    }
-                };
-                xhttp.open("POST", "/dynamic/generate_cart", true);
-                var orderedItemsJSON = JSON.stringify(_this.orderedItems);
-                xhttp.send(orderedItemsJSON);
-                cartTotal();
-            }
-            catch (e) {
-                console.log('Caught Exception: ' + e.message);
-            }
-        }
-    };
-    Cart.prototype.removeFromDOM = function (id, removeWithTransition) {
-        try {
-            _this.articleContainer = document.querySelector("#article" + id);
-            _this.articleContainerBtn = document.querySelector("#articleBtn" + id);
-            _this.articleContainer.removeChild(_this.articleContainerBtn);
-            _this.articleContainer.style.opacity = '0';
-        }
-        catch (e) {
-            console.log("Exception caught " + e);
-        }
-        if (removeWithTransition === true) {
-            setTimeout(function () {
-                try {
-                    cart.articleContainer.remove();
-                }
-                catch (e) {
-                }
-            }, 1000);
-        }
-        else {
-            cart.articleContainer.remove();
-        }
-    };
-    Cart.prototype.removeFromCart = function (id, price) {
-        remove(_this.orderedItems, id); // remove from the list of ordered items
-        _this.cart_items_quantity--;
-        _this.cart_sum -= price;
-        cart_quantity_text.html("" + _this.cart_items_quantity);
-        cart_sum.html(mathRoundToSecond(_this.cart_sum) + "$");
-        totalToPayText.html(mathRoundToSecond(_this.cart_sum) + "$");
-        _this.removeFromDOM(id, true);
-        // If the latest removed item happens to be the last one, show that the cart is empty
-        if (_this.orderedItems.length === 0) {
-            emptyCartImg.css("opacity", "1"); // has css transition
-        }
-    };
-    basketContainer.on("click", function () {
-        cart.sendItemsList(cart.orderedItems);
-        modalHeader.html('Cart'); // Remodal is now about the cart
-        // if there are no items in the cart show the empty cart images
-        if (cart.orderedItems.length === 0) {
-            if (emptyCartImg.css("opacity") === '0' || emptyCartImg.css("opacity") === '') {
-                emptyCartImg.css("opacity", "1");
-            }
-        }
-        // Determine and set the max-height so the container doesn't spill out of proportions
-        adjustHeight();
-    });
-};
-window.cart = new Cart(); // Made as window object, so the server-side rendered cart.addToCart works
-/* Additions
-
-// require(['Cart']  ,function(c){
-//   "use strict";
-//   c
-// });
-
-//var CartModule = (function() {
-
-//  return {
-//    cart : Cart
-//  };
-//}());
-
-//cart = new CartModule.cart();
-
-*/
-
-},{"./mymodule":2}],2:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-function sayHelloMf() { console.log("Hello MF"); return "HelloMF"; }
-exports.sayHelloMf = sayHelloMf;
+exports.slideshow = new SlideShow(); // attached to window - Browserify issue
 
 },{}]},{},[1]);
