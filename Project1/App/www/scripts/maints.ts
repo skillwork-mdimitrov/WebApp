@@ -1,18 +1,18 @@
-import { sayHelloMf } from "./mymodule";
-sayHelloMf();
-
-// Edit only .ts file
-// ******************
-
 /*jslint devel: true*/
-/*globals $:false*/
+/*globals $, setState, cart:false*/
 
-// Problems
+// Issues
 // 1 - Serious problem, 2 - problem with mediocre impact, 3 - Details
 // 2. https://stackoverflow.com/questions/6904166/should-i-use-window-variable-or-var
 // 2. Fallback for filter
-// 3. Move different modules to different classes, maybe use require.js
 // 3. On hover of the slideshow don't go next
+
+// @TODO Make AJAX calls jQuery
+
+import { effects } from "./modules/Effects";
+import { slideshow } from "./modules/SlideShow";
+import { mathRoundToSecond } from "./modules/Math";
+import { removeFromArr } from "./modules/Array";
 
 /* GLOBAL VARIABLES
    ========================================================================== */
@@ -34,11 +34,15 @@ const totalToPayText = $('#totalToPayText');
 const modalHeader = $('#modalHeader');
 const cartContent = $('#cartContent');
 const emptyCartImg = $("#emptyCartImg");
+const prevSlideBtn = $("#prevSlideBtn");
+const nextSlideBtn = $("#nextSlideBtn");
+
+// Unknown to TS variables/functions
+declare const cart: any;
+declare function setState(state: string): string;
 
 // used anywhere
 let viewPortHeight: number = window.innerHeight; // to be later re-calculated
-let slideshow; // to be later instantiated as Slideshow object
-let effects; // to be later instantiated as Effects object
 let currentState: string = "default"; // default state
 let loggedIn: boolean = false; // false by default
 
@@ -46,23 +50,22 @@ let loggedIn: boolean = false; // false by default
    ========================================================================== */
 
 // ON LOAD
-window.addEventListener('load', () => {
-    "use strict";
+$(window).on('load', () => {
     getNewestClothes();
     adjustHeight();
     setState("default");
 });
 
 $(document).ready(() => {
-    "use strict";
+    slideshow.showDivs(slideshow.slideIndex);
 
     /* Window event listeners
      ========================================================================== */
-    window.addEventListener('resize',() =>{
+    $(window).on('resize',() => {
         adjustHeight();
     });
 
-    window.addEventListener('scroll',() => {
+    $(window).on('scroll',() => {
         if(window.scrollY > 0) {
             headContainer.addClass("scrolled");
         }
@@ -98,37 +101,22 @@ $(document).ready(() => {
         repaintForEvent('login');
     });
 
+    prevSlideBtn.on('click', () => {
+        slideshow.plusDivs(-1);
+    });
+
+    nextSlideBtn.on('click', () => {
+        slideshow.plusDivs(+1);
+    });
+
 });
-
-/* HIGHLY RE-USABLE FUNCTIONS
-   ========================================================================== */
-// Remove element from array by value
-const remove = (array: number[], element): number => {
-    "use strict";
-    let value: number = array.indexOf(element);
-
-    if (value !== -1) {
-        array.splice(value, 1);
-    }
-
-    return value;
-};
-
-// Round a number to the second decimal
-const mathRoundToSecond = (num: number): number =>{
-    "use strict";
-    return Math.round(num * 100) / 100;
-};
-
 
 // NEW, PUT IN CLASS, hide from GLOBAL SCOPE, only setState can use those
 const defaultState = (): void => {
-    "use strict";
     registerContainer.css('display', 'none'); // check
 };
 
 const registerState = (): void => {
-    "use strict";
     registerContainer.css('display', 'flex'); // check
 };
 
@@ -136,8 +124,8 @@ const registerState = (): void => {
 * Set the current state
 * Note: setState("default") is being used in dist/remodal.min.js on remodal close
 * */
-const setState = (state: string): string => {
-    "use strict";
+// @ts-ignore - Attached to the window object because used as a global - Browserify issue
+window.setState = (state: string): string => {
     switch(state) {
         case "default":
             currentState = "default";
@@ -155,7 +143,6 @@ const setState = (state: string): string => {
 };
 
 const registrationForm = (comingFromCart: boolean = false): void => {
-    "use strict";
     // By default, user is registering, before purchasing items
 
     // If the user isn't logged in [redundant?]
@@ -187,17 +174,16 @@ const registrationForm = (comingFromCart: boolean = false): void => {
 };
 
 const register = (): void => {
-    "use strict";
     console.log("AJAX send register info from forms");
 };
 
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
 const adjustHeight = (): void => {
     // media query parameter
-    "use strict";
+    
     // VARIABLES
     // var defaultSize = 0.8;
-    viewPortHeight = window.innerHeight;
+    const viewPortHeight: number = window.innerHeight;
 
     // if(typeof mediaQuery === 'undefined' && mediaQuery !== null) {
     //   defaultSize = mediaQuery;
@@ -231,20 +217,17 @@ const adjustHeight = (): void => {
 /* Anchor scroll
    ========================================================================== */
 const scrollToAnchor = (aid): void =>{
-    "use strict";
     const aTag = $("a[name='"+ aid +"']");
     $('html,body').animate({scrollTop: aTag.offset().top},'slow');
 };
 
 $("#link").click((): void => {
-    "use strict";
     scrollToAnchor('menuContainer'); // is no longer correct, since header is overlapping with the menuContainer
 });
 
 /* Get newest clothes
    ========================================================================== */
 const getNewestClothes = () => {
-    "use strict";
     try {
         // VARIABLES
         let xhttp: XMLHttpRequest;
@@ -266,8 +249,6 @@ const getNewestClothes = () => {
 
 // Unite the login and register events in here
 const repaintForEvent = (event: string) => {
-    "use strict";
-
     // Make the cart clean
     const cleanCart = (fadeEmptyCart: boolean = false) => {
         if(cartContent.children.length > 0) {
@@ -290,180 +271,20 @@ const repaintForEvent = (event: string) => {
 
     if(event === 'register') {
         // Remodal window is now about Registration
-        modalHeader.html('Register');
+        modalHeader.text('Register');
         cleanCart(false);
     }
 
     else if(event === 'login') {
         // Remodal window is now about Registration
-        modalHeader.html('Login');
+        modalHeader.text('Login');
         cleanCart(false);
     }
 };
 
-/* Effects CLASS
-   ========================================================================== */
-const Effects = () => {
-    "use strict";
-    // Blur an element for a brief period
-    Effects.prototype.blurElement =
-        (
-            element: string = "class",
-            selector: string,
-            afterMilliseconds: number = 0,
-            forMilliseconds: number = 1000,
-            on_or_off: string
-        ) => {
-
-        let elem;
-
-        /* Element SELECTOR
-        ========================================================================== */
-        // Select the class to blur
-        if(selector === 'class') {
-            elem = $('.' +element);
-        }
-        // Select the id element to blur
-        else if(selector === 'id') {
-            elem = $('#' +element);
-        }
-        // Element couldn't be selected, expand
-        else {
-            console.log("Expand blurElem() function to accept non id/class selectors");
-        }
-
-        /* State
-       ========================================================================== */
-        if(on_or_off === 'on') {
-            // Blur effect, filter is not that well supported
-            setTimeout(() => {
-                elem.css({
-                    'transition-property': 'filter',
-                    'transition-duration': forMilliseconds + 'ms',
-                    'transition-timing-function': 'ease',
-                    'filter': 'blur(1px)'
-                });
-            }, afterMilliseconds);
-        }
-        else if(on_or_off === 'off') {
-            setTimeout(() => {
-                elem.css({
-                    'transition-property': 'filter',
-                    'transition-duration': forMilliseconds + 'ms',
-                    'transition-timing-function': 'ease-out',
-                    'filter': 'none'
-                });
-            }, afterMilliseconds);
-        }
-    };
-
-    Effects.prototype.displayElement =
-        (
-            element,
-            selector: string = "class",
-            afterMilliseconds: number = 0,
-            forMilliseconds: number = 1000,
-            on_or_off: string = "on"
-        ) => {
-        let elem;
-
-        /* Element SELECTOR
-       ========================================================================== */
-        // Select the class to dim/undim
-        if(selector === 'class') {
-            elem = $('.' +element);
-        }
-        // Select the id element to dim/undim
-        else if(selector === 'id') {
-            elem = $('#' +element);
-        }
-        // Select the element by tag name to dim/undim
-        else if(selector === 'tagName') {
-            elem = $('' +element);
-        }
-        // Element couldn't be selected, expand
-        else {
-            console.log("Expand show() function to accept non id/class selectors");
-        }
-
-        /* States
-       ========================================================================== */
-        if(on_or_off === 'on') {
-            setTimeout(() => {
-                elem.css({
-                    'transition-property': 'opacity',
-                    'transition-duration': forMilliseconds + 'ms',
-                    'transition-timing-function': 'ease-in',
-                    'visibility': 'visible',
-                    'opacity': 0.85
-                });
-            }, afterMilliseconds);
-        }
-        else if(on_or_off === 'off') {
-            setTimeout(() => {
-                elem.css({
-                    'transition-property': 'opacity, visibility',
-                    'transition-duration': forMilliseconds + 'ms',
-                    'transition-timing-function': 'ease-out',
-                    'opacity': 0,
-                    'visibility': 'hidden'
-                });
-            }, afterMilliseconds);
-        }
-    };
-};
-effects = new Effects();
-
-/* Slideshow CLASS
-   ========================================================================== */
-const SlideShow = function() {
-    "use strict";
-    this.slideShowImgs = document.getElementsByClassName("mySlides_js"); // used when randomizing the first slide
-    this.slideIndex = Math.floor(Math.random() * this.slideShowImgs.length) + 1;
-    this.timeNextSlide = 8000; // to reduce later
-    this.automaticSlideshow = setInterval(
-        () => {
-            slideshow.plusDivs(+1);
-        },
-        this.timeNextSlide
-    );
-
-    SlideShow.prototype.plusDivs = (n) => {
-        this.showDivs(this.slideIndex += n);
-        clearInterval(this.automaticSlideshow); // stop the timer (done in case the arrows were clicked)
-        this.automaticSlideshow = setInterval(() => {slideshow.plusDivs(+1);}, this.timeNextSlide); // start a new timer, lazy way
-    };
-
-    SlideShow.prototype.showDivs = (n) => {
-        let i;
-        const slideShowImgs: any = document.getElementsByClassName("mySlides_js");
-
-        const showElement = () => {
-            slideShowImgs[slideshow.slideIndex -1].style.opacity = '1';
-            slideShowImgs[slideshow.slideIndex -1].style.display = 'visible';
-        };
-
-        if (n > slideShowImgs.length) {
-            this.slideIndex = 1;
-        }
-        if (n < 1) {
-            this.slideIndex = slideShowImgs.length;
-        }
-        for (i = 0; i < slideShowImgs.length; i++) {
-            slideShowImgs[i].style.opacity = '0';
-            slideShowImgs[i].style.display = 'hidden';
-        }
-        setTimeout(showElement(), 3500);
-    };
-
-};
-slideshow = new SlideShow();
-slideshow.showDivs(slideshow.slideIndex);
-
 /* Cart class
    ========================================================================== */
 const Cart = function () {
-    "use strict";
     this.cart_sum = 0; // The sum of the user's currently requested clothes
     this.cart_items_quantity = 0; // How much items are currently in the cart
     this.orderedItems = []; // Will store the ordered items, later send to the server (so he can generate the cart)
@@ -471,7 +292,7 @@ const Cart = function () {
     this.articleContainerBtn = ""; // later defined
 
     const cartTotal = () => {
-        totalToPayText.html("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
+        totalToPayText.text("Total: " + mathRoundToSecond(cart.cart_sum) + "$");
     };
 
     // counter articles quantity in the session ??
@@ -483,9 +304,9 @@ const Cart = function () {
         effects.displayElement('dimmingBlock', 'class', 750, 750, 'off');
 
         this.cart_sum += articlePrice;
-        cart_sum.html(mathRoundToSecond(this.cart_sum) + "$");
+        cart_sum.text(mathRoundToSecond(this.cart_sum) + "$");
         this.cart_items_quantity++;
-        cart_quantity_text.html("" + this.cart_items_quantity);
+        cart_quantity_text.text("" + this.cart_items_quantity);
 
         this.orderedItems.push(articleId);
     };
@@ -542,13 +363,13 @@ const Cart = function () {
     };
 
     Cart.prototype.removeFromCart = (id, price) => {
-        remove(this.orderedItems, id); // remove from the list of ordered items
+        removeFromArr(this.orderedItems, id); // remove from the list of ordered items
 
         this.cart_items_quantity--;
         this.cart_sum -= price;
-        cart_quantity_text.html("" + this.cart_items_quantity);
-        cart_sum.html(mathRoundToSecond(this.cart_sum) + "$");
-        totalToPayText.html(mathRoundToSecond(this.cart_sum) + "$");
+        cart_quantity_text.text("" + this.cart_items_quantity);
+        cart_sum.text(mathRoundToSecond(this.cart_sum) + "$");
+        totalToPayText.text(mathRoundToSecond(this.cart_sum) + "$");
 
         this.removeFromDOM(id, true);
 
@@ -560,7 +381,7 @@ const Cart = function () {
 
     basketContainer.on("click", () => {
         cart.sendItemsList(cart.orderedItems);
-        modalHeader.html('Cart'); // Remodal is now about the cart
+        modalHeader.text('Cart'); // Remodal is now about the cart
         // if there are no items in the cart show the empty cart images
         if(cart.orderedItems.length === 0) {
             if(emptyCartImg.css("opacity") === '0' || emptyCartImg.css("opacity") === '') {
@@ -572,22 +393,5 @@ const Cart = function () {
         adjustHeight();
     });
 };
-window.cart = new Cart(); // Made as window object, so the server-side rendered cart.addToCart works
-
-/* Additions
-
-// require(['Cart']  ,function(c){
-//   "use strict";
-//   c
-// });
-
-//var CartModule = (function() {
-
-//  return {
-//    cart : Cart
-//  };
-//}());
-
-//cart = new CartModule.cart();
-
-*/
+// @ts-ignore - Made as window object, so the server-side rendered cart.addToCart works, Browserify issue
+window.cart = new Cart();
