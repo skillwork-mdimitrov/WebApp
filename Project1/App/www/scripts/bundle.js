@@ -358,7 +358,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* Effects CLASS
    ========================================================================== */
 var Effects = function () {
-    // Blur an element for aййй brief period
+    // Blur an element for a brief period
     Effects.prototype.blurElement =
         function (element, selector, afterMilliseconds, forMilliseconds, on_or_off) {
             if (element === void 0) { element = "class"; }
