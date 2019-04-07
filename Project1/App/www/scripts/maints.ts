@@ -180,7 +180,7 @@ const register = (): void => {
 /* Recalculate Remodal window height, case of mobile going sideways etc..*/
 const adjustHeight = (): void => {
     // media query parameter
-    
+
     // VARIABLES
     // var defaultSize = 0.8;
     const viewPortHeight: number = window.innerHeight;
