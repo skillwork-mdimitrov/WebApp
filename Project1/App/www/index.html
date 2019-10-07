@@ -99,7 +99,7 @@
 
   <div class="slideShowContainer">
 
-    <button class="slide-button" onclick="slideshow.plusDivs(-1)">&#10094;</button>
+    <button class="slide-button" id="prevSlideBtn">&#10094;</button>
 
       <div class="slideShowImages">
         <img class="mySlides_js" src="images/slideshow/banner_winter_smog.jpg" alt="DKNY">
@@ -108,7 +108,7 @@
         <img class="mySlides_js" src="images/slideshow/smog_header.jpg" alt="SMOG">
       </div>
 
-    <button class="slide-button" onclick="slideshow.plusDivs(+1)">&#10095;</button>
+    <button class="slide-button" id="nextSlideBtn">&#10095;</button>
   </div> <!-- Close slide-show container -->
 
   <a name="menuContainer"></a> <!-- Scroll to here -->
@@ -137,9 +137,12 @@
 </div> <!-- Close main container -->
 
 <!-- SCRIPTS -->
+
+<!--<script src="scripts/jquery.min.js"></script> &lt;!&ndash; Local &ndash;&gt;-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="scripts/script_main.js"></script>
-<!-- Remodal scripts -->
+<script src="scripts/dist/bundle.js"></script>
+
+ <!--Remodal scripts-->
 <script>
   window.REMODAL_GLOBALS = {
     DEFAULTS: {

@@ -1,0 +1,8 @@
+{
+  "name": "Project1",
+  "version": "0.0.1",
+  "scripts": {
+    "watch": "watchify App/www/scripts/maints.js -o App/www/scripts/dist/bundle.js -v",
+    "build": "browserify App/www/scripts/maints.js  | uglifyjs -mc warnings=false > App/www/scripts/dist/bundle.js"
+  }
+}
